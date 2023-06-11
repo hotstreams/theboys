@@ -1,45 +1,42 @@
 package com.theboys.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
+import org.springframework.security.web.context.NullSecurityContextRepository;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    @Autowired
+    private PersistentUserManager userManager;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/users").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/users").hasAnyRole(UserRole.SCIENTIST.name())
+                        .anyRequest().permitAll()
                 )
-                .formLogin((form) -> form
-                        .loginPage("/login")
-                        .permitAll()
+                .httpBasic(c -> c.authenticationEntryPoint(basicAuthenticationEntryPoint())
+                        .securityContextRepository(new NullSecurityContextRepository())
                 )
-                .logout(LogoutConfigurer::permitAll);
+                .userDetailsService(userManager)
+                .logout((logout) -> logout.permitAll());
 
         return http.build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("password")
-                        .roles("USER")
-                        .build();
-
-        return new InMemoryUserDetailsManager(user);
+    public BasicAuthenticationEntryPoint basicAuthenticationEntryPoint() {
+        var result = new BasicAuthenticationEntryPoint();
+        result.setRealmName("TEST REALM");
+        return result;
     }
+
 }
