@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "/candidates")
 public class CandidateController {
 
     private final CandidateService candidateService;
@@ -21,24 +22,24 @@ public class CandidateController {
         this.candidateService = candidateService;
     }
 
-    @GetMapping(path = "/candidates")
+    @GetMapping
     public List<CandidateResponseTO> getCandidates() {
         return candidateService.getCandidates();
     }
 
-    @PostMapping(path = "/candidates")
+    @PostMapping
     public CustomHttpResponse createCandidate(@RequestBody CandidateRequestTO candidateRequestTO) {
         candidateService.saveCandidate(candidateRequestTO);
         return new CustomHttpResponse();
     }
 
-    @GetMapping(path = "/candidates/{id}")
+    @GetMapping(path = "/{id}")
     public CandidateResponseTO getCandidate(@PathVariable("id") Integer userId) {
         return candidateService.getCandidateById(userId);
     }
 
     //todo Make wrapper to avoid writing new CustomHttpResponse call for every endpoint
-    @PatchMapping(path = "/candidates/{id}")
+    @PatchMapping(path = "/{id}")
     public CustomHttpResponse updateCandidateStatus(@PathVariable("id") Integer userId, @RequestBody UpdateCandidateStatusTO statusTO) {
         if (statusTO.getStatus() == null) {
             throw new IncorrectRequest("Missing required parameter 'status'");

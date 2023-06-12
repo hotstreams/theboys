@@ -5,7 +5,25 @@ insert into theboys.users (id,login,password,role) values (1,'login','{bcrypt}$2
 ,(5,'manager2','{bcrypt}$2a$10$WHJNOA9.XmARvzF4imWyoumSk4aRQIZXzVbDmPuGTgmKRZPMpPCuC', 'MANAGER')
 ,(6,'manager3','{bcrypt}$2a$10$R3qpKGPYfunTzKItCJmqYOv8AaeXWCUyx0yBzmzxwxnYgMWv.VAC', 'MANAGER')
 ,(7,'hero','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'HERO')
+,(8,'candidate','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'CANDIDATE')
 ,(28,'customer','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'CUSTOMER')
+;
+
+insert into theboys.scientists values (2)
+, (3)
+;
+
+insert into theboys.managers values (4)
+, (5)
+, (6)
+;
+
+insert into theboys.candidates values ('2000-03-04'::date, 8, 180, 75, 'SPB', 'Some candidate', 'John', 'Doe', '+19483728494', 'white', 'male', 'WAITING', null, null)
+;
+
+insert into theboys.medicine values (1, 'The V serum')
+, (2, 'The V serum II')
+, (3, 'The V serum III')
 ;
 
 insert into theboys.skills values (1, 'Controls fire and has the ability to manipulate flames.', 'Fire bending')
