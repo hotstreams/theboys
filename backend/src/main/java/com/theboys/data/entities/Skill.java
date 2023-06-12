@@ -1,14 +1,12 @@
 package com.theboys.data.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "skills", schema = "theboys")
 public class Skill {
     @Id
+    @GeneratedValue
     @Column(name = "skill_id")
     private Integer id;
 

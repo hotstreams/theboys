@@ -1,6 +1,9 @@
 package com.theboys.security;
 
+import com.theboys.data.entities.Hero;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users", schema = "theboys")
@@ -18,6 +21,15 @@ public class User {
     @Column(name = "role", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_her_subscriptions",
+            schema = "theboys",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "hero_id") }
+    )
+    private List<Hero> heroSubscriptions;
 
     public User(Integer id, String login, String password, UserRole role) {
         this.id = id;

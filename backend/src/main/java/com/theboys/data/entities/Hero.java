@@ -9,6 +9,7 @@ import java.util.Set;
 public class Hero {
 
     @Id
+    @GeneratedValue
     @Column(name = "hero_id")
     private Integer heroId;
 
@@ -18,7 +19,7 @@ public class Hero {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinTable(
             name = "heroes_skills",
             schema = "theboys",
