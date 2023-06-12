@@ -1,5 +1,6 @@
 package com.theboys.contollers;
 
+import com.theboys.data.entities.Medicine;
 import com.theboys.data.entities.Research;
 import com.theboys.data.repos.UserRepo;
 import com.theboys.services.ResearchService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/researches")
@@ -25,8 +27,13 @@ public class ResearchController {
     }
 
     @GetMapping
-    public List<Research> getResearches() {
-        return service.getResearches();
+    public List<ResearchResponseTO> getResearches() {
+        return service.getResearches().stream().map(ResearchResponseTO::new).collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/medicine")
+    public List<Medicine> getMedicine() {
+        return service.getMedicine();
     }
 
     @GetMapping(value = "/{id}")

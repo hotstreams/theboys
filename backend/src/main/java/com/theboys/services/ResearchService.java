@@ -36,6 +36,7 @@ public class ResearchService {
         this.testRepo = testRepo;
     }
 
+    public List<Medicine> getMedicine() { return medicineRepo.findAll(); }
     public List<Research> getResearches() {
         return researchRepo.findAll();
     }
