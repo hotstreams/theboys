@@ -2,6 +2,7 @@ package com.theboys.data.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,6 +28,9 @@ public class Hero {
             inverseJoinColumns = { @JoinColumn(name = "skill_id") }
     )
     private Set<Skill> skills;
+
+    @OneToMany(mappedBy = "hero")
+    private List<Order> orders;
 
     public String getDescription() {
         return description;

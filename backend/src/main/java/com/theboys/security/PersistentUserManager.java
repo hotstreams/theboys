@@ -18,7 +18,12 @@ public class PersistentUserManager implements UserDetailsService {
         this.userRepo = userRepo;
         var pe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         userRepo.save(new User(1, "login", pe.encode("password"), UserRole.VISITOR));
-        userRepo.save(new User(2, "science", pe.encode("password"), UserRole.SCIENTIST));
+        userRepo.save(new User(2, "scientist1", pe.encode("password"), UserRole.SCIENTIST));
+        userRepo.save(new User(3, "scientist2", pe.encode("password"), UserRole.SCIENTIST));
+        userRepo.save(new User(4, "manager1", pe.encode("password"), UserRole.MANAGER));
+        userRepo.save(new User(5, "manager2", pe.encode("password"), UserRole.MANAGER));
+        userRepo.save(new User(6, "manager3", pe.encode("password"), UserRole.MANAGER));
+        userRepo.save(new User(7, "hero1", pe.encode("password"), UserRole.HERO));
     }
 
     @Override
