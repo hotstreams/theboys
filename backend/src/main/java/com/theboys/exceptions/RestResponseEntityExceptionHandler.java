@@ -1,7 +1,5 @@
 package com.theboys.exceptions;
 
-import com.theboys.to.BasicHttpException;
-import com.theboys.to.ErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
