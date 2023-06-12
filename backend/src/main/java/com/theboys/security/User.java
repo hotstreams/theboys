@@ -24,7 +24,7 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
-            name = "user_her_subscriptions",
+            name = "user_hero_subscriptions",
             schema = "theboys",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "hero_id") }

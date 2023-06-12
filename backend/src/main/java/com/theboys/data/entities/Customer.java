@@ -9,8 +9,8 @@ import java.util.List;
 public class Customer {
 
     @Id
-    @GeneratedValue
     @Column(name = "customer_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer customerId;
 
     @OneToMany(mappedBy = "customer")

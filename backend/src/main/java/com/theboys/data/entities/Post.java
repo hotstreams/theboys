@@ -5,9 +5,10 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "posts", schema = "theboys")
 public class Post {
+
     @Id
-    @GeneratedValue
     @Column(name = "post_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer postId;
 
     @Column(name = "hero_id", nullable = false)

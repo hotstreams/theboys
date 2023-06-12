@@ -10,6 +10,7 @@ public class Scientist {
 
     @Id
     @Column(name = "scientist_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer scientistId;
 
     @OneToMany(mappedBy = "scientist")

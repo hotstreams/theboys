@@ -10,8 +10,8 @@ import java.util.Set;
 public class Hero {
 
     @Id
-    @GeneratedValue
     @Column(name = "hero_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer heroId;
 
     @Column(name = "name", unique = true, nullable = false)

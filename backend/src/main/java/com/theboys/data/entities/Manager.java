@@ -10,6 +10,7 @@ public class Manager {
 
     @Id
     @Column(name = "manager_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer managerId;
 
     @OneToMany(mappedBy = "manager")

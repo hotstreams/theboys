@@ -1,5 +1,6 @@
 package com.theboys.data.entities;
 
+import com.theboys.data.enums.CandidateStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -11,8 +12,10 @@ public class Candidate {
 
     @Id
     @Column(name = "candidate_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer candidateId;
 
+    //todo Add fetch type lazy
     @OneToMany(mappedBy = "candidate")
     private List<HeroCreationEvent> events;
 
@@ -52,7 +55,27 @@ public class Candidate {
     @Column(name = "medicalDoc")
     private byte[] medicalDocument;
 
+    @Column(name = "status")
+    @Enumerated(value = EnumType.STRING)
+    private CandidateStatus candidateStatus;
+
     public Candidate() {
+    }
+
+    public Candidate(String firstName, String lastName, String phone, LocalDate birthday, String sex, String race, int weight, int height, String address, String description, byte[] photo, byte[] medicalDocument) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.sex = sex;
+        this.race = race;
+        this.weight = weight;
+        this.height = height;
+        this.address = address;
+        this.description = description;
+        this.photo = photo;
+        this.medicalDocument = medicalDocument;
+        this.candidateStatus = CandidateStatus.WAITING;
     }
 
     public Integer getCandidateId() {
@@ -165,5 +188,13 @@ public class Candidate {
 
     public void setMedicalDocument(byte[] medicalDocument) {
         this.medicalDocument = medicalDocument;
+    }
+
+    public CandidateStatus getCandidateStatus() {
+        return candidateStatus;
+    }
+
+    public void setCandidateStatus(CandidateStatus candidateStatus) {
+        this.candidateStatus = candidateStatus;
     }
 }

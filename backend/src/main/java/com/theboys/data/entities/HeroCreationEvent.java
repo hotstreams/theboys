@@ -10,6 +10,7 @@ public class HeroCreationEvent {
 
     @Id
     @Column(name = "hero_creation_event_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer heroCreationEventId;
 
     @ManyToOne

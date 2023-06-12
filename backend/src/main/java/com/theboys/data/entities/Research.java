@@ -8,6 +8,7 @@ public class Research {
 
     @Id
     @Column(name = "research_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer researchId;
 
     @ManyToOne

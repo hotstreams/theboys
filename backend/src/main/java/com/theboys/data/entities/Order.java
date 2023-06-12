@@ -1,5 +1,6 @@
 package com.theboys.data.entities;
 
+import com.theboys.data.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -9,8 +10,8 @@ import java.time.LocalDate;
 public class Order {
 
     @Id
-    @GeneratedValue
     @Column(name = "order_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer order_id;
 
     @ManyToOne(targetEntity = Hero.class)

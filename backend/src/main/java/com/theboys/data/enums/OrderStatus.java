@@ -1,4 +1,4 @@
-package com.theboys.data.entities;
+package com.theboys.data.enums;
 
 public enum OrderStatus {
     PENDING,

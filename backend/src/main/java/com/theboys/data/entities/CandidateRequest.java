@@ -10,6 +10,7 @@ public class CandidateRequest {
 
     @Id
     @Column(name = "candidate_order_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer candidateId;
 
     @ManyToOne
