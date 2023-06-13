@@ -56,11 +56,11 @@ create table theboys.candidates (birthday date not null, candidate_id integer no
 create table theboys.customers (customer_id integer not null, primary key (customer_id));
 create table theboys.hero_creation_events (candidate_id integer, date date not null, hero_creation_event_id integer not null, scientist_id integer, result varchar(255) not null, primary key (hero_creation_event_id));
 create table theboys.hero_creation_orders (hero_creation_order_id integer not null, manager_id integer, primary key (hero_creation_order_id));
-create table theboys.heroes (hero_id integer not null, description varchar(255), name varchar(255) not null unique, primary key (hero_id));
+create table theboys.heroes (hero_id integer not null, description varchar(255), name varchar(255) not null unique, rating double precision, primary key (hero_id));
 create table theboys.heroes_skills (hero_id integer not null, skill_id integer not null, primary key (hero_id, skill_id));
 create table theboys.managers (manager_id integer not null, primary key (manager_id));
 create table theboys.medicine (medicine_id integer not null, name varchar(255) not null unique, primary key (medicine_id));
-create table theboys.orders (cost integer, customer_id integer not null, date date, hero_id integer, order_id integer not null, hero_description varchar(255), status varchar(255) not null check (status in ('PENDING','IN_PROGRESS','WAITING_FOR_CUSTOMER_APPROVAL','FULFILLED','DECLINED')), primary key (order_id));
+create table theboys.orders (customer_id integer not null, date date, start_date date, end_date date, request_description varchar(255), hero_id integer, order_id integer not null, hero_description varchar(255), status varchar(255) not null check (status in ('PENDING','IN_PROGRESS','WAITING_FOR_CUSTOMER_APPROVAL','FULFILLED','DECLINED')), primary key (order_id));
 create table theboys.orders_skills (order_id integer not null, skill_id integer not null, primary key (order_id, skill_id));
 create table theboys.posts (hero_id integer not null, post_id integer not null, description varchar(255), title varchar(255) not null, primary key (post_id));
 create table theboys.researches (candidate_id integer unique, doze_count integer not null, doze_ml integer not null, exam_passed boolean, medicine_id integer, research_id integer not null, scientist_id integer not null, result varchar(255), status varchar(255) not null check (status in ('INITIALIZED','CANDIDATE_FOUND','WAITING_FOR_INJECTION','WAITING_FOR_TESTS','WAITING_FOR_ASSESSMENT','WAITING_FOR_EXAM','CANDIDATE_BECAME_HERO','CANDIDATE_DIED_AT_INJECTION','CANDIDATE_DIED_AT_ASSESSMENT','CANDIDATE_DIED_AT_EXAM')), primary key (research_id));

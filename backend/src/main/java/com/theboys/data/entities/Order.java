@@ -22,11 +22,17 @@ public class Order {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @Column(name = "cost")
-    private Integer cost;
-
     @Column(name = "date")
     private LocalDate date;
+
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
+
+    @Column(name = "request_description")
+    private String requestDescription;
 
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -34,6 +40,23 @@ public class Order {
 
     @Column(name = "hero_description")
     private String heroDescription;
+
+    public Order(Customer customer, LocalDate date, LocalDate startDate, LocalDate endDate,
+                 String requestDescription, OrderStatus status, String heroDescription) {
+        this.customer = customer;
+        this.date = date;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.requestDescription = requestDescription;
+        this.status = status;
+        this.heroDescription = heroDescription;
+    }
+
+    public Order(Hero hero, Customer customer, LocalDate date, LocalDate startDate, LocalDate endDate,
+                 String requestDescription, OrderStatus status, String heroDescription) {
+        this(customer, date, startDate, endDate, requestDescription, status, heroDescription);
+        this.hero = hero;
+    }
 
 
 }

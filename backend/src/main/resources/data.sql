@@ -38,16 +38,16 @@ insert into theboys.skills values (1, 'Controls fire and has the ability to mani
 ,(10, 'Has the ability to bind and manipulate souls.', 'Soul bending')
 ;
 
-insert into theboys.heroes values (7, 'Controls fire and has the ability to manipulate flames.', 'Blaze')
-,(8, 'Ability to move objects with the power of mind.', 'Kinetic')
-,(9, 'Can turn invisible and pass through solid objects.', 'Phantom')
-,(10, 'Controls electricity and can discharge powerful electrical blasts.', 'Volt')
-,(11, 'Moves at incredible speeds, allowing for lightning-fast reflexes.', 'Quicksilver')
-,(12, 'Harnesses cosmic energy and possesses superhuman strength and flight.', 'Nova')
-,(13, 'Controls ice and can create freezing temperatures.', 'Frostbite')
-,(14, 'Possesses mind control and telepathic abilities.', 'Mind Bender')
-,(15, 'Can fly and has the power of healing and purification.', 'Seraph')
-,(16, 'Has the ability to bind and manipulate souls.', 'Warlock')
+insert into theboys.heroes values (7, 'Controls fire and has the ability to manipulate flames.', 'Blaze', 3.94)
+,(8, 'Ability to move objects with the power of mind.', 'Kinetic', 1.22)
+,(9, 'Can turn invisible and pass through solid objects.', 'Phantom', 2.55)
+,(10, 'Controls electricity and can discharge powerful electrical blasts.', 'Volt', 4.69)
+,(11, 'Moves at incredible speeds, allowing for lightning-fast reflexes.', 'Quicksilver', 4.85)
+,(12, 'Harnesses cosmic energy and possesses superhuman strength and flight.', 'Nova', 2.02)
+,(13, 'Controls ice and can create freezing temperatures.', 'Frostbite', 2.56)
+,(14, 'Possesses mind control and telepathic abilities.', 'Mind Bender', 4.32)
+,(15, 'Can fly and has the power of healing and purification.', 'Seraph', 4.63)
+,(16, 'Has the ability to bind and manipulate souls.', 'Warlock', 4.72)
 ;
 
 insert into theboys.heroes_skills values (7, 1)
@@ -74,6 +74,6 @@ insert into theboys.user_hero_subscriptions values (7, 1)
 ;
 
 insert into theboys.customers values (28);
-insert into theboys.orders values (500000, 28, '2023-08-08'::date, 7, 1, null, 'PENDING')
-, (500000, 28, '2023-08-09'::date, 8, 2, null, 'PENDING')
+insert into theboys.orders values (28, '2023-08-08'::date, '2023-08-10'::date, '2023-08-10'::date, null ,7, nextval('orders_seq'), null, 'PENDING')
+, (28, '2023-08-09'::date, '2023-08-12'::date, '2023-08-13'::date, null, 8, nextval('orders_seq'), null, 'PENDING')
 ;
