@@ -27,6 +27,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/heroes/rent").hasAnyRole(UserRole.CUSTOMER.name())
                         .anyRequest().permitAll()
                 )
+                .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(c -> c.authenticationEntryPoint(basicAuthenticationEntryPoint())
                         .securityContextRepository(new NullSecurityContextRepository())
