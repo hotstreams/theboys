@@ -12,7 +12,6 @@ public class Candidate {
 
     @Id
     @Column(name = "candidate_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer candidateId;
 
     //todo Add fetch type lazy

@@ -8,6 +8,7 @@ import com.theboys.security.User;
 import com.theboys.security.UserRole;
 import com.theboys.to.CandidateRequestTO;
 import com.theboys.to.CandidateResponseTO;
+import jakarta.transaction.Transactional;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -40,6 +41,7 @@ public class CandidateService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void saveCandidate(CandidateRequestTO candidateRequestTO, String username) {
         User user = userService.getUserByLogin(username);
         userService.updateUserRole(UserRole.CANDIDATE, user.getId());

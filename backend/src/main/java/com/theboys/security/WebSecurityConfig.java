@@ -3,6 +3,7 @@ package com.theboys.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,7 +25,7 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/users").hasAnyRole(UserRole.SCIENTIST.name())
-                        .requestMatchers("/heroes/rent").hasAnyRole(UserRole.CUSTOMER.name())
+                        .requestMatchers(HttpMethod.POST,"/heroes/rent").hasAnyRole(UserRole.CUSTOMER.name())
                         .anyRequest().permitAll()
                 )
                 .cors(AbstractHttpConfigurer::disable)

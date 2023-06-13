@@ -10,6 +10,7 @@ import com.theboys.exceptions.EntityNotFoundException;
 import com.theboys.security.User;
 import com.theboys.to.HeroTO;
 import com.theboys.to.OrderRequestTO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +43,8 @@ public class HeroService {
         return heroes.stream().map(this::createHeroTO).collect(Collectors.toList());
     }
 
+    @Transactional
     public void rentHero(OrderRequestTO request, String username) {
-        // todo Today user id equals id from role table
         User user = userService.getUserByLogin(username);
         customerService.getCustomer(user.getId())
                 .ifPresentOrElse(customer -> {

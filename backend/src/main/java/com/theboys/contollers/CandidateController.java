@@ -6,6 +6,7 @@ import com.theboys.to.CandidateRequestTO;
 import com.theboys.to.CandidateResponseTO;
 import com.theboys.to.CustomHttpResponse;
 import com.theboys.to.UpdateCandidateStatusTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,7 @@ public class CandidateController {
 
     //todo Make wrapper to avoid writing new CustomHttpResponse call for every endpoint
     @PatchMapping(path = "/{id}")
-    public CustomHttpResponse updateCandidateStatus(@PathVariable("id") Integer userId, @RequestBody UpdateCandidateStatusTO statusTO) {
+    public CustomHttpResponse updateCandidateStatus(@PathVariable("id") Integer userId, @Valid @RequestBody UpdateCandidateStatusTO statusTO) {
         if (statusTO.getStatus() == null) {
             throw new IncorrectRequest("Missing required parameter 'status'");
         }

@@ -30,8 +30,7 @@ public class User {
     )
     private List<Hero> heroSubscriptions;
 
-    public User(Integer id, String login, String password, UserRole role) {
-        this.id = id;
+    public User(String login, String password, UserRole role) {
         this.login = login;
         this.password = password;
         this.role = role;
