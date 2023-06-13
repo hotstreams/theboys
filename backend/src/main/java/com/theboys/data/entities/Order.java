@@ -12,7 +12,7 @@ public class Order {
     @Id
     @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer order_id;
+    private Integer orderId;
 
     @ManyToOne(targetEntity = Hero.class)
     @JoinColumn(name = "hero_id")
@@ -41,6 +41,9 @@ public class Order {
     @Column(name = "hero_description")
     private String heroDescription;
 
+    public Order() {
+    }
+
     public Order(Customer customer, LocalDate date, LocalDate startDate, LocalDate endDate,
                  String requestDescription, OrderStatus status, String heroDescription) {
         this.customer = customer;
@@ -58,5 +61,75 @@ public class Order {
         this.hero = hero;
     }
 
+    public Integer getOrderId() {
+        return orderId;
+    }
 
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
+    public Hero getHero() {
+        return hero;
+    }
+
+    public void setHero(Hero hero) {
+        this.hero = hero;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getRequestDescription() {
+        return requestDescription;
+    }
+
+    public void setRequestDescription(String requestDescription) {
+        this.requestDescription = requestDescription;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public String getHeroDescription() {
+        return heroDescription;
+    }
+
+    public void setHeroDescription(String heroDescription) {
+        this.heroDescription = heroDescription;
+    }
 }

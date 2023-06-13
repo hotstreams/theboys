@@ -9,7 +9,7 @@ import com.theboys.data.repos.HeroRepo;
 import com.theboys.exceptions.EntityNotFoundException;
 import com.theboys.security.User;
 import com.theboys.to.HeroTO;
-import com.theboys.to.RentHeroRequestTO;
+import com.theboys.to.OrderRequestTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +42,7 @@ public class HeroService {
         return heroes.stream().map(this::createHeroTO).collect(Collectors.toList());
     }
 
-    public void rentHero(RentHeroRequestTO request, String username) {
+    public void rentHero(OrderRequestTO request, String username) {
         // todo Today user id equals id from role table
         User user = userService.getUserByLogin(username);
         customerService.getCustomer(user.getId())
@@ -67,7 +67,7 @@ public class HeroService {
         );
     }
 
-    private Order createHeroOrder(RentHeroRequestTO request, Customer customer, Optional<Hero> heroOptional) {
+    private Order createHeroOrder(OrderRequestTO request, Customer customer, Optional<Hero> heroOptional) {
         LocalDate orderDate = LocalDate.now();
         return heroOptional
                 .map(hero -> new Order(hero, customer, orderDate, request.getDateStart(), request.getDateEnd(), request.getRequestDescription(), OrderStatus.PENDING, request.getHeroDescription()))

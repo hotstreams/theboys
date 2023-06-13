@@ -24,6 +24,7 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/users").hasAnyRole(UserRole.SCIENTIST.name())
+                        .requestMatchers("/heroes/rent").hasAnyRole(UserRole.CUSTOMER.name())
                         .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

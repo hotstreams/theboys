@@ -55,6 +55,7 @@ public class CandidateService {
                 candidate.getFirstName(),
                 candidate.getLastName(),
                 candidate.getPhone(),
+                candidate.getBirthday().format(DateTimeFormatter.ISO_LOCAL_DATE),
                 candidate.getSex(),
                 candidate.getRace(),
                 candidate.getHeight(),

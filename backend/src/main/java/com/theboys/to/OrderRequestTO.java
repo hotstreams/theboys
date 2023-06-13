@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RentHeroRequestTO {
+public class OrderRequestTO {
     private Integer heroId;
     private String heroDescription;
     private String requestDescription;

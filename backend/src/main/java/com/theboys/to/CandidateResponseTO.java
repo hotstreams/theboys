@@ -14,6 +14,7 @@ public class CandidateResponseTO {
     private String firstName;
     private String lastName;
     private String phone;
+    private String dateOfBirth;
     private String sex;
     private String race;
     private Integer height;
