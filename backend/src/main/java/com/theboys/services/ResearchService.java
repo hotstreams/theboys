@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -112,7 +113,7 @@ public class ResearchService {
         var assessment = assessmentRepo.findById(assessmentId).orElseThrow(()->new EntityNotFoundException("Assessment with id="+assessmentId+" not found"));
         assessment.setComment(resultTO.getComment());
         assessment.setPassed(resultTO.isPassed());
-        assessment.setEventDate(LocalDate.now());
+        assessment.setEventDate(LocalDate.parse(resultTO.getEventDate(), DateTimeFormatter.ISO_LOCAL_DATE));
         assessmentRepo.save(assessment);
         return assessment;
     }

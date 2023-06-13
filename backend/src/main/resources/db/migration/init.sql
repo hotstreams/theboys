@@ -34,57 +34,25 @@ drop table if exists skills cascade;
 drop table if exists tests cascade;
 drop table if exists user_hero_subscriptions cascade;
 drop table if exists users cascade;
-drop sequence if exists assessments_seq;
-drop sequence if exists candidate_requests_seq;
-drop sequence if exists candidates_seq;
-drop sequence if exists customers_seq;
-drop sequence if exists hero_creation_events_seq;
-drop sequence if exists hero_creation_orders_seq;
-drop sequence if exists heroes_seq;
-drop sequence if exists managers_seq;
-drop sequence if exists medicine_seq;
-drop sequence if exists orders_seq;
-drop sequence if exists posts_seq;
-drop sequence if exists researches_seq;
-drop sequence if exists scientists_seq;
-drop sequence if exists skills_seq;
-drop sequence if exists tests_seq;
-drop sequence if exists users_seq;
-create table assessments (event_date date, passed boolean, request_date date not null, research_id integer not null, test_id integer not null, comment varchar(255), name varchar(255) not null, primary key (test_id));
-create table candidate_requests (birthday date not null, candidate_order_id integer not null, height integer not null, scientist_id integer, weight integer not null, description varchar(255), race varchar(255), sex varchar(255), primary key (candidate_order_id));
+create table assessments (event_date date, passed boolean, request_date date not null, research_id integer not null, test_id serial not null, comment varchar(255), name varchar(255) not null, primary key (test_id));
+create table candidate_requests (birthday date not null, candidate_order_id serial not null, height integer not null, scientist_id integer, weight integer not null, description varchar(255), race varchar(255), sex varchar(255), primary key (candidate_order_id));
 create table candidates (birthday date not null, candidate_id integer not null, height integer not null, weight integer not null, address varchar(255), description varchar(255), first_name varchar(255) not null, last_name varchar(255) not null, phone varchar(255), race varchar(255), sex varchar(255), status varchar(255) check (status in ('IN_PROGRESS','WAITING','BECAME_HERO','DIED')), medical_doc bytea, photo bytea, primary key (candidate_id));
 create table customers (customer_id integer not null, primary key (customer_id));
-create table hero_creation_events (candidate_id integer, date date not null, hero_creation_event_id integer not null, scientist_id integer, result varchar(255) not null, primary key (hero_creation_event_id));
-create table hero_creation_orders (hero_creation_order_id integer not null, manager_id integer, primary key (hero_creation_order_id));
+create table hero_creation_events (candidate_id integer, date date not null, hero_creation_event_id serial not null, scientist_id integer, result varchar(255) not null, primary key (hero_creation_event_id));
+create table hero_creation_orders (hero_creation_order_id serial not null, manager_id integer, primary key (hero_creation_order_id));
 create table heroes (hero_id integer not null, description varchar(255), name varchar(255) not null unique, rating double precision, primary key (hero_id));
 create table heroes_skills (hero_id integer not null, skill_id integer not null, primary key (hero_id, skill_id));
 create table managers (manager_id integer not null, primary key (manager_id));
-create table medicine (medicine_id integer not null, name varchar(255) not null unique, primary key (medicine_id));
-create table orders (customer_id integer not null, date date, start_date date, end_date date, request_description varchar(255), hero_id integer, order_id integer not null, hero_description varchar(255), status varchar(255) not null check (status in ('PENDING','IN_PROGRESS','WAITING_FOR_CUSTOMER_APPROVAL','FULFILLED','DECLINED')), primary key (order_id));
+create table medicine (medicine_id serial not null, name varchar(255) not null unique, primary key (medicine_id));
+create table orders (customer_id integer not null, date date, start_date date, end_date date, request_description varchar(255), hero_id integer, order_id serial not null, hero_description varchar(255), status varchar(255) not null check (status in ('PENDING','IN_PROGRESS','WAITING_FOR_CUSTOMER_APPROVAL','FULFILLED','DECLINED')), primary key (order_id));
 create table orders_skills (order_id integer not null, skill_id integer not null, primary key (order_id, skill_id));
-create table posts (hero_id integer not null, post_id integer not null, description varchar(255), title varchar(255) not null, primary key (post_id));
-create table researches (candidate_id integer unique, doze_count integer not null, doze_ml integer not null, exam_passed boolean, medicine_id integer, research_id integer not null, scientist_id integer not null, result varchar(255), status varchar(255) not null check (status in ('INITIALIZED','CANDIDATE_FOUND','WAITING_FOR_INJECTION','WAITING_FOR_TESTS','WAITING_FOR_ASSESSMENT','WAITING_FOR_EXAM','CANDIDATE_BECAME_HERO','CANDIDATE_DIED_AT_INJECTION','CANDIDATE_DIED_AT_ASSESSMENT','CANDIDATE_DIED_AT_EXAM')), primary key (research_id));
+create table posts (hero_id integer not null, post_id serial not null, description varchar(255), title varchar(255) not null, primary key (post_id));
+create table researches (candidate_id integer unique, doze_count integer not null, doze_ml integer not null, exam_passed boolean, medicine_id integer, research_id serial not null, scientist_id integer not null, result varchar(255), status varchar(255) not null check (status in ('INITIALIZED','CANDIDATE_FOUND','WAITING_FOR_INJECTION','WAITING_FOR_TESTS','WAITING_FOR_ASSESSMENT','WAITING_FOR_EXAM','CANDIDATE_BECAME_HERO','CANDIDATE_DIED_AT_INJECTION','CANDIDATE_DIED_AT_ASSESSMENT','CANDIDATE_DIED_AT_EXAM')), primary key (research_id));
 create table scientists (scientist_id integer not null, primary key (scientist_id));
-create table skills (skill_id integer not null, description varchar(255), name varchar(255) not null unique, primary key (skill_id));
-create table tests (event_date date, request_date date not null, research_id integer not null, test_id integer not null, name varchar(255) not null, result varchar(255), primary key (test_id));
+create table skills (skill_id serial not null, description varchar(255), name varchar(255) not null unique, primary key (skill_id));
+create table tests (event_date date, request_date date not null, research_id integer not null, test_id serial not null, name varchar(255) not null, result varchar(255), primary key (test_id));
 create table user_hero_subscriptions (hero_id integer not null, user_id integer not null);
-create table users (id integer not null, login varchar(255) not null unique, password varchar(255) not null, role varchar(255) not null check (role in ('VISITOR','SCIENTIST','MANAGER','HERO','CANDIDATE','CUSTOMER')), primary key (id));
-create sequence assessments_seq start with 1 increment by 50;
-create sequence candidate_requests_seq start with 1 increment by 50;
-create sequence candidates_seq start with 1 increment by 50;
-create sequence customers_seq start with 1 increment by 50;
-create sequence hero_creation_events_seq start with 1 increment by 50;
-create sequence hero_creation_orders_seq start with 1 increment by 50;
-create sequence heroes_seq start with 1 increment by 50;
-create sequence managers_seq start with 1 increment by 50;
-create sequence medicine_seq start with 1 increment by 50;
-create sequence orders_seq start with 1 increment by 50;
-create sequence posts_seq start with 1 increment by 50;
-create sequence researches_seq start with 1 increment by 50;
-create sequence scientists_seq start with 1 increment by 50;
-create sequence skills_seq start with 1 increment by 50;
-create sequence tests_seq start with 1 increment by 50;
-create sequence users_seq start with 1 increment by 50;
+create table users (id serial not null, login varchar(255) not null unique, password varchar(255) not null, role varchar(255) not null check (role in ('VISITOR','SCIENTIST','MANAGER','HERO','CANDIDATE','CUSTOMER')), primary key (id));
 alter table if exists assessments add constraint FKao52jab8qxsufr4xj8ryrsao8 foreign key (research_id) references researches;
 alter table if exists candidate_requests add constraint FK6p18ycejl4iqnp7me3neqw3xo foreign key (scientist_id) references scientists;
 alter table if exists hero_creation_events add constraint FKp96ch72xasoo0dep874c2y5cx foreign key (candidate_id) references candidates;
@@ -103,15 +71,24 @@ alter table if exists tests add constraint FKg05yiq1me9mpxkh3pvclrhnok foreign k
 alter table if exists user_hero_subscriptions add constraint FKf6ijummhnbjdijc3pw3m10b18 foreign key (hero_id) references heroes;
 alter table if exists user_hero_subscriptions add constraint FKpe600ijjtefi75jxbicpjtxpr foreign key (user_id) references users;
 
-insert into users (id,login,password,role) values (1,'login','{bcrypt}$2a$10$gME7VLRHiw4dbjAJEJ9EM.1KA4/5jQwg6gQ6r9fCNJ2n3uPawF/OG', 'VISITOR')
-                                                ,(2,'scientist1','{bcrypt}$2a$10$B5iA7OUD4P9BrLfpjnatEemyGb.IDxUoEK25d48zCjCDYhzB9uwEe', 'SCIENTIST')
-                                                ,(3,'scientist2','{bcrypt}$2a$10$X44JqjGlX0hRAtqzr3ZBM.tTPUXb2KmLu8UaZNZjzdtAEr/R/MTsK', 'SCIENTIST')
-                                                ,(4,'manager1','{bcrypt}$2a$10$ppjYRaZVTPQhlspcI7f6uu7YX2S8HaPFFSVyS8W3.Y0jfpje/m8ie', 'MANAGER')
-                                                ,(5,'manager2','{bcrypt}$2a$10$WHJNOA9.XmARvzF4imWyoumSk4aRQIZXzVbDmPuGTgmKRZPMpPCuC', 'MANAGER')
-                                                ,(6,'manager3','{bcrypt}$2a$10$R3qpKGPYfunTzKItCJmqYOv8AaeXWCUyx0yBzmzxwxnYgMWv.VAC', 'MANAGER')
-                                                ,(7,'hero','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'HERO')
-                                                ,(8,'candidate','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'CANDIDATE')
-                                                ,(28,'customer','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'CUSTOMER')
+insert into users (login,password,role) values ('login','{bcrypt}$2a$10$gME7VLRHiw4dbjAJEJ9EM.1KA4/5jQwg6gQ6r9fCNJ2n3uPawF/OG', 'VISITOR')
+                                                ,('scientist1','{bcrypt}$2a$10$B5iA7OUD4P9BrLfpjnatEemyGb.IDxUoEK25d48zCjCDYhzB9uwEe', 'SCIENTIST')
+                                                ,('scientist2','{bcrypt}$2a$10$X44JqjGlX0hRAtqzr3ZBM.tTPUXb2KmLu8UaZNZjzdtAEr/R/MTsK', 'SCIENTIST')
+                                                ,('manager1','{bcrypt}$2a$10$ppjYRaZVTPQhlspcI7f6uu7YX2S8HaPFFSVyS8W3.Y0jfpje/m8ie', 'MANAGER')
+                                                ,('manager2','{bcrypt}$2a$10$WHJNOA9.XmARvzF4imWyoumSk4aRQIZXzVbDmPuGTgmKRZPMpPCuC', 'MANAGER')
+                                                ,('manager3','{bcrypt}$2a$10$R3qpKGPYfunTzKItCJmqYOv8AaeXWCUyx0yBzmzxwxnYgMWv.VAC', 'MANAGER')
+                                                ,('hero1','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'HERO')
+                                                ,('hero2','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'HERO')
+                                                ,('hero3','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'HERO')
+                                                ,('hero4','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'HERO')
+                                                ,('hero5','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'HERO')
+                                                ,('hero6','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'HERO')
+                                                ,('hero7','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'HERO')
+                                                ,('hero8','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'HERO')
+                                                ,('hero9','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'HERO')
+                                                ,('hero10','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'HERO')
+                                                ,('candidate','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'CANDIDATE')
+                                                ,('customer','{bcrypt}$2a$10$g8jsE/oUtD5q99Zhml1m5u7/v0HtOqB/CBhK63Wv950J8WXmCXywW', 'CUSTOMER')
 ;
 
 insert into scientists values (2)
@@ -123,7 +100,7 @@ insert into managers values (4)
                           , (6)
 ;
 
-insert into candidates values ('2000-03-04'::date, 8, 180, 75, 'SPB', 'Some candidate', 'John', 'Doe', '+19483728494', 'white', 'male', 'WAITING', null, null)
+insert into candidates values ('2000-03-04'::date, 17, 180, 75, 'SPB', 'Some candidate', 'John', 'Doe', '+19483728494', 'white', 'male', 'WAITING', null, null)
 ;
 
 insert into medicine values (1, 'The V serum')
@@ -178,7 +155,4 @@ insert into user_hero_subscriptions values (7, 1)
                                          , (10, 1)
 ;
 
-insert into customers values (28);
-insert into orders values (28, '2023-08-08'::date, '2023-08-10'::date, '2023-08-10'::date, null ,7, nextval('orders_seq'), null, 'PENDING')
-                        , (28, '2023-08-09'::date, '2023-08-12'::date, '2023-08-13'::date, null, 8, nextval('orders_seq'), null, 'PENDING')
-;
+insert into customers values (18);

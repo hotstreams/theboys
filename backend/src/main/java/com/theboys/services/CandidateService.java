@@ -4,6 +4,8 @@ import com.theboys.data.entities.Candidate;
 import com.theboys.data.enums.CandidateStatus;
 import com.theboys.data.repos.CandidateRepo;
 import com.theboys.exceptions.EntityNotFoundException;
+import com.theboys.security.User;
+import com.theboys.security.UserRole;
 import com.theboys.to.CandidateRequestTO;
 import com.theboys.to.CandidateResponseTO;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -21,10 +23,13 @@ import java.util.stream.Collectors;
 public class CandidateService {
 
     private final CandidateRepo candidateRepo;
+    private final UserService userService;
 
     @Autowired
-    public CandidateService(CandidateRepo candidateRepo) {
+    public CandidateService(CandidateRepo candidateRepo,
+                            UserService userService) {
         this.candidateRepo = candidateRepo;
+        this.userService = userService;
     }
 
 
@@ -35,8 +40,10 @@ public class CandidateService {
                 .collect(Collectors.toList());
     }
 
-    public void saveCandidate(CandidateRequestTO candidateRequestTO) {
-        candidateRepo.save(createCandidate(candidateRequestTO));
+    public void saveCandidate(CandidateRequestTO candidateRequestTO, String username) {
+        User user = userService.getUserByLogin(username);
+        userService.updateUserRole(UserRole.CANDIDATE, user.getId());
+        candidateRepo.save(createCandidate(user.getId(), candidateRequestTO));
     }
 
     public CandidateResponseTO getCandidateById(@NonNull Integer userId) {
@@ -66,8 +73,9 @@ public class CandidateService {
         );
     }
 
-    private Candidate createCandidate(CandidateRequestTO candidateRequestTO) {
+    private Candidate createCandidate(Integer userId, CandidateRequestTO candidateRequestTO) {
         return new Candidate(
+                userId,
                 candidateRequestTO.getFirstName(),
                 candidateRequestTO.getLastName(),
                 candidateRequestTO.getPhone(),

@@ -7,6 +7,7 @@ import com.theboys.to.CandidateResponseTO;
 import com.theboys.to.CustomHttpResponse;
 import com.theboys.to.UpdateCandidateStatusTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,8 +30,8 @@ public class CandidateController {
     }
 
     @PostMapping
-    public CustomHttpResponse createCandidate(@RequestBody CandidateRequestTO candidateRequestTO) {
-        candidateService.saveCandidate(candidateRequestTO);
+    public CustomHttpResponse createCandidate(@RequestBody CandidateRequestTO candidateRequestTO, Authentication authentication) {
+        candidateService.saveCandidate(candidateRequestTO, authentication.getName());
         return new CustomHttpResponse();
     }
 

@@ -11,7 +11,7 @@ public class Research {
 
     @Id
     @Column(name = "research_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer researchId;
 
     @ManyToOne

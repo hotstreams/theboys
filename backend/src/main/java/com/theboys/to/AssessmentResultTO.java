@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class AssessmentResultTO {
     private boolean passed;
     private String comment;
+    private String eventDate;
 }

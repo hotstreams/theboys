@@ -10,7 +10,7 @@ public class HeroCreationEvent {
 
     @Id
     @Column(name = "hero_creation_event_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer heroCreationEventId;
 
     @ManyToOne

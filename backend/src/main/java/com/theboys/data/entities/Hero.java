@@ -11,7 +11,7 @@ public class Hero {
 
     @Id
     @Column(name = "hero_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer heroId;
 
     @Column(name = "name", unique = true, nullable = false)

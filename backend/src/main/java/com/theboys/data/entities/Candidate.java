@@ -12,7 +12,7 @@ public class Candidate {
 
     @Id
     @Column(name = "candidate_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer candidateId;
 
     //todo Add fetch type lazy
@@ -62,7 +62,10 @@ public class Candidate {
     public Candidate() {
     }
 
-    public Candidate(String firstName, String lastName, String phone, LocalDate birthday, String sex, String race, int weight, int height, String address, String description, byte[] photo, byte[] medicalDocument) {
+    public Candidate(Integer userId, String firstName, String lastName, String phone, LocalDate birthday,
+                     String sex, String race, int weight, int height, String address, String description,
+                     byte[] photo, byte[] medicalDocument) {
+        this.candidateId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;

@@ -10,7 +10,7 @@ public class CandidateRequest {
 
     @Id
     @Column(name = "candidate_order_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer candidateId;
 
     @ManyToOne

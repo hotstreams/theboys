@@ -8,7 +8,7 @@ public class Skill {
 
     @Id
     @Column(name = "skill_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name", nullable = false, unique = true)
