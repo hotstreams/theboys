@@ -3,6 +3,7 @@ package com.theboys.services;
 import com.theboys.data.repos.UserRepo;
 import com.theboys.security.User;
 import com.theboys.security.UserRole;
+import com.theboys.to.LoginResponseTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,10 @@ public class UserService {
 
     public void updateUserRole(UserRole role, Integer id) {
         userRepo.updateUpdateUserRole(role, id);
+    }
+
+    public LoginResponseTO login(String username) {
+        User user = getUserByLogin(username);
+        return new LoginResponseTO(user.getId(), user.getLogin(), user.getRole(), null);
     }
 }
