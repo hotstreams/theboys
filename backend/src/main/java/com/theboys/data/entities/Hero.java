@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "heroes", schema = "theboys")
+@Table(name = "heroes")
 public class Hero {
 
     @Id
@@ -23,7 +23,6 @@ public class Hero {
     @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinTable(
             name = "heroes_skills",
-            schema = "theboys",
             joinColumns = { @JoinColumn(name = "hero_id") },
             inverseJoinColumns = { @JoinColumn(name = "skill_id") }
     )

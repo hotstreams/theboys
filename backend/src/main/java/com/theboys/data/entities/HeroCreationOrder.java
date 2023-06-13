@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "hero_creation_orders", schema = "theboys")
+@Table(name = "hero_creation_orders")
 public class HeroCreationOrder {
 
     @Id
@@ -20,7 +20,6 @@ public class HeroCreationOrder {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "orders_skills",
-            schema = "theboys",
             joinColumns = { @JoinColumn(name = "order_id")},
             inverseJoinColumns = { @JoinColumn(name = "skill_id")}
     )
