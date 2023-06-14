@@ -71,6 +71,7 @@ public class CandidateService {
                 candidate.getWeight(),
                 candidate.getAddress(),
                 Base64.encodeBase64String(candidate.getPhoto()),
+                candidate.getDescription(),
                 candidate.getCandidateStatus()
         );
     }

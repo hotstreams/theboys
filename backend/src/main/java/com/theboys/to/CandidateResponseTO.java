@@ -21,5 +21,6 @@ public class CandidateResponseTO {
     private Integer weight;
     private String address;
     private String photo;
+    private String description;
     private CandidateStatus status;
 }
