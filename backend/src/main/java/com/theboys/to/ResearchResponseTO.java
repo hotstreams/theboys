@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ResearchResponseTO {
     private Integer researchId;
-    private Integer scientistId;
     private String result;
     private Candidate candidate;
     private String medicine;
@@ -27,7 +26,6 @@ public class ResearchResponseTO {
 
     public ResearchResponseTO(Research research) {
         this.researchId = research.getResearchId();
-        this.scientistId = research.getScientist().getScientistId();
         this.result = research.getResult();
         this.candidate = research.getCandidate();
         this.medicine = research.getMedicine().getName();

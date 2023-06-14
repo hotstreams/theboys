@@ -100,9 +100,6 @@ insert into managers values (4)
                           , (6)
 ;
 
-insert into candidates values ('2000-03-04'::date, 17, 180, 75, 'SPB', 'Some candidate', 'John', 'Doe', '+19483728494', 'white', 'male', 'WAITING', null, null)
-;
-
 insert into medicine values (1, 'The V serum')
                           , (2, 'The V serum II')
                           , (3, 'The V serum III')

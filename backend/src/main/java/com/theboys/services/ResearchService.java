@@ -50,9 +50,7 @@ public class ResearchService {
         var research = new Research();
         research.setScientist(scientistRepo.findById(scientistId).orElseThrow(()->new EntityNotFoundException("Scientist with id="+scientistId+" not found")));
         Candidate candidate = candidateRepo.findById(requestTO.getCandidateId()).orElseThrow(()->new EntityNotFoundException("Candidate with id="+requestTO.getCandidateId()+" not found"));
-        if (candidate.getCandidateStatus() != CandidateStatus.WAITING) {
-            throw new IncorrectRequest("Candidate should have status "+ CandidateStatus.WAITING.name()+ ". Got "+candidate.getCandidateStatus());
-        }
+
         candidate.setCandidateStatus(CandidateStatus.IN_PROGRESS);
         research.setCandidate(candidate);
         research.setDozeMl(requestTO.getDozeMl());
