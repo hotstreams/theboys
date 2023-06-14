@@ -34,13 +34,13 @@
 
     async function changeStatus(request: any) {
       try {
-            const response = await fetch(config.host + '/entrepreneurs/' + request.enterpreneurId + '/rents' + request.id, {
+            const response = await fetch(config.host + '/entrepreneurs/' + request.enterpreneurId + '/rents/' + request.orderId, {
                 method: 'PATCH',
                 body: JSON.stringify({
                   status: request.status
                 }),
                 headers: {
-                    "Accept": "application/json",
+                    "Content-Type": "application/json",
                     'Authorization': getAuthHeader() ?? ''
                 }
             });
