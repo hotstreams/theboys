@@ -6,13 +6,13 @@
     onMount(() => {
         if (!isAuthenticated()) {
             goto('signin');
-        } else if (getUser().role != 'entrepreneur') {
+        } else if (getUser().role != 'CUSTOMER') {
             goto('/')
         }
     })
 
 </script>
 
-{#if isAuthenticated() && getUser().role == 'entrepreneur'}
+{#if isAuthenticated() && getUser().role == 'CUSTOMER'}
     <slot />
 {/if}

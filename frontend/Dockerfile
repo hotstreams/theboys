@@ -15,4 +15,5 @@ COPY --from=build /app/node_modules node_modules/
 COPY package.json .
 
 EXPOSE 3000
-CMD [ "node", "-r", "dotenv/config", "build"]
+#CMD [ "node", "-r", "dotenv/config", "build"]
+CMD [ "npm", "run", "dev"]

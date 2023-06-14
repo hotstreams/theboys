@@ -42,9 +42,9 @@
         validation = true
         validationMsg = 'Phone number shoud be X-XXX-XXX-XX-XX'
         return false
-      } else if (!/^[0-9]{2}\-[0-9]{2}\-[0-9]{4}$/.test(dateOfBirth)) {
+      } else if (!/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/.test(dateOfBirth)) {
         validation = true
-        validationMsg = 'Date of birth shoud be XX-XX-XXXX'
+        validationMsg = 'Date of birth shoud be XXXX-XX-XX'
         return false
       } else if (parseInt(height) <= 0 || parseInt(weight) <= 0) {
         validation = true
@@ -61,6 +61,26 @@
           return
       } 
 
+      // const bytes = new Uint8Array(await file.arrayBuffer()));
+      // await uploadBytes(uploadRef, bytes);
+
+      // const reader = new FileReader();
+      // reader.readAsArrayBuffer(new File(filename: photo));
+      // reader.onload = function() {
+      //     var arrayBuffer = (reader.result as ArrayBuffer) 
+      //     var bytes = new Uint8Array(arrayBuffer);
+      //     photo = bytes
+      //     console.log('1')
+      // }
+
+      // reader.readAsArrayBuffer(medicalDoc);
+      // reader.onload = function() {
+      //     var arrayBuffer = (reader.result as ArrayBuffer) 
+      //     var bytes = new Uint8Array(arrayBuffer);
+      //     medicalDoc = bytes
+      //     console.log('2')
+      // }
+
       try {
         const res = await fetch(config.host + '/candidates', {
             method: 'POST',
@@ -75,8 +95,8 @@
                 weight,
                 address,
                 description,
-                photo: window.btoa(photo),
-                medicalDoc: window.btoa(medicalDoc),
+                photo: btoa(photo),
+                medicalDoc: btoa(medicalDoc),
             }),
             headers: {
               'Content-Type': "application/json",
@@ -145,7 +165,7 @@
             <div class="sm:col-span-3">
                 <label for="date of birth" class="block text-sm font-medium leading-6 text-gray-900">Date of birth</label>
                 <div class="mt-2">
-                    <input bind:value={dateOfBirth} datepicker type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="date of birth XX-XX-XXXX">
+                    <input bind:value={dateOfBirth} datepicker type="date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="date of birth XXXX-XX-XX">
                 </div>
             </div>
 
@@ -153,7 +173,6 @@
                 <label for="sex" class="block text-sm font-medium leading-6 text-gray-900">Sex</label>
                 <div class="mt-2">
                     <select bind:value={sex} id="countries" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                    <option selected>Choose a sex</option>
                     <option value="Female">Female</option>
                     <option value="Male">Male</option>
                     <option value="Transformer">Transformer</option>
@@ -165,7 +184,6 @@
                 <label for="race" class="block text-sm font-medium leading-6 text-gray-900">Race</label>
                 <div class="mt-2">
                     <select bind:value={race} id="countries" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                    <option selected>Choose a race</option>
                     <option value="White">White supreme</option>
                     <option value="Black">Black</option>
                     <option value="Asian">Asian</option>

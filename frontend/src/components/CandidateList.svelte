@@ -1,10 +1,8 @@
 <script lang="ts">
-    import Header from '../../components/Header.svelte';
-    import config from '../../../config.js';
     import { onMount } from 'svelte';
-    import { getAuthHeader } from '../../components/Auth';
-
-    let selectedCandidate: any
+    import { getCandidates, downloadMedicalDocument, saveCandidate } from './Candidates';
+    
+    export let selectedCandidate: any
 
     let candidateSelection: boolean = true
 
@@ -13,37 +11,7 @@
 
     let saved: boolean
 
-    async function downloadMedicalDocument() {
-        try {
-            const response = await fetch(config.host + '/candidates/' + selectedCandidate.id + '/medicalDocument', {
-                method: 'GET',
-                headers: {
-                    "Accept": "application/pdf",
-                    'Authorization': getAuthHeader() ?? ''
-                }
-            })
-
-            if (response.ok) {
-                let blob = await response.blob()
-                var url = window.URL || window.webkitURL;
-                let link = url.createObjectURL(blob);
-
-                let a = document.createElement("a");
-                a.setAttribute("download", `Medical document.pdf`);
-                a.setAttribute("href", link);
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } else {
-              error = true
-              errorMessage = 'Error occured during downloading'
-            }
-        } catch(ex) {
-            console.log(ex)
-            error = true
-            errorMessage = 'Error occured during downloading'
-        }
-      }
+    let candidates: any = []
 
     function cancelSelection() {
         candidateSelection = true
@@ -56,65 +24,24 @@
         selectedCandidate = candidate
     }
 
-    async function saveCandidate() {
-        try {
-            const response = await fetch(config.host + '/candidates/' + selectedCandidate.id, {
-                method: 'PATCH',
-                headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': getAuthHeader() ?? ''
-                },
-                body: JSON.stringify({
-                    status: selectedCandidate.status
-                }),
-            })
-
-            if (response.ok) {
-                error = false
-                saved = true
-            } else {
-                error = true
-                errorMessage = 'Error occured during sending request'
-            }
-        } catch (ex) {
-            console.log(ex)
-            error = true
-            errorMessage = 'Error occured during sending request'
-        }
-    }
-
-    let candidates: any = []
-
-    async function getCandidates() {
-        try {
-            const response = await fetch(config.host + '/candidates', {
-                method: 'GET',
-                headers: {
-                    "Accept": "application/json",
-                    'Authorization': getAuthHeader() ?? ''
-                }
-            });
-
-            if (response.ok) {
-                console.log('ok')
-                candidates = await response.json();
-            } else {
-                error = true
-                errorMessage = 'Error occured during getting candidates'
-            }
-        } catch (ex) {
-            console.log(ex)
-            error = true
-            errorMessage = 'Error occured during getting candidates'
-        }
+    function selectCandidate(candidate: any) {
+        selectedCandidate = candidate
     }
 
     onMount(async () => {
-        await getCandidates()
-	  })
-</script>
+        const res = await getCandidates()
+        if (res.error) {
+          error = true
+          errorMessage = res.errorMessage ?? ''
+        } else {
+          candidates = res.candidates
+        }
+    })
 
-<Header />
+    async function saveC() {
+      saveCandidate
+    }
+</script>
 
 {#if candidateSelection}
 <div class="max-w-[70rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
@@ -127,13 +54,13 @@
             <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-gray-700">
               <div>
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                  Candidate requests
+                  Select candidate
                 </h2>
               </div>
             </div>
 
             {#if error}
-                <div class="pt-6 w-full">
+                <div class="pt-6 pb-6 w-full">
                     <div class="mx-8 flex flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-5 sm:h-12" >
                         <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
@@ -196,6 +123,7 @@
                   </th>
   
                   <th scope="col" class="px-6 py-3 text-right"></th>
+                  <th scope="col" class="px-6 py-3 text-right"></th>
                 </tr>
               </thead>
   
@@ -215,6 +143,7 @@
                       <div class="flex items-center gap-x-3">
                         <!-- <img class="inline-block h-[2.375rem] w-[2.375rem] rounded-full" src="{candidate.photo}" alt="Empty"> -->
                         <img class="inline-block h-[2.375rem] w-[2.375rem] rounded-full ring-2 ring-white dark:ring-gray-800" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80" alt="Image Description">
+
                       </div>
                     </div>
                   </td>
@@ -250,7 +179,6 @@
                           </svg>
                           {candidate.status}
                         </span>
-                    </div>
                   </td>
 
                   <td class="h-px w-px whitespace-nowrap">
@@ -260,6 +188,24 @@
                       </a>
                     </div>
                   </td>
+
+                  {#if selectedCandidate == candidate}
+                    <td class="h-px w-px whitespace-nowrap">
+                      <div class="px-6 py-1.5">
+                        <a on:click={() => selectCandidate(candidate)} class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-900 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="#">
+                          Select
+                        </a>
+                      </div>
+                    </td>
+                  {:else}
+                    <td class="h-px w-px whitespace-nowrap">
+                      <div class="px-6 py-1.5">
+                        <a on:click={() => selectCandidate(candidate)} class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="#">
+                          Select
+                        </a>
+                      </div>
+                    </td>
+                  {/if}
                 </tr>
                 {/each}
               </tbody>
@@ -267,10 +213,10 @@
             <!-- End Table -->
   
             <!-- Footer -->
-            <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-gray-700">
+            <!-- <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-gray-700">
               <div>
                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                  <span class="font-semibold text-gray-800 dark:text-gray-200">{candidates.length}</span> results
+                  <span class="font-semibold text-gray-800 dark:text-gray-200">6</span> results
                 </p>
               </div>
   
@@ -295,15 +241,13 @@
                   </button>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!-- End Footer -->
-          </div>
+            </div>
         </div>
-      </div>
     </div>
-    <!-- End Card -->
-    </div>
-
+</div>
+</div>
 {:else}
 
 <div class="max-w-[50rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
@@ -423,9 +367,8 @@
                     <div class="mt-2">
                         <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                         <div class="text-center">
-                            <!-- <img class="inline-block " src="{selectedCandidate.photo}" alt="Image"> -->
-                            <img class="inline-block h-[2.375rem] w-[2.375rem] rounded-full ring-2 ring-white dark:ring-gray-800" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80" alt="Image Description">
-
+                            <!-- <img class="inline-block " src="{selectedCandidate.photo}" alt="Image Description"> -->
+                            <img class="inline-block h-[2.375rem] w-[2.375rem] rounded-full ring-2 ring-white dark:ring-gray-800" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80" alt="Image">
                         </div>
                         </div>      
                     </div>
@@ -444,15 +387,15 @@
                               </div>
                             </div>
                             <div class="ml-4 flex-shrink-0">
-                              <a on:click={downloadMedicalDocument} href="#" download="Medical document" class="font-medium text-indigo-600 hover:text-indigo-500">Download</a>
+                              <a on:click={() => downloadMedicalDocument(selectedCandidate.id)} href="#" download="Medical document" class="font-medium text-indigo-600 hover:text-indigo-500">Download</a>
                             </div>
                           </li>
                     </div>
                 </div>
             </div>
             </div>
-
-            <div class="px-6 py-4 grid gap-3  md:items-center border-b border-gray-200 dark:border-gray-700">
+  
+              <div class="px-6 py-4 grid gap-3  md:items-center border-b border-gray-200 dark:border-gray-700">
                 <h2 class="text-base font-semibold leading-7 text-gray-900">Request Status</h2>
                 <select bind:value={selectedCandidate.status} id="countries" class="block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                   <option>BECAME_HERO</option>
@@ -464,7 +407,16 @@
 
             <div class="mt-6 flex items-center justify-end gap-x-5 px-4 py-5 sm:px-6 lg:px-5 lg:py-5">
                 <button on:click={cancelSelection} type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
-                <button on:click={saveCandidate} type="button" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+                <button on:click={async () => {
+                    const res = await saveCandidate(selectedCandidate.id, selectedCandidate.status)
+                    if (res.error) {
+                        error = true
+                        errorMessage = res.errorMessage ?? ''
+                    } else {
+                        saved = true
+                    }
+
+                  }} type="button" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
             </div>
         </div>
     </div>

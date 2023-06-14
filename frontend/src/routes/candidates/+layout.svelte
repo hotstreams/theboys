@@ -6,12 +6,12 @@
     onMount(() => {
         if (!isAuthenticated()) {
             goto('signin');
-        } else if (getUser().role != 'manager') {
+        } else if (getUser().role != 'MANAGER') {
             goto('/')
         }
     })
 </script>
 
-{#if isAuthenticated() && getUser().role == 'manager'}
+{#if isAuthenticated() && getUser().role == 'MANAGER'}
     <slot />
 {/if}

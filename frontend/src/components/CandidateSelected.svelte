@@ -1,10 +1,7 @@
 <script lang="ts">
-    import Header from '../../components/Header.svelte';
-    import config from '../../../config.js';
-    import { onMount } from 'svelte';
-    import { getAuthHeader } from '../../components/Auth';
-
-    let selectedCandidate: any
+    import { downloadMedicalDocument, saveCandidate } from './Candidates';
+    
+    export let selectedCandidate: any
 
     let candidateSelection: boolean = true
 
@@ -12,38 +9,6 @@
     let errorMessage: string
 
     let saved: boolean
-
-    async function downloadMedicalDocument() {
-        try {
-            const response = await fetch(config.host + '/candidates/' + selectedCandidate.id + '/medicalDocument', {
-                method: 'GET',
-                headers: {
-                    "Accept": "application/pdf",
-                    'Authorization': getAuthHeader() ?? ''
-                }
-            })
-
-            if (response.ok) {
-                let blob = await response.blob()
-                var url = window.URL || window.webkitURL;
-                let link = url.createObjectURL(blob);
-
-                let a = document.createElement("a");
-                a.setAttribute("download", `Medical document.pdf`);
-                a.setAttribute("href", link);
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } else {
-              error = true
-              errorMessage = 'Error occured during downloading'
-            }
-        } catch(ex) {
-            console.log(ex)
-            error = true
-            errorMessage = 'Error occured during downloading'
-        }
-      }
 
     function cancelSelection() {
         candidateSelection = true
@@ -55,66 +20,7 @@
         candidateSelection = false
         selectedCandidate = candidate
     }
-
-    async function saveCandidate() {
-        try {
-            const response = await fetch(config.host + '/candidates/' + selectedCandidate.id, {
-                method: 'PATCH',
-                headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': getAuthHeader() ?? ''
-                },
-                body: JSON.stringify({
-                    status: selectedCandidate.status
-                }),
-            })
-
-            if (response.ok) {
-                error = false
-                saved = true
-            } else {
-                error = true
-                errorMessage = 'Error occured during sending request'
-            }
-        } catch (ex) {
-            console.log(ex)
-            error = true
-            errorMessage = 'Error occured during sending request'
-        }
-    }
-
-    let candidates: any = []
-
-    async function getCandidates() {
-        try {
-            const response = await fetch(config.host + '/candidates', {
-                method: 'GET',
-                headers: {
-                    "Accept": "application/json",
-                    'Authorization': getAuthHeader() ?? ''
-                }
-            });
-
-            if (response.ok) {
-                console.log('ok')
-                candidates = await response.json();
-            } else {
-                error = true
-                errorMessage = 'Error occured during getting candidates'
-            }
-        } catch (ex) {
-            console.log(ex)
-            error = true
-            errorMessage = 'Error occured during getting candidates'
-        }
-    }
-
-    onMount(async () => {
-        await getCandidates()
-	  })
 </script>
-
-<Header />
 
 {#if candidateSelection}
 <div class="max-w-[70rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
@@ -127,13 +33,13 @@
             <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-gray-700">
               <div>
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                  Candidate requests
+                  Candidate
                 </h2>
               </div>
             </div>
 
             {#if error}
-                <div class="pt-6 w-full">
+                <div class="pt-6 pb-6 w-full">
                     <div class="mx-8 flex flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-5 sm:h-12" >
                         <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
@@ -200,7 +106,6 @@
               </thead>
   
               <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                {#each candidates as candidate}
                 <tr>
 
                     <td class="h-px w-px whitespace-nowrap">
@@ -213,16 +118,16 @@
                   <td class="h-px w-px whitespace-nowrap">
                     <div class="pl-6 lg:pl-3 xl:pl-0 pr-6 py-3">
                       <div class="flex items-center gap-x-3">
-                        <!-- <img class="inline-block h-[2.375rem] w-[2.375rem] rounded-full" src="{candidate.photo}" alt="Empty"> -->
+                        <!-- <img class="inline-block h-[2.375rem] w-[2.375rem] rounded-full" src="{selectedCandidate.photo}" alt="Empty"> -->
                         <img class="inline-block h-[2.375rem] w-[2.375rem] rounded-full ring-2 ring-white dark:ring-gray-800" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80" alt="Image Description">
-                      </div>
+                    </div>
                     </div>
                   </td>
 
                   <td class="h-px w-72 whitespace-nowrap">
                     <div class="px-6 py-3">
                       <div class="grow">
-                          <span class="block text-sm font-semibold text-gray-800 dark:text-gray-200">{candidate.firstName}</span>
+                          <span class="block text-sm font-semibold text-gray-800 dark:text-gray-200">{selectedCandidate.firstName}</span>
                         </div>
                     </div>
                   </td>
@@ -231,14 +136,14 @@
                   <td class="h-px w-72 whitespace-nowrap">
                     <div class="px-6 py-3">
                       <div class="grow">
-                          <span class="block text-sm font-semibold text-gray-800 dark:text-gray-200">{candidate.lastName}</span>
+                          <span class="block text-sm font-semibold text-gray-800 dark:text-gray-200">{selectedCandidate.lastName}</span>
                         </div>
                     </div>
                   </td>
                     
                   <td class="h-px w-72 whitespace-nowrap">
                     <div class="px-6 py-3">
-                      <span class="block text-sm text-gray-500">{candidate.phone}</span>
+                      <span class="block text-sm text-gray-500">{selectedCandidate.phone}</span>
                     </div>
                   </td>
 
@@ -248,29 +153,27 @@
                           <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                           </svg>
-                          {candidate.status}
+                          {selectedCandidate.candidateStatus}
                         </span>
-                    </div>
                   </td>
 
                   <td class="h-px w-px whitespace-nowrap">
                     <div class="px-6 py-1.5">
-                      <a on:click={() => viewCandidate(candidate)} class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="#">
+                      <a on:click={() => viewCandidate(selectedCandidate)} class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="#">
                         View
                       </a>
                     </div>
                   </td>
                 </tr>
-                {/each}
               </tbody>
             </table>
             <!-- End Table -->
   
             <!-- Footer -->
-            <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-gray-700">
+            <!-- <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-gray-700">
               <div>
                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                  <span class="font-semibold text-gray-800 dark:text-gray-200">{candidates.length}</span> results
+                  <span class="font-semibold text-gray-800 dark:text-gray-200">6</span> results
                 </p>
               </div>
   
@@ -295,15 +198,13 @@
                   </button>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!-- End Footer -->
-          </div>
+            </div>
         </div>
-      </div>
     </div>
-    <!-- End Card -->
-    </div>
-
+</div>
+</div>
 {:else}
 
 <div class="max-w-[50rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
@@ -423,9 +324,8 @@
                     <div class="mt-2">
                         <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                         <div class="text-center">
-                            <!-- <img class="inline-block " src="{selectedCandidate.photo}" alt="Image"> -->
+                            <!-- <img class="inline-block " src="{selectedCandidate.photo}" alt="Image Description"> -->
                             <img class="inline-block h-[2.375rem] w-[2.375rem] rounded-full ring-2 ring-white dark:ring-gray-800" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80" alt="Image Description">
-
                         </div>
                         </div>      
                     </div>
@@ -444,7 +344,7 @@
                               </div>
                             </div>
                             <div class="ml-4 flex-shrink-0">
-                              <a on:click={downloadMedicalDocument} href="#" download="Medical document" class="font-medium text-indigo-600 hover:text-indigo-500">Download</a>
+                              <a on:click={() => downloadMedicalDocument(selectedCandidate.id)} href="#" download="Medical document" class="font-medium text-indigo-600 hover:text-indigo-500">Download</a>
                             </div>
                           </li>
                     </div>
@@ -454,7 +354,7 @@
 
             <div class="px-6 py-4 grid gap-3  md:items-center border-b border-gray-200 dark:border-gray-700">
                 <h2 class="text-base font-semibold leading-7 text-gray-900">Request Status</h2>
-                <select bind:value={selectedCandidate.status} id="countries" class="block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <select bind:value={selectedCandidate.candidateStatus} id="countries" class="block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                   <option>BECAME_HERO</option>
                   <option>DIED</option>
                   <option>IN_PROGRESS</option>
@@ -464,7 +364,7 @@
 
             <div class="mt-6 flex items-center justify-end gap-x-5 px-4 py-5 sm:px-6 lg:px-5 lg:py-5">
                 <button on:click={cancelSelection} type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
-                <button on:click={saveCandidate} type="button" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+                <button on:click={() => saveCandidate(selectedCandidate.candidateId, selectedCandidate.candidateStatus)} type="button" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
             </div>
         </div>
     </div>

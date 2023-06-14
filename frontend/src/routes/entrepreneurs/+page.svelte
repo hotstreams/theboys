@@ -199,17 +199,13 @@
                   </td>
 
                   <td class="h-px w-72 whitespace-nowrap">
-                    {#if request.status == 'Done'}
-                      <div class="px-6 py-3">
-                        <span class="block text-sm text-gray-500">{request.status}</span>
-                      </div>
-                    {:else}
                       <select on:change={() => changeStatus(request)} bind:value={request.status} id="countries" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        <option>Accepted</option>
-                        <option>Rejected</option>
-                        <option>Pending</option>
+                        <option>PENDING</option>
+                        <option>IN_PROGRESS</option>
+                        <option>WAITING_FOR_CUSTOMER_APPROVAL</option>
+                        <option>FULFILLED</option>
+                        <option>DECLINED</option>
                       </select>
-                    {/if}
                   </td>
 
                   <!-- <div class="sm:col-span-3">
