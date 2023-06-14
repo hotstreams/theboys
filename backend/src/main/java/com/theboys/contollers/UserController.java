@@ -4,6 +4,7 @@ import com.theboys.services.UserService;
 import com.theboys.to.CustomHttpResponse;
 import com.theboys.to.LoginResponseTO;
 import com.theboys.to.RegistrationTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping
-    public CustomHttpResponse register(@RequestBody RegistrationTO registrationTO) {
+    public CustomHttpResponse register(@Valid @RequestBody RegistrationTO registrationTO) {
         userService.register(registrationTO);
         return new CustomHttpResponse();
     }

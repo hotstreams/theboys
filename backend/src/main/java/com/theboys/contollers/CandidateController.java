@@ -31,7 +31,7 @@ public class CandidateController {
     }
 
     @PostMapping
-    public CustomHttpResponse createCandidate(@RequestBody CandidateRequestTO candidateRequestTO, Authentication authentication) {
+    public CustomHttpResponse createCandidate(@Valid @RequestBody CandidateRequestTO candidateRequestTO, Authentication authentication) {
         candidateService.saveCandidate(candidateRequestTO, authentication.getName());
         return new CustomHttpResponse();
     }

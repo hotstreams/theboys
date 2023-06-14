@@ -4,6 +4,7 @@ import com.theboys.services.HeroService;
 import com.theboys.to.CustomHttpResponse;
 import com.theboys.to.HeroTO;
 import com.theboys.to.OrderRequestTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class HeroController {
     }
 
     @PostMapping("/rent")
-    public CustomHttpResponse rentHero(@RequestBody OrderRequestTO request, Authentication authentication) {
+    public CustomHttpResponse rentHero(@Valid @RequestBody OrderRequestTO request, Authentication authentication) {
         heroService.rentHero(request, authentication.getName());
         return new CustomHttpResponse();
     }

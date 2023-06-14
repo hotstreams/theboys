@@ -6,16 +6,20 @@ import com.theboys.security.UserRole;
 import com.theboys.to.LoginResponseTO;
 import com.theboys.to.RegistrationTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
     private final UserRepo userRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo,
+                       PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User getUserByLogin(String login) {
@@ -32,7 +36,8 @@ public class UserService {
     }
 
     public void register(RegistrationTO registrationTO) {
-        User user = new User(registrationTO.getUsername(), registrationTO.getPassword(), UserRole.VISITOR);
+        String password = passwordEncoder.encode(registrationTO.getPassword());
+        User user = new User(registrationTO.getUsername(), password, UserRole.VISITOR);
         userRepo.save(user);
     }
 }

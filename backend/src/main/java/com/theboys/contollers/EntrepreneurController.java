@@ -4,6 +4,7 @@ import com.theboys.services.OrderService;
 import com.theboys.to.CustomHttpResponse;
 import com.theboys.to.OrderResponseTO;
 import com.theboys.to.UpdateOrderStatusTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class EntrepreneurController {
     @PatchMapping("/{entrepreneursId}/rents/{rentId}")
     public CustomHttpResponse updateOrderStatus(@PathVariable("entrepreneursId") Integer entrepreneursId,
                                                 @PathVariable("rentId") Integer rentId,
-                                                @RequestBody UpdateOrderStatusTO orderStatusTO) {
+                                                @Valid @RequestBody UpdateOrderStatusTO orderStatusTO) {
         orderService.updateOrderStatus(orderStatusTO.getStatus(), rentId);
         return new CustomHttpResponse();
     }
