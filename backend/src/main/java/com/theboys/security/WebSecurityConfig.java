@@ -20,6 +20,7 @@ public class WebSecurityConfig {
     @Autowired
     private PersistentUserManager userManager;
 
+    //todo Remade it
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
