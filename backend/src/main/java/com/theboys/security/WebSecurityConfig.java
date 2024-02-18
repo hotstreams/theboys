@@ -19,6 +19,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+import static com.theboys.security.UserRole.*;
+
 @Configuration
 @EnableWebSecurity(debug = true)
 public class WebSecurityConfig {
@@ -33,10 +35,12 @@ public class WebSecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/users").anonymous()
-                        .requestMatchers("/researches").hasAnyRole(UserRole.SCIENTIST.name())
                         .requestMatchers("/heroes/rent").hasAnyRole(UserRole.CUSTOMER.name())
                         .requestMatchers("/entrepreneurs").hasAnyRole(UserRole.CUSTOMER.name(), UserRole.MANAGER.name())
-                        .anyRequest().authenticated()
+                        .requestMatchers("/researches").hasRole(SCIENTIST.name())
+                        .requestMatchers("/posts/subscriptions").authenticated()
+                        .requestMatchers("/candidates").hasRole(MANAGER.name())
+                        .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(c -> c.authenticationEntryPoint(basicAuthenticationEntryPoint())

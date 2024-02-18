@@ -74,4 +74,5 @@ public class HeroService {
                 .map(hero -> new Order(hero, customer, orderDate, request.getDateStart(), request.getDateEnd(), request.getRequestDescription(), OrderStatus.PENDING, request.getHeroDescription()))
                 .orElse(new Order(customer, orderDate, request.getDateStart(), request.getDateEnd(), request.getRequestDescription(), OrderStatus.PENDING, request.getHeroDescription()));
     }
+
 }

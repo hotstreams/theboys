@@ -2,6 +2,8 @@ package com.theboys.data.entities;
 
 import jakarta.persistence.*;
 
+import java.time.OffsetDateTime;
+
 @Entity
 @Table(name = "posts")
 public class Post {
@@ -19,6 +21,9 @@ public class Post {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "at")
+    private OffsetDateTime at;
 
     public Integer getPostId() {
         return postId;
@@ -50,5 +55,13 @@ public class Post {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public OffsetDateTime getAt() {
+        return at;
+    }
+
+    public void setAt(OffsetDateTime at) {
+        this.at = at;
     }
 }

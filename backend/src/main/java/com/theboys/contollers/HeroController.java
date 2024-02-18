@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/heroes")
+@RequestMapping(path = "/heroes")
 public class HeroController {
 
     private final HeroService heroService;
@@ -32,4 +32,9 @@ public class HeroController {
     public List<HeroTO> getHeroes() {
         return heroService.getHeroes();
     }
+
+//    @GetMapping(path = "/ratings")
+//    public List<Hero> getHeroesRatings() {
+//        return heroService.getHeroesRatings();
+//    }
 }

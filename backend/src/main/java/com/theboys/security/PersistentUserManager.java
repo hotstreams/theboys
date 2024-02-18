@@ -35,4 +35,13 @@ public class PersistentUserManager implements UserDetailsService {
                 .roles(user.getRole().toString())
                 .build();
     }
+
+    public int loadUserIdByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepo.findByLogin(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("Unable to find user with username '" + username + "'");
+        }
+
+        return user.getId();
+    }
 }
