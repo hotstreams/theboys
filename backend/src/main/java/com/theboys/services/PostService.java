@@ -24,4 +24,12 @@ public class PostService {
     public List<Post> getPostsBySubscription(int userId, Pageable pageable) {
         return postRepo.findPostsByUserSubscriptions(userId, pageable);
     }
+
+    public void subscribeToHero(int userId, int heroId) {
+        postRepo.saveUserHeroSubscription(userId, heroId);
+    }
+
+    public void unsubscribeFromHero(int userId, int heroId) {
+        postRepo.deleteUserHeroSubscription(userId, heroId);
+    }
 }
