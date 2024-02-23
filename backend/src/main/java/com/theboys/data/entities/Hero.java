@@ -73,4 +73,12 @@ public class Hero {
     public void setName(String name) {
         this.name = name;
     }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 }

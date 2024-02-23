@@ -3,6 +3,8 @@ package com.theboys.contollers;
 import com.theboys.data.entities.Post;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.services.PostService;
+import com.theboys.to.PostTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -44,5 +46,10 @@ public class PostController {
     @GetMapping(path = "/hero/{heroId}")
     public List<Post> getHeroPosts(@PathVariable(value = "heroId") int heroId, Pageable pageable) {
         return postService.getHeroPosts(heroId, pageable);
+    }
+
+    @PostMapping
+    public Post createPost(Principal principal, @Valid @RequestBody PostTO postTo) {
+        return postService.createPost(principal.getName(), postTo);
     }
 }

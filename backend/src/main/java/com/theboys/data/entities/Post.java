@@ -5,12 +5,12 @@ import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "posts", schema = "theboys")
 public class Post {
 
     @Id
     @Column(name = "post_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer postId;
 
     @Column(name = "hero_id", nullable = false)

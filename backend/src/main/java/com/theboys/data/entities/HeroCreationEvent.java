@@ -69,4 +69,6 @@ public class HeroCreationEvent {
     public void setResult(String result) {
         this.result = result;
     }
+
+
 }

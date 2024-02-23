@@ -11,6 +11,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class OrderService {
 
@@ -25,13 +27,12 @@ public class OrderService {
         orderRepo.save(order);
     }
 
-    public List<Order> getHeroOrders(Integer heroId) {
-        return orderRepo.findOrdersByHeroHeroId(heroId);
+    public List<OrderResponseTO> getOrders(int customerId) {
+        return orderRepo.findOrdersByCustomerCustomerId(customerId).stream().map(this::createOrderResponse).collect(toList());
     }
 
-    public List<OrderResponseTO> getOrders() {
-        List<Order> orders = (List<Order>) orderRepo.findAll();
-        return orders.stream().map(this::createOrderResponse).collect(Collectors.toList());
+    public List<OrderResponseTO> getHeroOrders(int heroId) {
+        return orderRepo.findOrdersByHeroHeroId(heroId).stream().map(this::createOrderResponse).collect(toList());
     }
 
     public void updateOrderStatus(OrderStatus status, Integer orderId) {

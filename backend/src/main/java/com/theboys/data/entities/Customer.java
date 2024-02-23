@@ -23,4 +23,12 @@ public class Customer {
     public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
     }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 }

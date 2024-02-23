@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HeroTO {
-    private Integer id;
-    private String name;
-    private double rating;
-    private String abilities;
-    private String description;
+public class PostTO {
+    String title;
+    String description;
 }

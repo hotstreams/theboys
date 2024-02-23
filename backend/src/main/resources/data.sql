@@ -77,3 +77,9 @@ insert into theboys.customers values (28);
 insert into theboys.orders values (500000, 28, '2023-08-08'::date, 7, 1, null, 'PENDING')
 , (500000, 28, '2023-08-09'::date, 8, 2, null, 'PENDING')
 ;
+
+insert into theboys.user_hero_rates values (7, 1, 5)
+,(7, 2, 4)
+,(7, 3, 5)
+,(7, 4, 2)
+;

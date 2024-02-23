@@ -14,6 +14,8 @@ import java.util.List;
 public interface OrderRepo extends CrudRepository<Order, Integer> {
     List<Order> findOrdersByHeroHeroId(Integer heroId);
 
+    List<Order> findOrdersByCustomerCustomerId(Integer heroId);
+
     @Transactional
     @Modifying
     @Query("update Order o set o.status = ?1 where o.orderId = ?2")
