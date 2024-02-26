@@ -15,6 +15,10 @@ alter table if exists theboys.researches drop constraint if exists FKree188qn5e0
 alter table if exists theboys.tests drop constraint if exists FKg05yiq1me9mpxkh3pvclrhnok;
 alter table if exists theboys.user_hero_subscriptions drop constraint if exists FKf6ijummhnbjdijc3pw3m10b18;
 alter table if exists theboys.user_hero_subscriptions drop constraint if exists FKpe600ijjtefi75jxbicpjtxpr;
+drop table if exists DATABASECHANGELOG;
+drop table if exists DATABASECHANGELOGLOCK;
+drop table if exists PRIMARY_KEY_D;
+drop table if exists PK_DATABASECHANGELOGLOCK;
 drop table if exists theboys.assessments cascade;
 drop table if exists theboys.candidate_requests cascade;
 drop table if exists theboys.candidates cascade;
@@ -65,7 +69,7 @@ create table theboys.managers (manager_id integer not null, primary key (manager
 create table theboys.medicine (medicine_id integer not null, name varchar(255) not null unique, primary key (medicine_id));
 create table theboys.orders (cost integer, customer_id integer not null, date date, hero_id integer, order_id integer not null, hero_description varchar(255), status varchar(255) not null check (status in ('PENDING','IN_PROGRESS','WAITING_FOR_CUSTOMER_APPROVAL','FULFILLED','DECLINED')), primary key (order_id));
 create table theboys.orders_skills (order_id integer not null, skill_id integer not null, primary key (order_id, skill_id));
-create table theboys.posts (hero_id integer not null, post_id integer not null, description varchar(255), title varchar(255) not null, "at" timestamp with time zone not null, primary key (post_id));
+create table theboys.posts (hero_id integer not null, post_id integer not null, description varchar(255), title varchar(255) not null, creation_time timestamp with time zone not null, primary key (post_id));
 create table theboys.researches (candidate_id integer unique, doze_count integer not null, doze_ml integer not null, exam_passed boolean, medicine_id integer, research_id integer not null, scientist_id integer not null, result varchar(255), status varchar(255) not null check (status in ('INITIALIZED','CANDIDATE_FOUND','WAITING_FOR_INJECTION','WAITING_FOR_TESTS','WAITING_FOR_ASSESSMENT','WAITING_FOR_EXAM','CANDIDATE_BECAME_HERO','CANDIDATE_DIED_AT_INJECTION','CANDIDATE_DIED_AT_ASSESSMENT','CANDIDATE_DIED_AT_EXAM')), primary key (research_id));
 create table theboys.scientists (scientist_id integer not null, primary key (scientist_id));
 create table theboys.skills (skill_id integer not null, description varchar(255), name varchar(255) not null unique, primary key (skill_id));

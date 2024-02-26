@@ -22,7 +22,7 @@ public class Post {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "at")
+    @Column(name = "creation_time")
     private OffsetDateTime at;
 
     public Integer getPostId() {
