@@ -1,0 +1,1 @@
+insert into theboys.customers values (1), (1);

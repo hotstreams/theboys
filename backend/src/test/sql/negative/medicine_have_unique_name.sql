@@ -1,0 +1,1 @@
+insert into theboys.medicine values (1,'V1'), (2,'V1');

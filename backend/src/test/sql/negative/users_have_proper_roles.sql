@@ -1,0 +1,1 @@
+insert into theboys.users values (2, 'login1', 'password', 'NON_EXISTING_ROLE');

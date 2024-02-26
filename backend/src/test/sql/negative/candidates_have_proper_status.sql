@@ -1,0 +1,1 @@
+insert into theboys.candidates values ('1980-01-01',1,180,80,'Somewhere','dodik','john','doe','9','white','male','DIED_OF_CRINGE', null, null);

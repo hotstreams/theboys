@@ -1,0 +1,1 @@
+insert into theboys.users values (1,'login1','password',null);
