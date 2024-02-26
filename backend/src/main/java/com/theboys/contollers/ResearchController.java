@@ -1,7 +1,6 @@
 package com.theboys.contollers;
 
 import com.theboys.data.entities.Medicine;
-import com.theboys.data.entities.Research;
 import com.theboys.data.repos.UserRepo;
 import com.theboys.services.ResearchService;
 import com.theboys.to.*;

@@ -1,4 +1,3 @@
-import com.theboys.contollers.HeroController;
 import com.theboys.contollers.MedicineController;
 import com.theboys.exceptions.RestResponseEntityExceptionHandler;
 import com.theboys.security.WebSecurityConfig;

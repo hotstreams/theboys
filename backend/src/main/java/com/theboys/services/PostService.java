@@ -1,15 +1,12 @@
 package com.theboys.services;
 
 import com.theboys.data.entities.Post;
-import com.theboys.data.repos.HeroRepo;
 import com.theboys.data.repos.PostRepo;
-import com.theboys.exceptions.EntityNotFoundException;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.to.PostTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.OffsetDateTime;
 import java.util.List;

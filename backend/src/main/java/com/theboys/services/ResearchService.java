@@ -5,7 +5,6 @@ import com.theboys.data.enums.CandidateStatus;
 import com.theboys.data.enums.ResearchStatus;
 import com.theboys.data.repos.*;
 import com.theboys.exceptions.EntityNotFoundException;
-import com.theboys.exceptions.IncorrectRequest;
 import com.theboys.to.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

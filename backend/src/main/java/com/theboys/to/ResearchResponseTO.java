@@ -1,6 +1,7 @@
 package com.theboys.to;
 
-import com.theboys.data.entities.*;
+import com.theboys.data.entities.Candidate;
+import com.theboys.data.entities.Research;
 import com.theboys.data.enums.ResearchStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;

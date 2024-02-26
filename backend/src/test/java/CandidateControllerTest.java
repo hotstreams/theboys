@@ -1,12 +1,10 @@
 import com.theboys.contollers.CandidateController;
-import com.theboys.contollers.HeroController;
 import com.theboys.data.enums.CandidateStatus;
 import com.theboys.exceptions.EntityNotFoundException;
 import com.theboys.exceptions.RestResponseEntityExceptionHandler;
 import com.theboys.security.WebSecurityConfig;
 import com.theboys.services.CandidateService;
 import com.theboys.to.CandidateResponseTO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
