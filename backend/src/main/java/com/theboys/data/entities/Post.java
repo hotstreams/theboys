@@ -64,4 +64,15 @@ public class Post {
     public void setAt(OffsetDateTime at) {
         this.at = at;
     }
+
+    public Post(Integer postId, Integer heroId, String title, String description, OffsetDateTime at) {
+        this.postId = postId;
+        this.heroId = heroId;
+        this.title = title;
+        this.description = description;
+        this.at = at;
+    }
+
+    public Post() {
+    }
 }

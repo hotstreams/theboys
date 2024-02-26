@@ -13,7 +13,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/entrepreneurs")
+@RequestMapping(path = "/entrepreneurs")
 public class EntrepreneurController {
 
     private final OrderService orderService;
@@ -27,13 +27,13 @@ public class EntrepreneurController {
     }
 
 
-    @GetMapping("/rents")
+    @GetMapping(path = "/rents")
     public List<OrderResponseTO> getOrders(Principal principal) {
         int entrepreneurId = userService.loadUserIdByUsername(principal.getName());
         return orderService.getOrders(entrepreneurId);
     }
 
-    @PatchMapping("/{entrepreneursId}/rents/{rentId}")
+    @PatchMapping(path = "/{entrepreneursId}/rents/{rentId}")
     public CustomHttpResponse updateOrderStatus(@PathVariable("entrepreneursId") Integer entrepreneursId,
                                                 @PathVariable("rentId") Integer rentId,
                                                 @Valid @RequestBody UpdateOrderStatusTO orderStatusTO) {
