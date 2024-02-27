@@ -1,3 +1,5 @@
+package com.theboys.controllers;
+
 import com.theboys.contollers.HeroController;
 import com.theboys.exceptions.RestResponseEntityExceptionHandler;
 import com.theboys.security.PersistentUserManager;
@@ -18,7 +20,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import testhelpers.SecurityTestConfigurationHelper;
+import com.theboys.SecurityTestConfigurationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +30,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static testhelpers.SecurityTestConfigurationHelper.AUTHORIZATION;
-import static testhelpers.SecurityTestConfigurationHelper.BASE64HEADER;
+import static com.theboys.SecurityTestConfigurationHelper.AUTHORIZATION;
+import static com.theboys.SecurityTestConfigurationHelper.BASE64HEADER;
 
 @WebMvcTest
 @ContextConfiguration(classes = {HeroController.class, WebSecurityConfig.class, RestResponseEntityExceptionHandler.class})
-@TestPropertySource(locations = {"/application-test.properties"})
+@TestPropertySource(locations = {"/application.properties"})
 @AutoConfigureMockMvc
 @Import(SecurityTestConfigurationHelper.class)
 public class HeroControllerTest {

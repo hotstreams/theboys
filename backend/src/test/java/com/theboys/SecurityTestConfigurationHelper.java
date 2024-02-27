@@ -1,4 +1,4 @@
-package testhelpers;
+package com.theboys;
 
 import com.theboys.security.PersistentUserManager;
 import org.mockito.Mockito;

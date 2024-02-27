@@ -1,4 +1,4 @@
-package services;
+package com.theboys.services;
 
 import com.theboys.data.entities.Hero;
 import com.theboys.data.repos.UserRepo;
@@ -7,6 +7,7 @@ import com.theboys.security.User;
 import com.theboys.security.UserRole;
 import com.theboys.security.WebSecurityConfig;
 import com.theboys.services.UserService;
+import com.theboys.to.LoginResponseTO;
 import com.theboys.to.RegistrationTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -31,7 +32,6 @@ import org.springframework.test.context.TestPropertySource;
         Hero.class
 })
 @Import(WebSecurityConfig.class)
-@TestPropertySource(locations = "classpath:application-test.properties")
 public class UserServiceTest {
 
     @Autowired
@@ -57,6 +57,17 @@ public class UserServiceTest {
         userService.register(registrationTO);
         User test = userService.getUserByLogin("test");
         Assertions.assertNotNull(test);
+    }
+
+    @Test
+    public void testLogin() {
+        RegistrationTO registrationTO = new RegistrationTO("testUser", "test");
+        userService.register(registrationTO);
+        User test = userService.getUserByLogin("testUser");
+        userService.updateUserRole(UserRole.HERO, test.getId());
+        LoginResponseTO testUser = userService.login("testUser");
+        Assertions.assertEquals(UserRole.HERO, testUser.getRole());
+        Assertions.assertEquals("testUser", testUser.getUsername());
     }
 
     @Test

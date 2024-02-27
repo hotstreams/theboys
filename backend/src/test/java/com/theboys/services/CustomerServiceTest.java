@@ -1,14 +1,13 @@
-package services;
+package com.theboys.services;
 
-import com.theboys.data.entities.Post;
-import com.theboys.data.repos.UserRepo;
+import com.theboys.data.entities.Customer;
+import com.theboys.data.repos.CustomerRepo;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.security.User;
+import com.theboys.security.UserRole;
 import com.theboys.security.WebSecurityConfig;
-import com.theboys.services.PostService;
+import com.theboys.services.CustomerService;
 import com.theboys.services.UserService;
-import com.theboys.to.PostTO;
-import com.theboys.to.RegistrationTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,38 +18,38 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.Optional;
+
 @SpringBootTest(
         classes = {
+                CustomerService.class,
                 PersistentUserManager.class,
-                PostService.class,
                 UserService.class
         })
 @EnableAutoConfiguration
-@EnableJpaRepositories(basePackageClasses = UserRepo.class)
+@EnableJpaRepositories(basePackageClasses = CustomerRepo.class)
 @EntityScan(basePackageClasses = {
-        Post.class,
+        Customer.class,
         User.class
 })
 @Import(WebSecurityConfig.class)
-@TestPropertySource(locations = "classpath:application-test.properties")
-public class PostServiceTest {
+public class CustomerServiceTest {
+    @Autowired
+    private CustomerRepo customerRepo;
 
     @Autowired
-    private PostService postService;
-
-    @Autowired
-    private UserService userService;
+    private CustomerService customerService;
 
     @Test
-    public void testCreatePost() {
-        RegistrationTO registrationTO = new RegistrationTO();
-        registrationTO.setUsername("test");
-        registrationTO.setPassword("test");
-        userService.register(registrationTO);
+    public void testGetCustomer() {
+        Customer customer = new Customer();
+        customer.setLogin("Auf");
+        customer.setPassword("X");
+        customer.setRole(UserRole.CUSTOMER);
+        Customer save = customerRepo.save(customer);
 
-        PostTO postTO = new PostTO();
-        postTO.setTitle("Title");
-        postTO.setDescription("Description");
-        Assertions.assertDoesNotThrow(() -> postService.createPost("test", postTO));
+        Optional<Customer> optionalCustomer = customerService.getCustomer(save.getId());
+        Assertions.assertTrue(optionalCustomer.isPresent());
     }
+
 }

@@ -1,9 +1,10 @@
-package services;
+package com.theboys.services;
 
 import com.theboys.data.entities.Candidate;
 import com.theboys.data.enums.CandidateStatus;
 import com.theboys.data.repos.CandidateRepo;
 import com.theboys.data.repos.UserRepo;
+import com.theboys.exceptions.EntityNotFoundException;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.security.User;
 import com.theboys.security.WebSecurityConfig;
@@ -38,7 +39,6 @@ import java.util.List;
         User.class
 })
 @Import(WebSecurityConfig.class)
-@TestPropertySource(locations = "classpath:application-test.properties")
 public class CandidateServiceTest {
 
     @Autowired
@@ -61,26 +61,26 @@ public class CandidateServiceTest {
 
     @Test
     public void testSavingCandidate() {
-        createUser();
+        createUser("User");
         CandidateRequestTO candidateRequestTO = createTestCandidate();
-        Assertions.assertDoesNotThrow(() -> candidateService.saveCandidate(candidateRequestTO, "test"));
+        Assertions.assertDoesNotThrow(() -> candidateService.saveCandidate(candidateRequestTO, "User"));
 
     }
 
     @Test
     public void testGetCandidates() {
-        createUser();
+        createUser("User2");
         CandidateRequestTO testCandidate = createTestCandidate();
-        candidateService.saveCandidate(testCandidate, "test");
+        candidateService.saveCandidate(testCandidate, "User2");
         List<CandidateResponseTO> candidates = candidateService.getCandidates();
         Assertions.assertEquals(1, candidates.size());
     }
 
     @Test
     public void testGetCandidate() {
-        createUser();
+        createUser("User3");
         CandidateRequestTO testCandidate = createTestCandidate();
-        candidateService.saveCandidate(testCandidate, "test");
+        candidateService.saveCandidate(testCandidate, "User3");
         List<CandidateResponseTO> candidates = candidateService.getCandidates();
         Assertions.assertEquals(1, candidates.size());
         CandidateResponseTO candidateResponseTO = candidates.get(0);
@@ -89,10 +89,15 @@ public class CandidateServiceTest {
     }
 
     @Test
+    public void testFailedGettingCandidate() {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> candidateService.getCandidateById(-1));
+    }
+
+    @Test
     public void testUpdateCandidateStatus() {
-        createUser();
+        createUser("User4");
         CandidateRequestTO testCandidate = createTestCandidate();
-        candidateService.saveCandidate(testCandidate, "test");
+        candidateService.saveCandidate(testCandidate, "User4");
         List<CandidateResponseTO> candidates = candidateService.getCandidates();
         Assertions.assertEquals(1, candidates.size());
         CandidateResponseTO candidateResponseTO = candidates.get(0);
@@ -103,8 +108,8 @@ public class CandidateServiceTest {
         Assertions.assertEquals(newStatus, candidateById.getStatus());
     }
 
-    private void createUser() {
-        RegistrationTO registrationTO = new RegistrationTO("test", "test");
+    private void createUser(String username) {
+        RegistrationTO registrationTO = new RegistrationTO(username, "test");
         userService.register(registrationTO);
     }
 

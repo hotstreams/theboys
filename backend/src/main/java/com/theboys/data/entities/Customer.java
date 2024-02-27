@@ -1,28 +1,17 @@
 package com.theboys.data.entities;
 
+import com.theboys.security.User;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "customers")
-public class Customer {
-
-    @Id
-    @Column(name = "customer_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer customerId;
+@PrimaryKeyJoinColumn(name = "customer_id")
+public class Customer extends User {
 
     @OneToMany(mappedBy = "customer")
     private List<Order> orders;
-
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
 
     public List<Order> getOrders() {
         return orders;

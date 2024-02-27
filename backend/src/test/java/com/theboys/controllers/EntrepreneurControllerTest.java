@@ -1,3 +1,5 @@
+package com.theboys.controllers;
+
 import com.theboys.contollers.EntrepreneurController;
 import com.theboys.data.enums.OrderStatus;
 import com.theboys.exceptions.RestResponseEntityExceptionHandler;
@@ -17,7 +19,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import testhelpers.SecurityTestConfigurationHelper;
+import com.theboys.SecurityTestConfigurationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 @ContextConfiguration(classes = {EntrepreneurController.class, WebSecurityConfig.class, RestResponseEntityExceptionHandler.class})
-@TestPropertySource(locations = {"/application-test.properties"})
+@TestPropertySource(locations = {"/application.properties"})
 @AutoConfigureMockMvc
 @Import(SecurityTestConfigurationHelper.class)
 public class EntrepreneurControllerTest {

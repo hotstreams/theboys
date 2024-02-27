@@ -1,4 +1,4 @@
-package services;
+package com.theboys.services;
 
 import com.theboys.data.entities.Medicine;
 import com.theboys.data.repos.MedicineRepo;
@@ -32,7 +32,6 @@ import java.util.List;
         User.class
 })
 @Import(WebSecurityConfig.class)
-@TestPropertySource(locations = "classpath:application-test.properties")
 public class MedicineServiceTest {
 
     @Autowired
@@ -42,9 +41,15 @@ public class MedicineServiceTest {
     private MedicineService medicineService;
 
     @Test
-    @Transactional
     public void testGetMedicines() {
+        Medicine medicine = new Medicine();
+        medicine.setName("Drug");
+        medicineRepo.save(medicine);
+
         List<MedicineTO> medicines = medicineService.getMedicines();
-        Assertions.assertEquals(0, medicines.size());
+        Assertions.assertEquals(1, medicines.size());
+
+        MedicineTO medicineTO = medicines.get(0);
+        Assertions.assertEquals(medicine.getName(), medicineTO.getName());
     }
 }

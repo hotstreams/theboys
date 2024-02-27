@@ -27,11 +27,11 @@ public class OrderService {
     }
 
     public List<OrderResponseTO> getOrders(int customerId) {
-        return orderRepo.findOrdersByCustomerCustomerId(customerId).stream().map(this::createOrderResponse).collect(toList());
+        return orderRepo.findOrdersByCustomerId(customerId).stream().map(this::createOrderResponse).collect(toList());
     }
 
     public List<OrderResponseTO> getHeroOrders(int heroId) {
-        return orderRepo.findOrdersByHeroHeroId(heroId).stream().map(this::createOrderResponse).collect(toList());
+        return orderRepo.findOrdersByHeroId(heroId).stream().map(this::createOrderResponse).collect(toList());
     }
 
     public void updateOrderStatus(OrderStatus status, Integer orderId) {
@@ -43,7 +43,7 @@ public class OrderService {
 
         return new OrderResponseTO(
                 order.getOrderId(),
-                order.getCustomer().getCustomerId(),
+                order.getCustomer().getId(),
                 heroName,
                 order.getHeroDescription(),
                 order.getRequestDescription(),

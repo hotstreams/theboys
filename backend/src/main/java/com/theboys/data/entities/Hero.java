@@ -1,5 +1,6 @@
 package com.theboys.data.entities;
 
+import com.theboys.security.User;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -7,13 +8,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "heroes")
-public class Hero {
-
-    @Id
-    @Column(name = "hero_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer heroId;
-
+@PrimaryKeyJoinColumn(name = "hero_id")
+public class Hero extends User {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
@@ -45,14 +41,6 @@ public class Hero {
 
     public void setSkills(Set<Skill> skills) {
         this.skills = skills;
-    }
-
-    public Integer getHeroId() {
-        return heroId;
-    }
-
-    public void setHeroId(Integer heroId) {
-        this.heroId = heroId;
     }
 
     public String getName() {

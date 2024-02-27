@@ -1,3 +1,5 @@
+package com.theboys.controllers;
+
 import com.theboys.contollers.UserController;
 import com.theboys.exceptions.RestResponseEntityExceptionHandler;
 import com.theboys.security.WebSecurityConfig;
@@ -14,7 +16,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import testhelpers.SecurityTestConfigurationHelper;
+import com.theboys.SecurityTestConfigurationHelper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -22,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 @ContextConfiguration(classes = {UserController.class, WebSecurityConfig.class, RestResponseEntityExceptionHandler.class})
-@TestPropertySource(locations = {"/application-test.properties"})
+@TestPropertySource(locations = {"/application.properties"})
 @AutoConfigureMockMvc
 @Import(SecurityTestConfigurationHelper.class)
 public class UserControllerTest {
