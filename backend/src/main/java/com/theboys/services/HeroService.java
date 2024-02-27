@@ -68,7 +68,7 @@ public class HeroService {
         return new HeroTO(
                 hero.getHeroId(),
                 hero.getName(),
-                hero.getRating(),
+                0d,
                 hero.getSkills().stream().map(Skill::getName).collect(Collectors.joining(", ")),
                 hero.getDescription()
         );

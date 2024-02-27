@@ -1,1 +1,1 @@
-insert into theboys.heroes values (1,'description1','HERO_NAME'), (2, 'description2', 'HERO_NAME');
+insert into s265062.heroes values (1,'description1','HERO_NAME'), (2, 'description2', 'HERO_NAME');

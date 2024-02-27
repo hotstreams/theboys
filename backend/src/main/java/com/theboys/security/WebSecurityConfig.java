@@ -22,7 +22,7 @@ import java.util.List;
 import static com.theboys.security.UserRole.*;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class WebSecurityConfig {
 
     @Autowired

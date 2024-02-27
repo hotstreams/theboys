@@ -31,17 +31,6 @@ public class Hero {
     @OneToMany(mappedBy = "hero")
     private List<Order> orders;
 
-    @Column(name = "rating")
-    private float rating;
-
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
-
     public String getDescription() {
         return description;
     }

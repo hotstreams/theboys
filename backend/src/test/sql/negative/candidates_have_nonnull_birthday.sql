@@ -1,1 +1,1 @@
-insert into theboys.candidates values (null,1,180,80,'Somewhere','dodik','john','doe','9','white','male','DIED', null, null);
+insert into s265062.candidates values (null,1,180,80,'Somewhere','dodik','john','doe','9','white','male','DIED', null, null);

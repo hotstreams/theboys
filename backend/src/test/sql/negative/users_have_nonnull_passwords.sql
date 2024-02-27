@@ -1,1 +1,1 @@
-insert into theboys.users values (2, 'login1',null, 'HERO');
+insert into s265062.users values (2, 'login1',null, 'HERO');
