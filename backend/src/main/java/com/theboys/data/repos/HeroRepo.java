@@ -18,6 +18,6 @@ public interface HeroRepo extends JpaRepository<Hero, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "insert into theboys.user_hero_rates values(:heroId, :userId, :rate) on conflict (hero_id, user_id) do update set hero_id = excluded.hero_id, user_id = excluded.user_id, rate = excluded.rate;", nativeQuery = true)
+    @Query(value = "insert into S265062.user_hero_rates values(:heroId, :userId, :rate) on conflict (hero_id, user_id) do update set hero_id = excluded.hero_id, user_id = excluded.user_id, rate = excluded.rate;", nativeQuery = true)
     void rateHero(@Param("heroId") int heroId, @Param("userId") int userId, @Param("rate") int rate);
 }

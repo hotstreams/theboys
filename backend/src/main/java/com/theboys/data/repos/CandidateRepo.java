@@ -23,7 +23,7 @@ public interface CandidateRepo extends JpaRepository<Candidate, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "insert into theboys.candidates (first_name, last_name, phone, birthday, sex, race, " +
+    @Query(value = "insert into S265062.candidates (first_name, last_name, phone, birthday, sex, race, " +
             "weight, height, address, description, photo, medical_doc, candidate_id) values (:firstName, :lastName, " +
             ":phone, :birthday, :sex, :race, :weight, :height, :address, :description, :photo, :medicalDoc, :userId)",
             nativeQuery = true)

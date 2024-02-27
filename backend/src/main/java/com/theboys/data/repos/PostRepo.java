@@ -15,20 +15,20 @@ import java.util.List;
 public interface PostRepo extends JpaRepository<Post, Integer> {
     List<Post> findPostsByHeroId(Integer heroId, Pageable pageable);
 
-    @Query(countQuery = "select count(*) from theboys.posts where hero_id in (select hero_id from theboys.user_hero_subscriptions where user_id=:userId) order by creation_time desc;",
-            value = "select * from theboys.posts where hero_id in (select hero_id from theboys.user_hero_subscriptions where user_id=:userId) order by creation_time desc;",
+    @Query(countQuery = "select count(*) from S265062.posts where hero_id in (select hero_id from theboys.user_hero_subscriptions where user_id=:userId) order by creation_time desc;",
+            value = "select * from S265062.posts where hero_id in (select hero_id from S265062.user_hero_subscriptions where user_id=:userId) order by creation_time desc;",
             nativeQuery = true)
     List<Post> findPostsByUserSubscriptions(@Param("userId")Integer userId, Pageable pageable);
 
     @Transactional
     @Modifying
-    @Query(value = "insert into theboys.user_hero_subscriptions (hero_id, user_id) values (:heroId, :userId)",
+    @Query(value = "insert into S265062.user_hero_subscriptions (hero_id, user_id) values (:heroId, :userId)",
             nativeQuery = true)
     void saveUserHeroSubscription(@Param("userId")Integer userId, @Param("heroId")Integer heroId);
 
     @Transactional
     @Modifying
-    @Query(value = "delete from theboys.user_hero_subscriptions where hero_id=:heroId and user_id=:userId",
+    @Query(value = "delete from S265062.user_hero_subscriptions where hero_id=:heroId and user_id=:userId",
             nativeQuery = true)
     void deleteUserHeroSubscription(@Param("userId")Integer userId, @Param("heroId")Integer heroId);
 }
