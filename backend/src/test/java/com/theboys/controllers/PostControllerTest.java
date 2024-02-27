@@ -1,5 +1,6 @@
 package com.theboys.controllers;
 
+import com.theboys.SecurityTestConfigurationHelper;
 import com.theboys.contollers.PostController;
 import com.theboys.data.entities.Post;
 import com.theboys.exceptions.RestResponseEntityExceptionHandler;
@@ -18,7 +19,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import com.theboys.SecurityTestConfigurationHelper;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;

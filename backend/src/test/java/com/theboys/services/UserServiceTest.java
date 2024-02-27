@@ -2,11 +2,11 @@ package com.theboys.services;
 
 import com.theboys.data.entities.Hero;
 import com.theboys.data.repos.UserRepo;
+import com.theboys.exceptions.UserNotFoundException;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.security.User;
 import com.theboys.security.UserRole;
 import com.theboys.security.WebSecurityConfig;
-import com.theboys.services.UserService;
 import com.theboys.to.LoginResponseTO;
 import com.theboys.to.RegistrationTO;
 import org.junit.jupiter.api.AfterEach;
@@ -18,7 +18,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(
         classes = {
@@ -60,7 +59,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testLogin() {
+    public void testLogin() throws UserNotFoundException {
         RegistrationTO registrationTO = new RegistrationTO("testUser", "test");
         userService.register(registrationTO);
         User test = userService.getUserByLogin("testUser");
@@ -68,6 +67,11 @@ public class UserServiceTest {
         LoginResponseTO testUser = userService.login("testUser");
         Assertions.assertEquals(UserRole.HERO, testUser.getRole());
         Assertions.assertEquals("testUser", testUser.getUsername());
+    }
+
+    @Test
+    public void testLoginFailed() {
+        Assertions.assertThrows(UserNotFoundException.class, () -> userService.login("testUser"));
     }
 
     @Test

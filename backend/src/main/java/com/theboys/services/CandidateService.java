@@ -1,8 +1,11 @@
 package com.theboys.services;
 
 import com.theboys.data.entities.Candidate;
+import com.theboys.data.entities.CandidateRequest;
+import com.theboys.data.entities.Scientist;
 import com.theboys.data.enums.CandidateStatus;
 import com.theboys.data.repos.CandidateRepo;
+import com.theboys.data.repos.CandidateRequestRepo;
 import com.theboys.exceptions.EntityNotFoundException;
 import com.theboys.security.User;
 import com.theboys.security.UserRole;
@@ -24,13 +27,23 @@ import java.util.stream.Collectors;
 public class CandidateService {
 
     private final CandidateRepo candidateRepo;
+
+    private final CandidateRequestRepo candidateRequestRepo;
     private final UserService userService;
 
     @Autowired
     public CandidateService(CandidateRepo candidateRepo,
-                            UserService userService) {
+                            UserService userService,
+                            CandidateRequestRepo candidateRequestRepo) {
         this.candidateRepo = candidateRepo;
         this.userService = userService;
+        this.candidateRequestRepo = candidateRequestRepo;
+    }
+
+    @Transactional
+    public void createCandidateRequest(Scientist scientist, CandidateRequestTO candidateRequestTO) {
+        CandidateRequest candidateRequest = convertCandidateRequest(scientist, candidateRequestTO);
+        candidateRequestRepo.save(candidateRequest);
     }
 
 
@@ -95,5 +108,14 @@ public class CandidateService {
                 Base64.decodeBase64(candidateRequestTO.getPhoto()),
                 Base64.decodeBase64(candidateRequestTO.getMedicalDoc())
         );
+    }
+
+    private CandidateRequest convertCandidateRequest(Scientist scientist, CandidateRequestTO candidateRequestTO) {
+        CandidateRequest candidateRequest = new CandidateRequest();
+        candidateRequest.setRace(candidateRequestTO.getRace());
+        String dateOfBirth = candidateRequestTO.getDateOfBirth();
+        candidateRequest.setBirthday(LocalDate.parse(dateOfBirth));
+        candidateRequest.setScientist(scientist);
+        return candidateRequest;
     }
 }

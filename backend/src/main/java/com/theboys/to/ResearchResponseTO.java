@@ -3,14 +3,13 @@ package com.theboys.to;
 import com.theboys.data.entities.Candidate;
 import com.theboys.data.entities.Research;
 import com.theboys.data.enums.ResearchStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResearchResponseTO {

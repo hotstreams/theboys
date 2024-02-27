@@ -1,18 +1,20 @@
 package com.theboys.services;
 
 import com.theboys.data.entities.Candidate;
+import com.theboys.data.entities.Scientist;
 import com.theboys.data.enums.CandidateStatus;
 import com.theboys.data.repos.CandidateRepo;
+import com.theboys.data.repos.ScientistRepo;
 import com.theboys.data.repos.UserRepo;
 import com.theboys.exceptions.EntityNotFoundException;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.security.User;
+import com.theboys.security.UserRole;
 import com.theboys.security.WebSecurityConfig;
-import com.theboys.services.CandidateService;
-import com.theboys.services.UserService;
 import com.theboys.to.CandidateRequestTO;
 import com.theboys.to.CandidateResponseTO;
 import com.theboys.to.RegistrationTO;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,7 +24,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
@@ -53,10 +54,22 @@ public class CandidateServiceTest {
     @Autowired
     private UserService userService;
 
-    @AfterEach
-    public void afterEach() {
-        candidateRepo.deleteAll();
-        userRepo.deleteAll();
+    @Autowired
+    private ScientistRepo scientistRepo;
+    @Test
+    public void testCreateCandidateRequest() {
+        Scientist scientist = new Scientist();
+        scientist.setLogin("1X");
+        scientist.setPassword("2");
+        scientist.setRole(UserRole.SCIENTIST);
+        Scientist saved = scientistRepo.save(scientist);
+
+        CandidateRequestTO candidateRequestTO = CandidateRequestTO.builder()
+                .firstName("C")
+                .dateOfBirth("2023-11-01")
+                .race("race")
+                .build();
+        Assertions.assertDoesNotThrow(() -> candidateService.createCandidateRequest(saved, candidateRequestTO));
     }
 
     @Test
@@ -73,7 +86,7 @@ public class CandidateServiceTest {
         CandidateRequestTO testCandidate = createTestCandidate();
         candidateService.saveCandidate(testCandidate, "User2");
         List<CandidateResponseTO> candidates = candidateService.getCandidates();
-        Assertions.assertEquals(1, candidates.size());
+        Assertions.assertEquals(2, candidates.size());
     }
 
     @Test
@@ -82,7 +95,7 @@ public class CandidateServiceTest {
         CandidateRequestTO testCandidate = createTestCandidate();
         candidateService.saveCandidate(testCandidate, "User3");
         List<CandidateResponseTO> candidates = candidateService.getCandidates();
-        Assertions.assertEquals(1, candidates.size());
+        Assertions.assertEquals(4, candidates.size());
         CandidateResponseTO candidateResponseTO = candidates.get(0);
         CandidateResponseTO candidateById = candidateService.getCandidateById(candidateResponseTO.getId());
         Assertions.assertEquals(candidateById, candidateResponseTO);
@@ -99,7 +112,7 @@ public class CandidateServiceTest {
         CandidateRequestTO testCandidate = createTestCandidate();
         candidateService.saveCandidate(testCandidate, "User4");
         List<CandidateResponseTO> candidates = candidateService.getCandidates();
-        Assertions.assertEquals(1, candidates.size());
+        Assertions.assertEquals(3, candidates.size());
         CandidateResponseTO candidateResponseTO = candidates.get(0);
         Integer id = candidateResponseTO.getId();
         CandidateStatus newStatus = CandidateStatus.IN_PROGRESS;

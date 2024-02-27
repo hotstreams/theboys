@@ -1,6 +1,7 @@
 package com.theboys.services;
 
 import com.theboys.data.repos.UserRepo;
+import com.theboys.exceptions.UserNotFoundException;
 import com.theboys.security.User;
 import com.theboys.security.UserRole;
 import com.theboys.to.LoginResponseTO;
@@ -30,8 +31,11 @@ public class UserService {
         userRepo.updateUpdateUserRole(role, id);
     }
 
-    public LoginResponseTO login(String username) {
+    public LoginResponseTO login(String username) throws UserNotFoundException {
         User user = getUserByLogin(username);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
         return new LoginResponseTO(user.getId(), user.getLogin(), user.getRole(), null);
     }
 

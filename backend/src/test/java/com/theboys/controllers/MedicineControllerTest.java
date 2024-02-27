@@ -1,5 +1,6 @@
 package com.theboys.controllers;
 
+import com.theboys.SecurityTestConfigurationHelper;
 import com.theboys.contollers.MedicineController;
 import com.theboys.exceptions.RestResponseEntityExceptionHandler;
 import com.theboys.security.WebSecurityConfig;
@@ -16,7 +17,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import com.theboys.SecurityTestConfigurationHelper;
 
 import java.util.ArrayList;
 

@@ -1,5 +1,6 @@
 package com.theboys.contollers;
 
+import com.theboys.exceptions.UserNotFoundException;
 import com.theboys.services.UserService;
 import com.theboys.to.CustomHttpResponse;
 import com.theboys.to.LoginResponseTO;
@@ -21,7 +22,7 @@ public class UserController {
 
 
     @GetMapping("/{username}")
-    public LoginResponseTO login(@PathVariable("username") String username) {
+    public LoginResponseTO login(@PathVariable("username") String username) throws UserNotFoundException {
         return userService.login(username);
     }
 

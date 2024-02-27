@@ -1,5 +1,6 @@
 package com.theboys.controllers;
 
+import com.theboys.SecurityTestConfigurationHelper;
 import com.theboys.contollers.HeroController;
 import com.theboys.exceptions.RestResponseEntityExceptionHandler;
 import com.theboys.security.PersistentUserManager;
@@ -20,18 +21,17 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import com.theboys.SecurityTestConfigurationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.theboys.SecurityTestConfigurationHelper.AUTHORIZATION;
+import static com.theboys.SecurityTestConfigurationHelper.BASE64HEADER;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static com.theboys.SecurityTestConfigurationHelper.AUTHORIZATION;
-import static com.theboys.SecurityTestConfigurationHelper.BASE64HEADER;
 
 @WebMvcTest
 @ContextConfiguration(classes = {HeroController.class, WebSecurityConfig.class, RestResponseEntityExceptionHandler.class})

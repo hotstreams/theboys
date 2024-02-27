@@ -5,7 +5,6 @@ import com.theboys.data.repos.MedicineRepo;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.security.User;
 import com.theboys.security.WebSecurityConfig;
-import com.theboys.services.MedicineService;
 import com.theboys.to.MedicineTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,8 +14,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

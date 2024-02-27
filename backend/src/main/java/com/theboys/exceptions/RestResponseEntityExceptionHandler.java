@@ -1,5 +1,6 @@
 package com.theboys.exceptions;
 
+import com.theboys.to.ErrorTO;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,14 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ResponseBody
     public String handleConstraintViolationException(ConstraintViolationException e){
         return e.getConstraintViolations().stream().map(c -> c.getPropertyPath().toString() + " " + c.getMessage()).collect(Collectors.joining(",\n"));
+    }
+
+    @ExceptionHandler(value = UserNotFoundException.class)
+    public ResponseEntity<ErrorTO> handleUserNotFound(UserNotFoundException exception) {
+        ErrorTO errorTO = new ErrorTO("Введены неверные данные");
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND.value())
+                .body(errorTO);
     }
 
     @ExceptionHandler(value = IncorrectRequest.class)

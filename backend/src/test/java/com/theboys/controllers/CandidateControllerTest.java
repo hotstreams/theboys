@@ -1,5 +1,6 @@
 package com.theboys.controllers;
 
+import com.theboys.SecurityTestConfigurationHelper;
 import com.theboys.contollers.CandidateController;
 import com.theboys.data.enums.CandidateStatus;
 import com.theboys.exceptions.EntityNotFoundException;
@@ -7,19 +8,24 @@ import com.theboys.exceptions.RestResponseEntityExceptionHandler;
 import com.theboys.security.WebSecurityConfig;
 import com.theboys.services.CandidateService;
 import com.theboys.to.CandidateResponseTO;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import com.theboys.SecurityTestConfigurationHelper;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -208,5 +214,18 @@ public class CandidateControllerTest {
                         """).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
+    }
+
+    @Test
+    public void testGettingCandidateByIdFailed() throws Exception {
+        Mockito.when(candidateService.getCandidateById(Mockito.anyInt()))
+                .thenThrow(EntityNotFoundException.class);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/candidates/1"))
+                .andExpect(result -> {
+                    MockHttpServletResponse response = result.getResponse();
+                    int status = response.getStatus();
+                    Assertions.assertEquals(HttpStatus.NOT_FOUND.value(), status);
+                });
     }
 }
