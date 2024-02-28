@@ -44,7 +44,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/posts/subscriptions/**").authenticated()
                         .requestMatchers("/posts/subscriptions").authenticated()
                         .requestMatchers("/posts").hasRole(HERO.name())
-                        .requestMatchers("/candidates").hasRole(MANAGER.name())
+                        .requestMatchers("/candidates").hasAnyRole(MANAGER.name(), SCIENTIST.name())
                         .requestMatchers("/medicines").hasRole(SCIENTIST.name())
                         .anyRequest().permitAll()
                 )

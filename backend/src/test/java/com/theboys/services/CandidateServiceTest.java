@@ -59,9 +59,9 @@ public class CandidateServiceTest {
     @Test
     public void testCreateCandidateRequest() {
         Scientist scientist = new Scientist();
-        scientist.setLogin("1X");
-        scientist.setPassword("2");
-        scientist.setRole(UserRole.SCIENTIST);
+//        scientist.setLogin("1X");
+//        scientist.setPassword("2");
+//        scientist.setRole(UserRole.SCIENTIST);
         Scientist saved = scientistRepo.save(scientist);
 
         CandidateRequestTO candidateRequestTO = CandidateRequestTO.builder()

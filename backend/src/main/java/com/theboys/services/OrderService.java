@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
 
@@ -26,12 +28,18 @@ public class OrderService {
         orderRepo.save(order);
     }
 
-    public List<OrderResponseTO> getOrders(int customerId) {
-        return orderRepo.findOrdersByCustomerId(customerId).stream().map(this::createOrderResponse).collect(toList());
+    public List<OrderResponseTO> getOrders() {
+        return StreamSupport.stream(orderRepo.findAll().spliterator(), false)
+                .map(this::createOrderResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<OrderResponseTO> getOrdersByCustomerId(int customerId) {
+        return orderRepo.findOrdersByCustomerCustomerId(customerId).stream().map(this::createOrderResponse).collect(toList());
     }
 
     public List<OrderResponseTO> getHeroOrders(int heroId) {
-        return orderRepo.findOrdersByHeroId(heroId).stream().map(this::createOrderResponse).collect(toList());
+        return orderRepo.findOrdersByHeroHeroId(heroId).stream().map(this::createOrderResponse).collect(toList());
     }
 
     public void updateOrderStatus(OrderStatus status, Integer orderId) {
@@ -43,7 +51,7 @@ public class OrderService {
 
         return new OrderResponseTO(
                 order.getOrderId(),
-                order.getCustomer().getId(),
+                order.getCustomer().getCustomerId(),
                 heroName,
                 order.getHeroDescription(),
                 order.getRequestDescription(),

@@ -1,17 +1,13 @@
 package com.theboys.services;
 
-import com.theboys.data.entities.Candidate;
 import com.theboys.data.entities.Customer;
 import com.theboys.data.entities.Hero;
 import com.theboys.data.entities.Order;
 import com.theboys.data.enums.OrderStatus;
-import com.theboys.data.repos.CandidateRepo;
 import com.theboys.data.repos.CustomerRepo;
 import com.theboys.data.repos.HeroRepo;
 import com.theboys.data.repos.OrderRepo;
 import com.theboys.security.PersistentUserManager;
-import com.theboys.security.User;
-import com.theboys.security.UserRole;
 import com.theboys.security.WebSecurityConfig;
 import com.theboys.to.OrderResponseTO;
 import org.junit.jupiter.api.Assertions;
@@ -63,22 +59,22 @@ public class OrderServiceTest {
     public void testGetOrders() {
         Order order = createOrder(4);
         orderService.createHeroOrder(order);
-        List<OrderResponseTO> orders = orderService.getOrders(2);
+        List<OrderResponseTO> orders = orderService.getOrdersByCustomerId(2);
         Assertions.assertEquals(1, orders.size());
     }
 
     private Order createOrder(int postfix) {
         Hero hero = new Hero();
         hero.setName("X" + (postfix + 1));
-        hero.setLogin("X" + (postfix + 1));
-        hero.setPassword("X" + (postfix + 1));
-        hero.setRole(UserRole.HERO);
+//        hero.setLogin("X" + (postfix + 1));
+//        hero.setPassword("X" + (postfix + 1));
+//        hero.setRole(UserRole.HERO);
         heroRepo.save(hero);
 
         Customer customer = new Customer();
-        customer.setLogin("X" + postfix);
-        customer.setPassword("X" + postfix);
-        customer.setRole(UserRole.CUSTOMER);
+//        customer.setLogin("X" + postfix);
+//        customer.setPassword("X" + postfix);
+//        customer.setRole(UserRole.CUSTOMER);
         customerRepo.save(customer);
 
         Order order = new Order();

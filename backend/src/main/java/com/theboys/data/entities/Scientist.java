@@ -1,17 +1,18 @@
 package com.theboys.data.entities;
 
 import com.theboys.security.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "scientists")
-@PrimaryKeyJoinColumn(name = "scientist_id")
-public class Scientist  extends User {
+public class Scientist {
+
+    @Id
+    @Column(name = "scientist_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer scientistId;
 
     @OneToMany(mappedBy = "scientist")
     private List<HeroCreationEvent> heroCreationEvents;
@@ -21,6 +22,14 @@ public class Scientist  extends User {
 
     @OneToMany(mappedBy = "scientist")
     private List<Research> researches;
+
+    public Integer getScientistId() {
+        return scientistId;
+    }
+
+    public void setScientistId(Integer scientistId) {
+        this.scientistId = scientistId;
+    }
 
     public List<HeroCreationEvent> getHeroCreationEvents() {
         return heroCreationEvents;

@@ -6,6 +6,7 @@ import com.theboys.to.CustomHttpResponse;
 import com.theboys.to.OrderResponseTO;
 import com.theboys.to.UpdateOrderStatusTO;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +30,12 @@ public class EntrepreneurController {
 
     @GetMapping(path = "/rents")
     public List<OrderResponseTO> getOrders(Principal principal) {
-        int entrepreneurId = userService.loadUserIdByUsername(principal.getName());
-        return orderService.getOrders(entrepreneurId);
+        return orderService.getOrders();
+    }
+
+    @GetMapping(path = "/{entrepreneursId}/rents")
+    public List<OrderResponseTO> getOrders(@PathVariable("entrepreneursId") @NotNull Integer entrepreneursId) {
+        return orderService.getOrdersByCustomerId(entrepreneursId);
     }
 
     @PatchMapping(path = "/{entrepreneursId}/rents/{rentId}")

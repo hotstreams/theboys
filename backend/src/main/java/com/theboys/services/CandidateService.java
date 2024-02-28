@@ -57,12 +57,8 @@ public class CandidateService {
     @Transactional
     public void saveCandidate(CandidateRequestTO candidateRequestTO, String username) {
         User user = userService.getUserByLogin(username);
-        Candidate candidate = createCandidate(candidateRequestTO);
-        candidateRepo.saveCandidate(candidate.getFirstName(), candidate.getLastName(), candidate.getPhone(),
-                candidate.getBirthday(), candidate.getSex(), candidate.getRace(), candidate.getWeight(),
-                candidate.getHeight(), candidate.getAddress(), candidate.getDescription(), candidate.getPhoto(),
-                candidate.getMedicalDocument(), user.getId());
         userService.updateUserRole(UserRole.CANDIDATE, user.getId());
+        candidateRepo.save(createCandidate(user.getId(), candidateRequestTO));
     }
 
     public CandidateResponseTO getCandidateById(@NonNull Integer userId) {
@@ -77,7 +73,7 @@ public class CandidateService {
 
     private CandidateResponseTO createCandidateResponse(Candidate candidate) {
         return new CandidateResponseTO(
-                candidate.getId(),
+                candidate.getCandidateId(),
                 candidate.getFirstName(),
                 candidate.getLastName(),
                 candidate.getPhone(),
@@ -93,8 +89,9 @@ public class CandidateService {
         );
     }
 
-    private Candidate createCandidate(CandidateRequestTO candidateRequestTO) {
+    private Candidate createCandidate(Integer userId, CandidateRequestTO candidateRequestTO) {
         return new Candidate(
+                userId,
                 candidateRequestTO.getFirstName(),
                 candidateRequestTO.getLastName(),
                 candidateRequestTO.getPhone(),

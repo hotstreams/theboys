@@ -58,7 +58,7 @@ public class HeroServiceTest {
 
         OrderRequestTO orderRequestTO = new OrderRequestTO();
         orderRequestTO.setHeroDescription("test");
-        orderRequestTO.setHeroId(saved.getId());
+//        orderRequestTO.setHeroId(saved.getId());
         orderRequestTO.setDateStart(LocalDate.now());
         orderRequestTO.setDateEnd(LocalDate.now().plusDays(1));
 
@@ -67,18 +67,18 @@ public class HeroServiceTest {
 
     private Customer createCustomer(int postfix) {
         Customer customer = new Customer();
-        customer.setLogin("X" + postfix);
-        customer.setPassword("X" + postfix);
-        customer.setRole(UserRole.CUSTOMER);
+//        customer.setLogin("X" + postfix);
+//        customer.setPassword("X" + postfix);
+//        customer.setRole(UserRole.CUSTOMER);
         return customer;
     }
 
     private Hero createHero(int postfix) {
         Hero hero = new Hero();
         hero.setName("X" + (postfix + 1));
-        hero.setLogin("X" + (postfix + 1));
-        hero.setPassword("X" + (postfix + 1));
-        hero.setRole(UserRole.HERO);
+//        hero.setLogin("X" + (postfix + 1));
+//        hero.setPassword("X" + (postfix + 1));
+//        hero.setRole(UserRole.HERO);
         return hero;
     }
 }

@@ -1,7 +1,6 @@
 package com.theboys.data.entities;
 
 import com.theboys.data.enums.CandidateStatus;
-import com.theboys.security.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -9,8 +8,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "candidates")
-@PrimaryKeyJoinColumn(name = "candidate_id")
-public class Candidate extends User {
+public class Candidate {
+
+    @Id
+    @Column(name = "candidate_id")
+    private Integer candidateId;
 
     //todo Add fetch type lazy
     @OneToMany(mappedBy = "candidate")
@@ -49,7 +51,7 @@ public class Candidate extends User {
     @Column(name = "photo")
     private byte[] photo;
 
-    @Column(name = "medical_doc")
+    @Column(name = "medicalDoc")
     private byte[] medicalDocument;
 
     @Column(name = "status")
@@ -59,9 +61,10 @@ public class Candidate extends User {
     public Candidate() {
     }
 
-    public Candidate(String firstName, String lastName, String phone, LocalDate birthday,
+    public Candidate(Integer userId, String firstName, String lastName, String phone, LocalDate birthday,
                      String sex, String race, int weight, int height, String address, String description,
                      byte[] photo, byte[] medicalDocument) {
+        this.candidateId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -75,6 +78,14 @@ public class Candidate extends User {
         this.photo = photo;
         this.medicalDocument = medicalDocument;
         this.candidateStatus = CandidateStatus.WAITING;
+    }
+
+    public Integer getCandidateId() {
+        return candidateId;
+    }
+
+    public void setCandidateId(Integer candidateId) {
+        this.candidateId = candidateId;
     }
 
     public List<HeroCreationEvent> getEvents() {

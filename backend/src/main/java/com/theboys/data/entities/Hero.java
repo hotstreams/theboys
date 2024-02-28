@@ -8,8 +8,13 @@ import java.util.Set;
 
 @Entity
 @Table(name = "heroes")
-@PrimaryKeyJoinColumn(name = "hero_id")
-public class Hero extends User {
+public class Hero {
+
+    @Id
+    @Column(name = "hero_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer heroId;
+
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
@@ -26,6 +31,14 @@ public class Hero extends User {
 
     @OneToMany(mappedBy = "hero")
     private List<Order> orders;
+
+    public Integer getHeroId() {
+        return heroId;
+    }
+
+    public void setHeroId(Integer heroId) {
+        this.heroId = heroId;
+    }
 
     public String getDescription() {
         return description;

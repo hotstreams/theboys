@@ -12,9 +12,9 @@ import java.util.List;
 
 @Repository
 public interface OrderRepo extends CrudRepository<Order, Integer> {
-    List<Order> findOrdersByHeroId(Integer heroId);
+    List<Order> findOrdersByHeroHeroId(Integer heroId);
 
-    List<Order> findOrdersByCustomerId(Integer heroId);
+    List<Order> findOrdersByCustomerCustomerId(Integer heroId);
 
     @Transactional
     @Modifying

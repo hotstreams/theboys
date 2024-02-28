@@ -66,7 +66,7 @@ public class HeroService {
 
     private HeroTO createHeroTO(Hero hero) {
         return new HeroTO(
-                hero.getId(),
+                hero.getHeroId(),
                 hero.getName(),
                 0d,
                 hero.getSkills().stream().map(Skill::getName).collect(Collectors.joining(", ")),

@@ -51,7 +51,7 @@ public class EntrepreneurControllerTest {
     @Test
     public void testGetOrders() throws Exception {
         List<OrderResponseTO> orders = new ArrayList<>();
-        when(orderService.getOrders(anyInt())).thenReturn(orders);
+        when(orderService.getOrdersByCustomerId(anyInt())).thenReturn(orders);
         mockMvc.perform(get("/entrepreneurs/rents"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -80,7 +80,7 @@ public class EntrepreneurControllerTest {
     @Test
     public void testGetOrdersUnauthorized() throws Exception {
         List<OrderResponseTO> orders = new ArrayList<>();
-        when(orderService.getOrders(anyInt())).thenReturn(orders);
+        when(orderService.getOrdersByCustomerId(anyInt())).thenReturn(orders);
         mockMvc.perform(get("/entrepreneurs/rents"))
                 .andExpect(status().isUnauthorized());
         orders.add(new OrderResponseTO(1, 2, "Something", "Big guy", "Gang fight", "2020-01-01", "2020-01-03", "2019-10-01", OrderStatus.PENDING));

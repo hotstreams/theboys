@@ -35,6 +35,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
     }
 
     @Test
+    //Fix it
     public void signinShouldBeUnsuccessfulWithIncorrectCredentials() {
         driver.get(URL + "signin");
 
@@ -89,6 +90,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
     }
 
     @Test
+    //Fix me
     public void customerSpecifiedHeroRentShouldBeSuccessful() {
         driver.get(URL + "signin");
 
@@ -126,6 +128,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
     }
 
     @Test
+    //Fix me
     public void customerSpecifiedHeroRentShouldBeUnsuccessfulWhenDateIsNull() {
         driver.get(URL + "signin");
 
@@ -204,6 +207,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
     }
 
     @Test
+    //Fix me
     public void visitorBecomeHeroRequestSuccessfullySubmitted() {
         driver.get(URL + "signup");
 
@@ -385,6 +389,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
     }
 
     @Test
+    //Fix me
     public void visitorBecomeHeroRequestUnsuccessfullWhenHeightAndWeightIsNull() {
         signInAsRandomUser();
 
@@ -416,6 +421,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
     }
 
     @Test
+    //Fix me
     public void visitorBecomeHeroRequestUnsuccessfullWhenAddressAndDescrIsNull() {
         signInAsRandomUser();
 
@@ -460,6 +466,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
     }
 
     @Test
+    //Fix me
     public void visitorBecomeHeroRequestUnsuccessfullWhenPhoneIsNotValid() {
         signInAsRandomUser();
 
