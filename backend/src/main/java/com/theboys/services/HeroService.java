@@ -3,6 +3,8 @@ package com.theboys.services;
 import com.theboys.data.entities.*;
 import com.theboys.data.enums.OrderStatus;
 import com.theboys.data.repos.HeroRepo;
+import com.theboys.data.repos.SubscriptionsRepo;
+import com.theboys.data.repos.UserHeroRateRepo;
 import com.theboys.exceptions.EntityNotFoundException;
 import com.theboys.security.User;
 import com.theboys.to.HeroTO;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,15 +28,23 @@ public class HeroService {
     private final UserService userService;
     private final HeroRepo heroRepo;
 
+    private final UserHeroRateRepo userHeroRateRepo;
+
+    private final SubscriptionsRepo subscriptionsRepo;
+
     @Autowired
     public HeroService(HeroRepo heroRepo,
                        OrderService orderService,
                        UserService userService,
-                       CustomerService customerService) {
+                       CustomerService customerService,
+                       SubscriptionsRepo subscriptionsRepo,
+                       UserHeroRateRepo userHeroRateRepo) {
         this.heroRepo = heroRepo;
         this.orderService = orderService;
         this.userService = userService;
         this.customerService = customerService;
+        this.subscriptionsRepo = subscriptionsRepo;
+        this.userHeroRateRepo = userHeroRateRepo;
     }
 
     public List<HeroTO> getHeroes() {
@@ -42,6 +53,26 @@ public class HeroService {
         HashMap<Integer, Double> ratingsMap = new HashMap<>(ratings.size());
         ratings.forEach(heroToRating -> ratingsMap.put(heroToRating.getHeroId(), heroToRating.getRating()));
         return heroes.stream().map(this::createHeroTO).peek(heroTO -> heroTO.setRating(ratingsMap.getOrDefault(heroTO.getId(), 0d))).collect(Collectors.toList());
+    }
+
+    public List<HeroTO> getHeroes(String username) {
+        User userByLogin = userService.getUserByLogin(username);
+        List<HeroTO> heroes = getHeroes();
+        heroes.forEach(hero -> {
+            Integer heroId = hero.getId();
+            Integer userId = userByLogin.getId();
+
+            RateId rateId = new RateId();
+            rateId.setHeroId(heroId);
+            rateId.setUserId(userId);
+
+            Subscription subscription = subscriptionsRepo.findByUserIdAndHeroId(heroId, userId);
+            Optional<UserHeroRate> userHeroRating = userHeroRateRepo.findById(rateId);
+
+            hero.setSubscribed(Objects.nonNull(subscription));
+            hero.setAlreadyRatedByUser(userHeroRating.isPresent());
+        });
+        return heroes;
     }
 
     @Transactional
@@ -70,7 +101,9 @@ public class HeroService {
                 hero.getName(),
                 0d,
                 hero.getSkills().stream().map(Skill::getName).collect(Collectors.joining(", ")),
-                hero.getDescription()
+                hero.getDescription(),
+                null,
+                null
         );
     }
 

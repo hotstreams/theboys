@@ -12,4 +12,6 @@ public class HeroTO {
     private double rating;
     private String abilities;
     private String description;
+    private Boolean alreadyRatedByUser;
+    private Boolean subscribed;
 }

@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +43,12 @@ public class HeroController {
     }
 
     @GetMapping
-    public List<HeroTO> getHeroes() {
-        return heroService.getHeroes();
+    public List<HeroTO> getHeroes(Principal principal) {
+        if (principal == null) {
+            return heroService.getHeroes();
+        }
+        String name = principal.getName();
+        return heroService.getHeroes(name);
     }
 
     @GetMapping("/rents")
