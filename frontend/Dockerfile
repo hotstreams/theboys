@@ -12,7 +12,7 @@ WORKDIR /app
 COPY --from=build /app/build build/
 COPY ./.env build/
 COPY --from=build /app/node_modules node_modules/
-COPY package.json .
+COPY package.json ./
 
 EXPOSE 3000
 #CMD [ "node", "-r", "dotenv/config", "build"]
