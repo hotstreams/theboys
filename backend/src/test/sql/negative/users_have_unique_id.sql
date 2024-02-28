@@ -1,0 +1,1 @@
+insert into s265062.users values (1,'login1','password','HERO'),(1, 'login2', 'password', 'HERO');

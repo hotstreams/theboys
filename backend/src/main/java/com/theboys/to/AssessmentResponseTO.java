@@ -1,13 +1,12 @@
 package com.theboys.to;
 
 import com.theboys.data.entities.Assessment;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AssessmentResponseTO {

@@ -19,8 +19,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+import static com.theboys.security.UserRole.*;
+
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class WebSecurityConfig {
 
     @Autowired
@@ -33,10 +35,18 @@ public class WebSecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/users").anonymous()
-                        .requestMatchers("/researches").hasAnyRole(UserRole.SCIENTIST.name())
-                        .requestMatchers("/heroes/rent").hasAnyRole(UserRole.CUSTOMER.name())
-                        .requestMatchers("/entrepreneurs").hasAnyRole(UserRole.CUSTOMER.name(), UserRole.MANAGER.name())
-                        .anyRequest().authenticated()
+                        .requestMatchers("/heroes/rent").hasAnyRole(CUSTOMER.name())
+                        .requestMatchers("/heroes/rents").hasAnyRole(HERO.name())
+                        .requestMatchers("/heroes/*/rates").authenticated()
+                        .requestMatchers("/heroes").permitAll()
+                        .requestMatchers("/entrepreneurs/**").hasAnyRole(CUSTOMER.name(), MANAGER.name())
+                        .requestMatchers("/researches").hasRole(SCIENTIST.name())
+                        .requestMatchers("/posts/subscriptions/**").authenticated()
+                        .requestMatchers("/posts/subscriptions").authenticated()
+                        .requestMatchers("/posts").hasRole(HERO.name())
+                        .requestMatchers("/candidates").hasRole(MANAGER.name())
+                        .requestMatchers("/medicines").hasRole(SCIENTIST.name())
+                        .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(c -> c.authenticationEntryPoint(basicAuthenticationEntryPoint())

@@ -1,28 +1,20 @@
 package com.theboys.data.entities;
 
-import jakarta.persistence.*;
+import com.theboys.security.User;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 
 import java.util.List;
 
 @Entity
 @Table(name = "managers")
-public class Manager {
-
-    @Id
-    @Column(name = "manager_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer managerId;
+@PrimaryKeyJoinColumn(name = "manager_id")
+public class Manager extends User {
 
     @OneToMany(mappedBy = "manager")
     private List<HeroCreationOrder> orders;
-
-    public Integer getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(Integer managerId) {
-        this.managerId = managerId;
-    }
 
     public List<HeroCreationOrder> getOrders() {
         return orders;

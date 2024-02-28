@@ -1,11 +1,10 @@
 package com.theboys.to;
 
 import com.theboys.security.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginResponseTO {

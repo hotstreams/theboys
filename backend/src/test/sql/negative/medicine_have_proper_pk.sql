@@ -1,0 +1,1 @@
+insert into s265062.medicine values (1,'V1'), (1,'V20');

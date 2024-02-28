@@ -1,0 +1,1 @@
+insert into s265062.heroes values (1,'description1','HERO_NAME1'), (1, 'description2', 'HERO_NAME2');

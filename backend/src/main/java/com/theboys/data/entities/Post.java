@@ -2,13 +2,15 @@ package com.theboys.data.entities;
 
 import jakarta.persistence.*;
 
+import java.time.OffsetDateTime;
+
 @Entity
 @Table(name = "posts")
 public class Post {
 
     @Id
     @Column(name = "post_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer postId;
 
     @Column(name = "hero_id", nullable = false)
@@ -19,6 +21,9 @@ public class Post {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "creation_time")
+    private OffsetDateTime at;
 
     public Integer getPostId() {
         return postId;
@@ -50,5 +55,24 @@ public class Post {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public OffsetDateTime getAt() {
+        return at;
+    }
+
+    public void setAt(OffsetDateTime at) {
+        this.at = at;
+    }
+
+    public Post(Integer postId, Integer heroId, String title, String description, OffsetDateTime at) {
+        this.postId = postId;
+        this.heroId = heroId;
+        this.title = title;
+        this.description = description;
+        this.at = at;
+    }
+
+    public Post() {
     }
 }

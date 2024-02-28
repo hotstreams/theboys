@@ -1,0 +1,1 @@
+insert into s265062.customers values (1), (1);

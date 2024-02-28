@@ -1,7 +1,6 @@
 package com.theboys.contollers;
 
 import com.theboys.data.entities.Medicine;
-import com.theboys.data.entities.Research;
 import com.theboys.data.repos.UserRepo;
 import com.theboys.services.ResearchService;
 import com.theboys.to.*;
@@ -31,12 +30,12 @@ public class ResearchController {
         return service.getResearches().stream().map(ResearchResponseTO::new).collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/medicine")
+    @GetMapping(path = "/medicine")
     public List<Medicine> getMedicine() {
         return service.getMedicine();
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(path = "/{id}")
     public ResearchResponseTO getResearch(@PathVariable(name = "id") Integer id) {
         return new ResearchResponseTO(service.getResearchById(id));
     }
@@ -47,27 +46,27 @@ public class ResearchController {
         return new ResearchResponseTO(service.createResearch(userRepo.findByLogin(principal.getName()).getId(), requestTO));
     }
 
-    @PatchMapping(value = "/{researchId}")
+    @PatchMapping(path = "/{researchId}")
     public void updateResearchStatus(@PathVariable(name = "researchId") Integer id, @RequestBody ResearchStatusTO statusTO) {
         service.updateResearchStatus(id, statusTO);
     }
 
-    @PostMapping(value = "/{researchId}/tests")
+    @PostMapping(path = "/{researchId}/tests")
     public TestResponseTO addTestToResearch(@PathVariable(name = "researchId") Integer id, @RequestBody TestRequestTO testTO) {
         return new TestResponseTO(service.addTestsToResearch(id, testTO));
     }
 
-    @PatchMapping(value = "/{researchId}/tests/{testId}")
+    @PatchMapping(path = "/{researchId}/tests/{testId}")
     public TestResponseTO submitTestResults(@PathVariable(name = "researchId") Integer id, @PathVariable(name = "testId") Integer testId, @RequestBody TestResultTO testTO) {
         return new TestResponseTO(service.submitTestResults(testId, testTO));
     }
 
-    @PostMapping(value = "/{researchId}/assessments")
+    @PostMapping(path = "/{researchId}/assessments")
     public AssessmentResponseTO addAssessmentsToResearch(@PathVariable(name = "researchId") Integer researchId, @RequestBody AssessmentRequestTO assessmentTO) {
         return new AssessmentResponseTO(service.addAssessmentsToResearch(researchId, assessmentTO));
     }
 
-    @PatchMapping(value = "/{researchId}/assessments/{assessmentId}")
+    @PatchMapping(path = "/{researchId}/assessments/{assessmentId}")
     public AssessmentResponseTO submitAssessmentResults(@PathVariable(name = "researchId") Integer id, @PathVariable(name = "assessmentId") Integer assessmentId, @RequestBody AssessmentResultTO assessmentTO) {
         return new AssessmentResponseTO(service.submitAssessmentResults(assessmentId, assessmentTO));
     }

@@ -5,11 +5,9 @@ import com.theboys.data.enums.CandidateStatus;
 import com.theboys.data.enums.ResearchStatus;
 import com.theboys.data.repos.*;
 import com.theboys.exceptions.EntityNotFoundException;
-import com.theboys.exceptions.IncorrectRequest;
 import com.theboys.to.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

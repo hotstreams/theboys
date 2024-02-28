@@ -1,6 +1,5 @@
 package com.theboys.contollers;
 
-import com.theboys.exceptions.IncorrectRequest;
 import com.theboys.services.CandidateService;
 import com.theboys.to.CandidateRequestTO;
 import com.theboys.to.CandidateResponseTO;
@@ -43,9 +42,6 @@ public class CandidateController {
     //todo Make wrapper to avoid writing new CustomHttpResponse call for every endpoint
     @PatchMapping(path = "/{id}")
     public CustomHttpResponse updateCandidateStatus(@PathVariable("id") Integer userId, @Valid @RequestBody UpdateCandidateStatusTO statusTO) {
-        if (statusTO.getStatus() == null) {
-            throw new IncorrectRequest("Missing required parameter 'status'");
-        }
         candidateService.updateCandidateStatus(userId, statusTO.getStatus());
         return new CustomHttpResponse();
     }

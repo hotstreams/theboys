@@ -1,9 +1,6 @@
 package com.theboys.services;
 
-import com.theboys.data.entities.Customer;
-import com.theboys.data.entities.Hero;
-import com.theboys.data.entities.Order;
-import com.theboys.data.entities.Skill;
+import com.theboys.data.entities.*;
 import com.theboys.data.enums.OrderStatus;
 import com.theboys.data.repos.HeroRepo;
 import com.theboys.exceptions.EntityNotFoundException;
@@ -15,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,7 +38,10 @@ public class HeroService {
 
     public List<HeroTO> getHeroes() {
         List<Hero> heroes = heroRepo.findAll();
-        return heroes.stream().map(this::createHeroTO).collect(Collectors.toList());
+        List<HeroToRating> ratings = heroRepo.getHeroRates();
+        HashMap<Integer, Double> ratingsMap = new HashMap<>(ratings.size());
+        ratings.forEach(heroToRating -> ratingsMap.put(heroToRating.getHeroId(), heroToRating.getRating()));
+        return heroes.stream().map(this::createHeroTO).peek(heroTO -> heroTO.setRating(ratingsMap.getOrDefault(heroTO.getId(), 0d))).collect(Collectors.toList());
     }
 
     @Transactional
@@ -58,11 +59,16 @@ public class HeroService {
                 );
     }
 
+    @Transactional
+    public void rateHero(int heroId, int userId, int rate) {
+        heroRepo.rateHero(heroId, userId, rate);
+    }
+
     private HeroTO createHeroTO(Hero hero) {
         return new HeroTO(
-                hero.getHeroId(),
+                hero.getId(),
                 hero.getName(),
-                hero.getRating(),
+                0d,
                 hero.getSkills().stream().map(Skill::getName).collect(Collectors.joining(", ")),
                 hero.getDescription()
         );
@@ -74,4 +80,5 @@ public class HeroService {
                 .map(hero -> new Order(hero, customer, orderDate, request.getDateStart(), request.getDateEnd(), request.getRequestDescription(), OrderStatus.PENDING, request.getHeroDescription()))
                 .orElse(new Order(customer, orderDate, request.getDateStart(), request.getDateEnd(), request.getRequestDescription(), OrderStatus.PENDING, request.getHeroDescription()));
     }
+
 }
