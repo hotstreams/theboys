@@ -38,6 +38,22 @@ public class Vacancy {
     @Enumerated(value = EnumType.STRING)
     private VacancyStatus status;
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public Integer getVacancyId() {
         return vacancyId;
     }

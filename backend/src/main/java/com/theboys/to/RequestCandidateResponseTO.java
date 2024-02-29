@@ -10,6 +10,8 @@ import lombok.Setter;
 @Setter
 public class RequestCandidateResponseTO {
     private String id;
+    private String firstName;
+    private String lastName;
     private String dateOfBirth;
     private String sex;
     private String race;

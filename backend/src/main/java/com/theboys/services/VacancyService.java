@@ -62,12 +62,16 @@ public class VacancyService {
         vacancy.setSex(request.getSex());
         vacancy.setHeight(request.getHeight());
         vacancy.setWeight(request.getWeight());
+        vacancy.setFirstName(request.getFirstName());
+        vacancy.setLastName(request.getLastName());
         return vacancy;
     }
 
     private VacancyResponseTO buildResponse(Vacancy vacancy) {
         return VacancyResponseTO.builder()
                 .id(vacancy.getVacancyId().toString())
+                .firstName(vacancy.getFirstName())
+                .lastName(vacancy.getLastName())
                 .race(vacancy.getRace())
                 .dateOfBirth(vacancy.getBirthday())
                 .sex(vacancy.getSex())

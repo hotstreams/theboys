@@ -42,6 +42,22 @@ public class CandidateRequest {
     @Enumerated(value = EnumType.STRING)
     private CandidateRequestStatus status;
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public CandidateRequestStatus getStatus() {
         return status;
     }

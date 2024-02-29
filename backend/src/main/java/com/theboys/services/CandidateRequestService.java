@@ -70,6 +70,8 @@ public class CandidateRequestService {
 
     private CandidateRequest createCandidateRequest(Scientist scientist, RequestCandidateRequestTO candidateRequestTO) {
         CandidateRequest candidateRequest = new CandidateRequest();
+        candidateRequest.setFirstName(candidateRequestTO.getFirstName());
+        candidateRequest.setLastName(candidateRequestTO.getLastName());
         candidateRequest.setScientist(scientist);
         candidateRequest.setStatus(CandidateRequestStatus.PENDING);
         candidateRequest.setBirthday(candidateRequestTO.getBirthday());
@@ -84,8 +86,10 @@ public class CandidateRequestService {
     private RequestCandidateResponseTO buildResponse(CandidateRequest candidateRequest) {
         return RequestCandidateResponseTO.builder()
                 .id(candidateRequest.getCandidateId().toString())
+                .firstName(candidateRequest.getFirstName())
+                .lastName(candidateRequest.getLastName())
                 .race(candidateRequest.getRace())
-                .dateOfBirth(candidateRequest.getBirthday().toString())
+                .dateOfBirth(candidateRequest.getBirthday())
                 .sex(candidateRequest.getSex())
                 .status(candidateRequest.getStatus())
                 .weight(candidateRequest.getWeight())
