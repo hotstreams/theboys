@@ -2,8 +2,11 @@ package com.theboys.services;
 
 import com.theboys.data.entities.Hero;
 import com.theboys.data.entities.Post;
+import com.theboys.data.entities.Subscription;
+import com.theboys.data.entities.SubscriptionId;
 import com.theboys.data.repos.HeroRepo;
 import com.theboys.data.repos.PostRepo;
+import com.theboys.data.repos.SubscriptionsRepo;
 import com.theboys.data.repos.UserRepo;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.to.PostTO;
@@ -24,13 +27,17 @@ public class PostService {
 
     private final HeroRepo heroRepo;
 
+    private final SubscriptionsRepo subscriptionsRepo;
+
     @Autowired
     public PostService(PostRepo postRepo,
                        PersistentUserManager userService,
-                       HeroRepo heroRepo) {
+                       HeroRepo heroRepo,
+                       SubscriptionsRepo subscriptionsRepo) {
         this.postRepo = postRepo;
         this.userService = userService;
         this.heroRepo = heroRepo;
+        this.subscriptionsRepo = subscriptionsRepo;
     }
 
     public List<PostTO> getHeroPosts(int heroId, Pageable pageable) {
@@ -57,11 +64,17 @@ public class PostService {
     }
 
     public void subscribeToHero(int userId, int heroId) {
-        postRepo.saveUserHeroSubscription(userId, heroId);
+        Subscription subscription = new Subscription();
+        subscription.setHeroId(heroId);
+        subscription.setUserId(userId);
+        subscriptionsRepo.save(subscription);
     }
 
     public void unsubscribeFromHero(int userId, int heroId) {
-        postRepo.deleteUserHeroSubscription(userId, heroId);
+        SubscriptionId subscriptionId = new SubscriptionId();
+        subscriptionId.setHeroId(heroId);
+        subscriptionId.setUserId(userId);
+        subscriptionsRepo.deleteById(subscriptionId);
     }
 
     private PostTO createPostTO(Post post) {
