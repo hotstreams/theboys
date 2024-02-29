@@ -2,6 +2,7 @@ package com.theboys.exceptions;
 
 import com.theboys.to.ErrorTO;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -24,6 +25,14 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ResponseBody
     public String handleConstraintViolationException(ConstraintViolationException e){
         return e.getConstraintViolations().stream().map(c -> c.getPropertyPath().toString() + " " + c.getMessage()).collect(Collectors.joining(",\n"));
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<ErrorTO> handleDataAccessException(DataAccessException exception) {
+        ErrorTO errorTO = new ErrorTO(exception.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST.value())
+                .body(errorTO);
     }
 
     @ExceptionHandler(value = UserNotFoundException.class)
