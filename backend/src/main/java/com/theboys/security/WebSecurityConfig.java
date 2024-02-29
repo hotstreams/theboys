@@ -46,6 +46,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/posts").hasRole(HERO.name())
                         .requestMatchers("/candidates").hasAnyRole(MANAGER.name(), SCIENTIST.name())
                         .requestMatchers("/medicines").hasRole(SCIENTIST.name())
+                        .requestMatchers("/scientist/**").hasAnyRole(SCIENTIST.name(), MANAGER.name())
                         .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

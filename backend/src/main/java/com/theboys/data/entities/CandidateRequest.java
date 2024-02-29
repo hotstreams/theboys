@@ -1,5 +1,6 @@
 package com.theboys.data.entities;
 
+import com.theboys.data.enums.CandidateRequestStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -34,6 +35,18 @@ public class CandidateRequest {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "status")
+    @Enumerated(value = EnumType.STRING)
+    private CandidateRequestStatus status;
+
+    public CandidateRequestStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CandidateRequestStatus status) {
+        this.status = status;
+    }
 
     public Integer getCandidateId() {
         return candidateId;
