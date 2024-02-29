@@ -52,7 +52,7 @@ create table s265062.researches (candidate_id integer unique, doze_count integer
 create table s265062.scientists (scientist_id integer not null, primary key (scientist_id));
 create table s265062.skills (skill_id serial not null, description varchar(255), name varchar(255) not null unique, primary key (skill_id));
 create table s265062.tests (event_date date, request_date date not null, research_id integer not null, test_id serial not null, name varchar(255) not null, result varchar(255), primary key (test_id));
-create table s265062.user_hero_subscriptions (hero_id integer not null, user_id integer not null);
+create table s265062.user_hero_subscriptions (hero_id integer not null, user_id integer not null, primary key (hero_id, user_id));
 create table s265062.user_hero_rates (hero_id integer not null, user_id integer not null, rate integer not null check (rate < 6 and rate > 0), primary key (hero_id, user_id));
 create table s265062.users (id serial, login varchar(255) not null unique, password varchar(255) not null, role varchar(255) not null check (role in ('VISITOR','SCIENTIST','MANAGER','HERO','CANDIDATE','CUSTOMER')), primary key (id));
 alter table if exists s265062.assessments add constraint FKao52jab8qxsufr4xj8ryrsao8 foreign key (research_id) references s265062.researches;
