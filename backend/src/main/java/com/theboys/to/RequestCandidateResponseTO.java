@@ -9,13 +9,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RequestCandidateResponseTO {
-    private Integer id;
+    private String id;
     private String dateOfBirth;
     private String sex;
     private String race;
-    private Integer height;
-    private Integer weight;
+    private String height;
+    private String weight;
     private String description;
-    private Integer scientistId;
+    private String scientistId;
     private CandidateRequestStatus status;
 }

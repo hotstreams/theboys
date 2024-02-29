@@ -85,7 +85,7 @@ public class CandidateRequestService {
 
     private RequestCandidateResponseTO buildResponse(CandidateRequest candidateRequest) {
         return RequestCandidateResponseTO.builder()
-                .id(candidateRequest.getCandidateId())
+                .id(candidateRequest.getCandidateId().toString())
                 .race(candidateRequest.getRace())
                 .dateOfBirth(candidateRequest.getBirthday().toString())
                 .sex(candidateRequest.getSex())
@@ -93,17 +93,17 @@ public class CandidateRequestService {
                 .weight(candidateRequest.getWeight())
                 .height(candidateRequest.getHeight())
                 .description(candidateRequest.getDescription())
-                .scientistId(candidateRequest.getScientist().getScientistId())
+                .scientistId(candidateRequest.getScientist().getScientistId().toString())
                 .build();
     }
 
     private boolean isNullAllFields(RequestCandidateRequestTO request) {
-        LocalDate birthday = request.getBirthday();
+        String birthday = request.getBirthday();
         String description = request.getDescription();
         String sex = request.getSex();
-        Integer weight = request.getWeight();
+        String weight = request.getWeight();
         String race = request.getRace();
-        Integer height = request.getHeight();
+        String height = request.getHeight();
         return Stream.of(birthday, description, sex, weight, race, height)
                 .allMatch(Objects::isNull);
     }

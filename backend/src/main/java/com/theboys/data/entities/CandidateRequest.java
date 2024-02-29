@@ -18,8 +18,8 @@ public class CandidateRequest {
     @JoinColumn(name = "scientist_id")
     private Scientist scientist;
 
-    @Column(name = "birthday", nullable = false)
-    private LocalDate birthday;
+    @Column(name = "birthday")
+    private String birthday;
 
     @Column(name = "sex")
     private String sex;
@@ -27,11 +27,11 @@ public class CandidateRequest {
     @Column(name = "race")
     private String race;
 
-    @Column(name = "weight", nullable = false)
-    private int weight;
+    @Column(name = "weight")
+    private String weight;
 
-    @Column(name = "height", nullable = false)
-    private int height;
+    @Column(name = "height")
+    private String height;
 
     @Column(name = "description")
     private String description;
@@ -64,14 +64,6 @@ public class CandidateRequest {
         this.scientist = scientist;
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
-    }
-
     public String getSex() {
         return sex;
     }
@@ -88,19 +80,11 @@ public class CandidateRequest {
         this.race = race;
     }
 
-    public int getWeight() {
-        return weight;
-    }
-
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
-
-    public int getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
@@ -110,5 +94,21 @@ public class CandidateRequest {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 }

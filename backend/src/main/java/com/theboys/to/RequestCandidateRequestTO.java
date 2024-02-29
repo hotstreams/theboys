@@ -2,22 +2,25 @@ package com.theboys.to;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDate;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Getter
 @Setter
 public class RequestCandidateRequestTO {
 
-    private LocalDate birthday;
+    private String firstName = "";
 
-    private String sex;
+    private String lastName = "";
 
-    private String race;
+    private String birthday = "";
 
-    private Integer weight;
+    private String sex = "";
 
-    private Integer height;
+    private String race = "";
 
-    private String description;
+    private String weight = "";
+
+    private String height = "";
+
+    private String description = "";
 }

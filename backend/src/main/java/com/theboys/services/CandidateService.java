@@ -111,7 +111,7 @@ public class CandidateService {
         CandidateRequest candidateRequest = new CandidateRequest();
         candidateRequest.setRace(candidateRequestTO.getRace());
         String dateOfBirth = candidateRequestTO.getDateOfBirth();
-        candidateRequest.setBirthday(LocalDate.parse(dateOfBirth));
+        candidateRequest.setBirthday(dateOfBirth);
         candidateRequest.setScientist(scientist);
         return candidateRequest;
     }

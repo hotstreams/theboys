@@ -18,7 +18,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/scientist")
+@RequestMapping("/scientists")
 public class ScientistController {
 
     private final CandidateRequestService candidateRequestService;
