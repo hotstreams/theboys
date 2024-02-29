@@ -11,7 +11,7 @@
 
     async function getRentRequests() {
         try {
-            const response = await fetch(config.host + '/entrepreneurs/' + getUser().id + '/rents', {
+            const response = await fetch(config.host + '/entrepreneurs/rents', {
                 method: 'GET',
                 headers: {
                     "Accept": "application/json",

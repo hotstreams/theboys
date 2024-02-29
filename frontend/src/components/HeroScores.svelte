@@ -1,10 +1,12 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import config from '../../config.js';
-    import { getAuthHeader } from './Auth.js'
+    import { getAuthHeader, isAuthenticated } from './Auth.js'
+    import { createEventDispatcher } from 'svelte';
+
+    let dispatch = createEventDispatcher()
 
     export let heroSelection: boolean
-    export let requestAnyHero: boolean
     export let selectedHero: any
 
     let heroes: any = []
@@ -12,15 +14,92 @@
     let error: boolean
     let errorMessage: string
 
-    function requestAny() {
-        requestAnyHero = true
+    function viewHero(hero: any) {
         heroSelection = false
+        selectedHero = hero
+        dispatch('view')
     }
 
-    function rentHero(hero: any) {
-        requestAnyHero = false;
-        selectedHero = hero
-        heroSelection = false
+    async function scoreHero(hero: any) {
+        if (hero.userRate == null || hero.userRate == "" || parseInt(hero.userRate) < 1 || parseInt(hero.userRate) > 5) {
+            error = true
+            errorMessage = "User rating should be in rage [1, 5]"
+            return
+        }  
+
+        error = false;
+        errorMessage = ""
+        
+        await sendScore(hero)
+    }
+
+    async function sendScore(hero: any) {
+        try {
+            const response = await fetch(config.host + '/heroes/' + hero.id + '/rate?rate=' + hero.userRate, {
+                method: 'POST',
+                headers: {
+                    "Accept": "application/json",
+					'Authorization': getAuthHeader() ?? ''
+                }
+            });
+
+            if (response.ok) {
+                await getHeroes()
+            } else {
+                error = true
+                errorMessage = 'Error occured during rating update'
+            }
+        } catch (ex) {
+            console.log(ex)
+            error = true
+            errorMessage = 'Error occured during rating update'
+        }
+    }
+
+    async function subscribeToHero(hero: any) {
+        try {
+            const response = await fetch(config.host + '/posts/subscriptions/' + hero.id, {
+                method: 'POST',
+                headers: {
+                    "Accept": "application/json",
+					'Authorization': getAuthHeader() ?? ''
+                }
+            });
+
+            if (response.ok) {
+                hero.subscribed = true
+            } else {
+                error = true
+                errorMessage = 'Error occured during subscription'
+            }
+        } catch (ex) {
+            console.log(ex)
+            error = true
+            errorMessage = 'Error occured during subscription'
+        }
+    }
+
+    async function unsubscribeToHero(hero: any) {
+        try {
+            const response = await fetch(config.host + '/posts/subscriptions/' + hero.id, {
+                method: 'DELETE',
+                headers: {
+                    "Accept": "application/json",
+					'Authorization': getAuthHeader() ?? ''
+                }
+            });
+
+            if (response.ok) {
+                hero.subscribed = false
+            } else {
+                error = true
+                errorMessage = 'Error occured during unsubscription'
+            }
+        } catch (ex) {
+            console.log(ex)
+            error = true
+            errorMessage = 'Error occured during unsubscription'
+        }
     }
 
     async function getHeroes() {
@@ -29,7 +108,7 @@
                 method: 'GET',
                 headers: {
                     "Accept": "application/json",
-					          'Authorization': getAuthHeader() ?? ''
+					'Authorization': getAuthHeader() ?? ''
                 }
             });
 
@@ -55,7 +134,7 @@
     })
 </script>
 
-<div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+<div class="max-w-[100rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
     <!-- Card -->
     <div class="flex flex-col">
       <div class="-m-1.5 overflow-x-auto">
@@ -69,16 +148,16 @@
                 </h2>
               </div>
   
-              <div>
+              <!-- <div>
                 <div class="inline-flex gap-x-2">
                   <a on:click={requestAny} class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="#">
-                    <!-- <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                       <path d="M2.63452 7.50001L13.6345 7.5M8.13452 13V2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg> -->
-                    Request any
-                  </a>
-                </div>
-              </div>
+                    <!-- Request any -->
+                  <!-- </a> -->
+                <!-- </div> -->
+              <!-- </div> --> 
             </div>
 
             {#if error}
@@ -135,8 +214,14 @@
                       </span>
                     </div>
                   </th>
-  
+                  
                   <th scope="col" class="px-6 py-3 text-right"></th>
+
+                  {#if isAuthenticated()}
+                    <th scope="col" class="px-6 py-3 text-right"></th>  
+                    <th scope="col" class="px-6 py-3 text-right"></th> 
+                    <th scope="col" class="px-6 py-3 text-right"></th>               
+                  {/if}
                 </tr>
               </thead>
   
@@ -155,7 +240,6 @@
                       <div class="flex items-center gap-x-3">
                         <!-- <img class="inline-block h-[2.375rem] w-[2.375rem] rounded-full" src="{hero.img}" alt="Image Description"> -->
                         <img class="inline-block h-[2.375rem] w-[2.375rem] rounded-full ring-2 ring-white dark:ring-gray-800" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80" alt="Image Description">
-
 
                         <div class="grow">
                           <span class="block text-sm font-semibold text-gray-800 dark:text-gray-200">{hero.name}</span>
@@ -193,11 +277,54 @@
 
                   <td class="h-px w-px whitespace-nowrap">
                     <div class="px-6 py-1.5">
-                      <a on:click={() => rentHero(hero)} class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="#">
-                        Rent
+                      <a on:click={() => viewHero(hero)} class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="#">
+                        View
                       </a>
                     </div>
                   </td>
+
+                  {#if isAuthenticated()}
+
+                    {#if hero.alreadyRatedByUser == false}
+                        <td class="h-px w-px whitespace-nowrap">
+                          <input bind:value={hero.userRate} type="number" min="1" max="5" name="score" id="last-name" autocomplete="family-name" class="block w-20 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        </td>
+
+                        <td class="h-px w-px whitespace-nowrap">
+                            <div class="px-6 py-1.5">
+                            <a on:click={() => scoreHero(hero)} class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="#">
+                                Score
+                            </a>
+                            </div>
+                        </td>  
+                    {/if} 
+
+                    {#if hero.alreadyRatedByUser == true}
+                        <td class="h-px w-px whitespace-nowrap"></td>
+                        <td class="h-px w-px whitespace-nowrap"></td>  
+                    {/if} 
+                  
+                    {#if hero.subscribed == false}
+                        <td class="h-px w-px whitespace-nowrap">
+                            <div class="px-6 py-1.5">
+                            <a on:click={() => subscribeToHero(hero)} class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="#">
+                                Like, subscribe
+                            </a>
+                            </div>
+                        </td> 
+                    {:else}
+                    <td class="h-px w-px whitespace-nowrap">
+                        <div class="px-6 py-1.5">
+                        <a on:click={() => unsubscribeToHero(hero)} class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="#">
+                            Dislike, unsubscribe
+                        </a>
+                        </div>
+                    </td> 
+                    {/if} 
+        
+                     
+                  {/if}
+
                 </tr>
                 {/each}
               </tbody>

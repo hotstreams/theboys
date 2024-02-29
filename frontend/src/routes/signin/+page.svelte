@@ -12,7 +12,7 @@
     let errorMessage: string
 
     function validate() {
-        if (username == null || password == null || username.length < 8 || password.length < 8) {
+        if (username == null || password == null || password.length < 8) {
             error = true
             errorMessage = 'Fields should be min 8 length'
             return false;
