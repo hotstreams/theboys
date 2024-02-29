@@ -26,7 +26,7 @@ public class PostController {
     }
 
     @GetMapping(path = "/subscriptions")
-    public List<Post> getBySubscriptions(Principal principal, Pageable pageable) {
+    public List<PostTO> getBySubscriptions(Principal principal, Pageable pageable) {
         int userId = userService.loadUserIdByUsername(principal.getName());
         return postService.getPostsBySubscription(userId, pageable);
     }
@@ -44,12 +44,12 @@ public class PostController {
     }
 
     @GetMapping(path = "/hero/{heroId}")
-    public List<Post> getHeroPosts(@PathVariable(value = "heroId") int heroId, Pageable pageable) {
+    public List<PostTO> getHeroPosts(@PathVariable(value = "heroId") int heroId, Pageable pageable) {
         return postService.getHeroPosts(heroId, pageable);
     }
 
     @PostMapping
-    public Post createPost(Principal principal, @Valid @RequestBody PostTO postTo) {
+    public PostTO createPost(Principal principal, @Valid @RequestBody PostTO postTo) {
         return postService.createPost(principal.getName(), postTo);
     }
 }

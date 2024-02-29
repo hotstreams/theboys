@@ -148,9 +148,9 @@ insert into s265062.heroes_skills values (7, 1)
 ,(16, 10)
 ;
 
-insert into s265062.posts values (7, 1, 'Last night a massive battle happened in the center of the New York between aliens and Blaze. As we know for now, there`re 70 of murdered and 137 of injured.', 'Blaze saves the city again!!!', '2004-10-18 10:23:54+02')
-, (7, 2, 'Last night a massive battle happened in the center of the New York between aliens and Blaze. As we know for now, there`re 70 of murdered and 137 of injured.', 'Blaze saves the city again!!!', '2004-10-19 10:23:54+02')
-, (7, 3, 'Last night a massive battle happened in the center of the New York between aliens and Blaze. As we know for now, there`re 70 of murdered and 137 of injured.', 'Blaze saves the city again!!!', '2004-10-20 10:23:54+02')
+insert into s265062.posts (hero_id, description, title, creation_time) values (7, 'Last night a massive battle happened in the center of the New York between aliens and Blaze. As we know for now, there`re 70 of murdered and 137 of injured.', 'Blaze saves the city again!!!', '2004-10-18 10:23:54+02')
+, (7, 'Last night a massive battle happened in the center of the New York between aliens and Blaze. As we know for now, there`re 70 of murdered and 137 of injured.', 'Blaze saves the city again!!!', '2004-10-19 10:23:54+02')
+, (7, 'Last night a massive battle happened in the center of the New York between aliens and Blaze. As we know for now, there`re 70 of murdered and 137 of injured.', 'Blaze saves the city again!!!', '2004-10-20 10:23:54+02')
 ;
 
 insert into s265062.user_hero_subscriptions values (7, 1)
