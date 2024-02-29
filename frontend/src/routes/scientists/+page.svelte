@@ -20,7 +20,7 @@
             });
 
             if (response.status == 200) {
-                candidates = [await response.json()]
+                candidates = await response.json()
                 error = false
             } else if (response.status == 204) {
                 candidates = []
@@ -35,6 +35,37 @@
             errorMessage = 'Error occured during getting candidate requests'
         }
     }
+
+      async function changeStatus(candidate: any) {
+        try {
+            const response = await fetch(config.host + '/scientists/candidate/' + candidate.id, {
+                method: 'PATCH',
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': getAuthHeader() ?? ''
+                },
+                body: JSON.stringify({
+                    candidateRequestStatus: candidate.status
+                })
+            });
+
+            if (response.ok) {
+                error = false
+            } else {
+                return {
+                    error: true,
+                    errorMessage: 'Error occured during saving test'
+                }
+            }
+        } catch (ex) {
+            console.log(ex)
+            return {
+                error: true,
+                errorMessage: 'Error occured during saving test'
+            }
+        }
+    }
+
 
     onMount(async () => {
         await getCandidateRequests()
@@ -53,7 +84,7 @@
             <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-gray-700">
               <div>
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                  Candidate requests
+                  Scientist requests
                 </h2>
               </div>
             </div>
@@ -212,9 +243,15 @@
                     </div>
                   </td>
 
+                  <td class="h-px w-72 whitespace-nowrap">
+                    <div class="px-6 py-3">
+                      <span class="block text-sm text-gray-500">{candidate.description}</span>
+                    </div>
+                  </td>
+
                   <td class="h-px w-px whitespace-nowrap">
                     <div class="px-6 py-3">
-                      <select bind:value={candidate.status} id="countries" class="block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                      <select bind:value={candidate.status} on:change={()=> changeStatus(candidate)} id="countries" class="block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                         <option>PENDING</option>
                         <option>IN_PROGRESS</option>
                         <option>FULFILLED</option>

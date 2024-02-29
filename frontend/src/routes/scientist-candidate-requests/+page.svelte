@@ -20,7 +20,10 @@
             });
 
             if (response.status == 200) {
-                candidates = [await response.json()]
+                candidates = await response.json()
+                if (candidates.length == 0) {
+                  candidates = []
+                }
                 error = false
             } else if (response.status == 204) {
                 candidates = []
@@ -209,6 +212,12 @@
                   <td class="h-px w-72 whitespace-nowrap">
                     <div class="px-6 py-3">
                       <span class="block text-sm text-gray-500">{candidate.weight}</span>
+                    </div>
+                  </td>
+
+                  <td class="h-px w-72 whitespace-nowrap">
+                    <div class="px-6 py-3">
+                      <span class="block text-sm text-gray-500">{candidate.description}</span>
                     </div>
                   </td>
 

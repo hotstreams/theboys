@@ -44,6 +44,7 @@
             });
 
             if (response.ok) {
+                error = false
                 await getHeroes()
             } else {
                 error = true
@@ -62,12 +63,13 @@
                 method: 'POST',
                 headers: {
                     "Accept": "application/json",
-					'Authorization': getAuthHeader() ?? ''
+					          'Authorization': getAuthHeader() ?? ''
                 }
             });
 
             if (response.ok) {
-                hero.subscribed = true
+                error = false
+                await getHeroes()
             } else {
                 error = true
                 errorMessage = 'Error occured during subscription'
@@ -85,12 +87,13 @@
                 method: 'DELETE',
                 headers: {
                     "Accept": "application/json",
-					'Authorization': getAuthHeader() ?? ''
+					          'Authorization': getAuthHeader() ?? ''
                 }
             });
 
             if (response.ok) {
-                hero.subscribed = false
+                error = false
+                await getHeroes()
             } else {
                 error = true
                 errorMessage = 'Error occured during unsubscription'

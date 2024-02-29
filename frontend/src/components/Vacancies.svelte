@@ -10,9 +10,7 @@
 
     const dispatch = createEventDispatcher()
 
-    let vacancies: any = [{
-
-    }]
+    let vacancies: any = []
 
     async function getVacancyRequests() {
         try {
@@ -25,7 +23,7 @@
             });
 
             if (response.status == 200) {
-              vacancies = [await response.json()]
+              vacancies = await response.json()
               error = false
             } else if (response.status == 204) {
               vacancies = []
@@ -43,19 +41,19 @@
 
     async function changeStatus(vacancy: any) {
         try {
-            const response = await fetch(config.host + '/managers/vacancies/' + vacancy.id, {
+            const response = await fetch(config.host + '/managers/vacancy/' + vacancy.id, {
                 method: 'PATCH',
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': getAuthHeader() ?? ''
                 },
                 body: JSON.stringify({
-                  status: vacancy.status
+                  vacancyStatus: vacancy.vacancyStatus
                 }),
             });
 
             if (response.status == 200) {
-                error = false
+              error = false
             } else {
               error = true
               errorMessage = 'Error occured during vacancy update'
@@ -271,23 +269,25 @@
                   {#if getUser().role == 'VISITOR'}
                     <td class="h-px w-px whitespace-nowrap">
                         <div class="px-6 py-3">
-                            <span class="block text-sm text-gray-500">{vacancy.status}</span>
+                            <span class="block text-sm text-gray-500">{vacancy.vacancyStatus}</span>
                           </div>
                     </td>
 
-                    <td class="h-px w-px whitespace-nowrap">
-                      <div class="px-6 py-1.5">
-                      <a class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="/become-a-hero">
-                          Apply
-                      </a>
-                      </div>
-                  </td> 
+                      {#if vacancy.vacancyStatus == 'OPEN'}
+                      <td class="h-px w-px whitespace-nowrap">
+                        <div class="px-6 py-1.5">
+                        <a class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="/become-a-hero">
+                            Apply
+                        </a>
+                        </div>
+                    </td> 
+                    {/if}
                   {/if}
 
                   {#if getUser().role == 'MANAGER'}
                     <td class="h-px w-px whitespace-nowrap">
                       <div class="px-6 py-3">
-                        <select bind:value={vacancy.status} on:change={()=>changeStatus(vacancy)}    id="countries" class="block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <select bind:value={vacancy.vacancyStatus} on:change={()=>changeStatus(vacancy)}    id="countries" class="block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                           <option>OPEN</option>
                           <option>CLOSED</option>
                           <option>FOUND</option>
