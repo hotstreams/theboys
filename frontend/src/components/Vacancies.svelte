@@ -1,17 +1,22 @@
 <script lang="ts">
-    import Header from '../../components/Header.svelte';
-    import config from '../../../config.js';
+    import Header from '../components/Header.svelte';
+    import config from '../../config.js';
     import { onMount } from 'svelte';
-    import { getAuthHeader, getUser } from '../../components/Auth';
+    import { getAuthHeader, getUser } from './Auth';
+    import { createEventDispatcher } from 'svelte';
 
     let error: boolean
     let errorMessage: string
 
-    let requests: any = []
+    const dispatch = createEventDispatcher()
 
-    async function getRentRequests() {
+    let vacancies: any = [{
+
+    }]
+
+    async function getVacancyRequests() {
         try {
-            const response = await fetch(config.host + '/entrepreneurs/rents', {
+            const response = await fetch(config.host + '/managers/vacancies', {
                 method: 'GET',
                 headers: {
                     "Accept": "application/json",
@@ -19,54 +24,57 @@
                 }
             });
 
-            if (response.ok) {
-              requests = await response.json();
+            if (response.status == 200) {
+              vacancies = [await response.json()]
+              error = false
+            } else if (response.status == 204) {
+              vacancies = []
+              error = false
             } else {
-                error = true
-                errorMessage = 'Error occured during getting rent requests'
+              error = true
+              errorMessage = 'Error occured during getting vacancy requests'
             }
         } catch (ex) {
             console.log(ex)
             error = true
-            errorMessage = 'Error occured during getting rent requests'
+            errorMessage = 'Error occured during getting vacancy requests'
         }
     }
 
-    async function changeStatus(request: any) {
-      console.log(request)
-      try {
-            const response = await fetch(config.host + '/entrepreneurs/' + request.enterpreneurId + '/rents/' + request.orderId, {
+    async function changeStatus(vacancy: any) {
+        try {
+            const response = await fetch(config.host + '/managers/vacancies/' + vacancy.id, {
                 method: 'PATCH',
-                body: JSON.stringify({
-                  status: request.status
-                }),
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': getAuthHeader() ?? ''
-                }
+                },
+                body: JSON.stringify({
+                  status: vacancy.status
+                }),
             });
 
-            if (response.ok) {
-              requests = await response.json();
+            if (response.status == 200) {
+                error = false
             } else {
-                error = true
-                errorMessage = 'Error occured during getting rent requests'
+              error = true
+              errorMessage = 'Error occured during vacancy update'
             }
         } catch (ex) {
             console.log(ex)
             error = true
-            errorMessage = 'Error occured during getting rent requests'
+            errorMessage = 'Error occured during vacancy update'
         }
     }
 
     onMount(async () => {
-        await getRentRequests()
+        await getVacancyRequests()
 	  })
 </script>
 
 <Header />
 
-<div class="max-w-[70rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+<div class="max-w-[80rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
     <!-- Card -->
     <div class="flex flex-col">
       <div class="-m-1.5 overflow-x-auto">
@@ -76,9 +84,20 @@
             <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-gray-700">
               <div>
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                  Entrepreneur requests
+                  Vacancies
                 </h2>
               </div>
+
+              {#if getUser().role == 'MANAGER'}
+                <div>
+                  <div class="inline-flex gap-x-2">
+                      <a on:click={() => dispatch('add') } class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm" href="#">
+                          Open vacancy
+                      </a>
+                  </div>
+              </div>
+              {/if}
+
             </div>
 
             {#if error}
@@ -107,7 +126,7 @@
                   <th scope="col" class="px-6 py-3 text-left">
                     <div class="flex items-center gap-x-2">
                       <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                        Hero
+                        First Name
                       </span>
                     </div>
                   </th>
@@ -115,31 +134,55 @@
                   <th scope="col" class="px-6 py-3 text-left">
                     <div class="flex items-center gap-x-2">
                       <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                        Last Name
+                      </span>
+                    </div>
+                  </th>
+
+                  <th scope="col" class="px-6 py-3 text-left">
+                    <div class="flex items-center gap-x-2">
+                      <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                        Date of birth
+                      </span>
+                    </div>
+                  </th>
+
+                  <th scope="col" class="px-6 py-3 text-left">
+                    <div class="flex items-center gap-x-2">
+                      <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                        Sex
+                      </span>
+                    </div>
+                  </th>
+
+                  <th scope="col" class="px-6 py-3 text-left">
+                    <div class="flex items-center gap-x-2">
+                      <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                        Race
+                      </span>
+                    </div>
+                  </th>
+
+                  <th scope="col" class="px-6 py-3 text-left">
+                    <div class="flex items-center gap-x-2">
+                      <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                        Height
+                      </span>
+                    </div>
+                  </th>
+
+                  <th scope="col" class="px-6 py-3 text-left">
+                    <div class="flex items-center gap-x-2">
+                      <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                        Weight
+                      </span>
+                    </div>
+                  </th>
+
+                  <th scope="col" class="px-6 py-3 text-left">
+                    <div class="flex items-center gap-x-2">
+                      <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
                         Description
-                      </span>
-                    </div>
-                  </th>
-
-                  <th scope="col" class="px-6 py-3 text-left">
-                    <div class="flex items-center gap-x-2">
-                      <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                        Start date
-                      </span>
-                    </div>
-                  </th>
-
-                  <th scope="col" class="px-6 py-3 text-left">
-                    <div class="flex items-center gap-x-2">
-                      <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                        End date
-                      </span>
-                    </div>
-                  </th>
-
-                  <th scope="col" class="px-6 py-3 text-left">
-                    <div class="flex items-center gap-x-2">
-                      <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                        Request Date
                       </span>
                     </div>
                   </th>
@@ -152,11 +195,19 @@
                     </div>
                   </th>
 
+                  {#if getUser().role == 'VISITOR'}
+                  <th scope="col" class="px-6 py-3 text-left">
+                    <div class="flex items-center gap-x-2">
+    
+                    </div>
+                  </th>
+                  {/if}
+
                 </tr>
               </thead>
   
               <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                {#each requests as request}
+                {#each vacancies as vacancy}
                 <tr>
                     <td class="h-px w-px whitespace-nowrap">
                         <div class="pl-6 py-3 hidden">
@@ -168,7 +219,7 @@
                   <td class="h-px w-72 whitespace-nowrap">
                     <div class="px-6 py-3">
                       <div class="grow">
-                          <span class="block text-sm font-semibold text-gray-800 dark:text-gray-200">{request.name ?? request.heroDescription}</span>
+                          <span class="block text-sm  text-gray-800 dark:text-gray-200">{vacancy.firstName}</span>
                         </div>
                     </div>
                   </td>
@@ -176,72 +227,75 @@
                   <td class="h-px w-72 whitespace-nowrap">
                     <div class="px-6 py-3">
                       <div class="grow">
-                          <span class="block text-sm font-semibold text-gray-800 dark:text-gray-200">{request.requestDescription}</span>
+                          <span class="block text-sm  text-gray-800 dark:text-gray-200">{vacancy.lastName}</span>
                         </div>
                     </div>
                   </td>
-                    
+
                   <td class="h-px w-72 whitespace-nowrap">
                     <div class="px-6 py-3">
-                      <span class="block text-sm text-gray-500">{request.startDate}</span>
+                      <span class="block text-sm text-gray-500">{vacancy.dateOfBirth}</span>
                     </div>
                   </td>
 
                   <td class="h-px w-72 whitespace-nowrap">
                     <div class="px-6 py-3">
-                      <span class="block text-sm text-gray-500">{request.endDate}</span>
+                      <span class="block text-sm text-gray-500">{vacancy.sex}</span>
                     </div>
                   </td>
 
                   <td class="h-px w-72 whitespace-nowrap">
                     <div class="px-6 py-3">
-                      <span class="block text-sm text-gray-500">{request.date}</span>
+                      <span class="block text-sm text-gray-500">{vacancy.race}</span>
                     </div>
                   </td>
 
                   <td class="h-px w-72 whitespace-nowrap">
-                      <select bind:value={request.status} on:change={() => changeStatus(request)} id="countries" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        <option>PENDING</option>
-                        <option>IN_PROGRESS</option>
-                        <option>WAITING_FOR_CUSTOMER_APPROVAL</option>
-                        <option>FULFILLED</option>
-                        <option>DECLINED</option>
-                      </select>
+                    <div class="px-6 py-3">
+                      <span class="block text-sm text-gray-500">{vacancy.height}</span>
+                    </div>
                   </td>
 
-                  <!-- <div class="sm:col-span-3">
-                    <label for="race" class="block text-sm font-medium leading-6 text-gray-900">Race</label>
-                    <div class="mt-2">
-                        
-                    </div>
-                  </div> -->
-
-                  <!-- <td class="h-px w-px whitespace-nowrap">
+                  <td class="h-px w-72 whitespace-nowrap">
                     <div class="px-6 py-3">
-                        {#if rent.status == 'Accepted'}
-                        <span class="inline-flex items-center gap-1.5 py-0.5 px-2 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                          <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                          </svg>
-                          {rent.status}
-                        </span>
-                        {:else if rent.status == 'Rejected'}
-                        <span class="inline-flex items-center gap-1.5 py-0.5 px-2 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-                          <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                          </svg>
-                          {rent.status}
-                        </span>
-                        {:else}
-                            <span class="inline-flex items-center gap-1.5 py-0.5 px-2 rounded-full text-xs font-medium bg-yellow-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-                            <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                              <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                            </svg>
-                            {rent.status}
-                          </span>
-                        {/if}
+                      <span class="block text-sm text-gray-500">{vacancy.weight}</span>
                     </div>
-                  </td> -->
+                  </td>
+
+                  <td class="h-px w-72 whitespace-nowrap">
+                    <div class="px-6 py-3">
+                      <span class="block text-sm text-gray-500">{vacancy.description}</span>
+                    </div>
+                  </td>
+
+                  {#if getUser().role == 'VISITOR'}
+                    <td class="h-px w-px whitespace-nowrap">
+                        <div class="px-6 py-3">
+                            <span class="block text-sm text-gray-500">{vacancy.status}</span>
+                          </div>
+                    </td>
+
+                    <td class="h-px w-px whitespace-nowrap">
+                      <div class="px-6 py-1.5">
+                      <a class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="/become-a-hero">
+                          Apply
+                      </a>
+                      </div>
+                  </td> 
+                  {/if}
+
+                  {#if getUser().role == 'MANAGER'}
+                    <td class="h-px w-px whitespace-nowrap">
+                      <div class="px-6 py-3">
+                        <select bind:value={vacancy.status} on:change={()=>changeStatus(vacancy)}    id="countries" class="block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                          <option>OPEN</option>
+                          <option>CLOSED</option>
+                          <option>FOUND</option>
+                        </select>
+                      </div>
+                    </td>
+                  {/if}
+
                 </tr>
                 {/each}
               </tbody>
@@ -252,7 +306,7 @@
             <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-gray-700">
               <div>
                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                  <span class="font-semibold text-gray-800 dark:text-gray-200">{requests.length}</span> results
+                  <span class="font-semibold text-gray-800 dark:text-gray-200">{vacancies.length}</span> results
                 </p>
               </div>
   

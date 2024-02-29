@@ -19,10 +19,12 @@
                 }
             });
 
-            if (response.ok) {
+            if (response.status == 200) {
                 candidates = [await response.json()]
-            } else if (response.status == 404){
+                error = false
+            } else if (response.status == 204) {
                 candidates = []
+                error = false
             } else {
               error = true
               errorMessage = 'Error occured during getting candidate requests'

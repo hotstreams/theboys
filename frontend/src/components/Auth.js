@@ -25,6 +25,7 @@ export async function authenticate(username, password) {
             }
         }
     } catch (error) {
+        console.log(error)
         return {
             status: false,
             message: 'Error occured during sending request'

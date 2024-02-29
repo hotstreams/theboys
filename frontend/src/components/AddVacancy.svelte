@@ -2,11 +2,13 @@
     import Header from './Header.svelte';
     import config from '../../config.js';
     import { getAuthHeader, getUser } from './Auth.js'
-    import { goto } from '$app/navigation';
+
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher()
 
     let firstName: string
     let lastName: string
-    let phone: string
     let dateOfBirth: string
     let sex: string
     let race: string
@@ -14,38 +16,25 @@
     let weight: string
     let address: string
     let description: string
-    let photo: any
-    let medicalDoc: any
 
     let validation: boolean = false
     let validationMsg: string
 
     function validate() {
-      if (dateOfBirth == null) {
-          dateOfBirth = document.getElementsByName('birth')[0].getAttribute('value') ?? ""
-      }
-      console.log(dateOfBirth)
-      if (firstName == null ||
-        lastName == null ||
-        phone == null ||
-        dateOfBirth == null ||
-        sex == null ||
-        race == null ||
-        height == null ||
-        weight == null ||
-        address == null ||
-        description == null ||
-        photo == null ||
-        medicalDoc == null
+      if (firstName == null &&
+        lastName == null &&
+        dateOfBirth == null &&
+        sex == 'Does not matter' &&
+        race == 'Does not matter' &&
+        height == null &&
+        weight == null &&
+        address == null &&
+        description == null
       ) {
         validation = true
-        validationMsg = 'All fields should be filled out'
+        validationMsg = 'At least one field should be filled out'
         return false
-      } else if (!/^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/.test(phone)) {
-        validation = true
-        validationMsg = 'Phone number shoud be X-XXX-XXX-XX-XX'
-        return false
-      } else if (!/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/.test(dateOfBirth)) {
+      } else if (dateOfBirth != null && !/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/.test(dateOfBirth)) {
         validation = true
         validationMsg = 'Date of birth shoud be XXXX-XX-XX'
         return false
@@ -64,33 +53,12 @@
           return
       } 
 
-      // const bytes = new Uint8Array(await file.arrayBuffer()));
-      // await uploadBytes(uploadRef, bytes);
-
-      // const reader = new FileReader();
-      // reader.readAsArrayBuffer(new File(filename: photo));
-      // reader.onload = function() {
-      //     var arrayBuffer = (reader.result as ArrayBuffer) 
-      //     var bytes = new Uint8Array(arrayBuffer);
-      //     photo = bytes
-      //     console.log('1')
-      // }
-
-      // reader.readAsArrayBuffer(medicalDoc);
-      // reader.onload = function() {
-      //     var arrayBuffer = (reader.result as ArrayBuffer) 
-      //     var bytes = new Uint8Array(arrayBuffer);
-      //     medicalDoc = bytes
-      //     console.log('2')
-      // }
-
       try {
-        const res = await fetch(config.host + '/candidates', {
+        const res = await fetch(config.host + '/managers/vacancies', {
             method: 'POST',
             body: JSON.stringify({
                 firstName,
                 lastName,
-                phone,
                 dateOfBirth,
                 sex,
                 race,
@@ -98,8 +66,6 @@
                 weight,
                 address,
                 description,
-                photo: btoa(photo),
-                medicalDoc: btoa(medicalDoc),
             }),
             headers: {
               'Content-Type': "application/json",
@@ -108,10 +74,10 @@
         })
 
         if (res.ok) {
-            goto('/candidate-requests')
+            dispatch('cancel');
         } else {
             validation = true
-            validationMsg = (await res.json()).message
+            validationMsg = 'Error occured during sending your request'
         }
       } catch (error) {
           console.log(error)
@@ -127,10 +93,10 @@
     <div class="flex flex-col">
       <div class="-m-1.5 overflow-x-auto">
         <div class="p-1.5 min-w-full inline-block align-middle">
-          <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-slate-900 dark:border-gray-700">
-            <div class="px-6 py-4 grid gap-3  md:items-center border-b border-gray-200 dark:border-gray-700">
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden dark:bg-slate-900 dark:border-gray-700">
+            <div class="px-6 py-4 grid gap-3  md:items-center  dark:border-gray-700">
               <div class="border-b border-gray-900/10 pb-12">
-                <h2 class="text-base font-semibold leading-7 text-gray-900">Request to become a hero</h2>
+                <h2 class="text-base font-semibold leading-7 text-gray-900">Open vacancy</h2>
   
                 {#if validation}
                 <div class="pt-6 w-full">
@@ -157,13 +123,6 @@
               <input bind:value={lastName} type="text" name="last-name" id="last-name" autocomplete="family-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             </div>
           </div>
-  
-          <div class="sm:col-span-3">
-            <label for="phone" class="block text-sm font-medium leading-6 text-gray-900">Phone</label>
-            <div class="mt-2">
-              <input bind:value={phone} id="phone" name="phone" type="phone" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder=" X-XXX-XXX-XX-XX">
-            </div>
-          </div>
 
             <div class="sm:col-span-3">
                 <label for="date of birth" class="block text-sm font-medium leading-6 text-gray-900">Date of birth</label>
@@ -176,6 +135,7 @@
                 <label for="sex" class="block text-sm font-medium leading-6 text-gray-900">Sex</label>
                 <div class="mt-2">
                     <select bind:value={sex} name="sex" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    <option value="Does not matter">Does not matter</option>
                     <option value="Female">Female</option>
                     <option value="Male">Male</option>
                     <option value="Transformer">Transformer</option>
@@ -187,6 +147,7 @@
                 <label for="race" class="block text-sm font-medium leading-6 text-gray-900">Race</label>
                 <div class="mt-2">
                     <select bind:value={race} name="race" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    <option value="Does not matter">Does not matter</option>
                     <option value="White">White supreme</option>
                     <option value="Black">Black</option>
                     <option value="Asian">Asian</option>
@@ -216,7 +177,7 @@
           </div>
 
           <div class="col-span-full">
-            <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Describe yourself</label>
+            <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
             <div class="mt-2">
               <textarea bind:value={description} id="about" name="about" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
             </div>
@@ -224,52 +185,22 @@
         </div>
       </div>
 
-      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-        <div class="sm:col-span-3">
-            <label for="photo" class="block text-sm font-medium leading-3 text-gray-900">Photo</label>
-            <div class="mt-2">
-                <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                  <div class="text-center">
-                    <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
-                    </svg>
-                    <div class="mt-4 flex text-sm leading-6 text-gray-600">
-                      <label for="file-upload-photo" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-                        <span>Upload a file</span>
-                        <input bind:value={photo} id="file-upload-photo" name="file-upload-photo" type="file" class="sr-only">
-                      </label>
-                    </div>
-                    <p class="text-xs leading-5 text-gray-600">PNG, JPG up to 10MB</p>
-                  </div>
-                </div>      
-            </div>
-        </div>
+    </div>
 
-        <div class="sm:col-span-3">
-            <label for="med" class="block text-sm font-medium leading-3 text-gray-900">Medical document</label>
-            <div class="mt-2">
-                <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                  <div class="text-center">
-                    <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
-                    </svg>
-                    <div class="mt-4 flex text-sm leading-6 text-gray-600">
-                      <label for="file-upload-pdf" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-                        <span>Upload a file</span>
-                        <input bind:value={medicalDoc} id="file-upload-pdf" name="file-upload-pdf" type="file" class="sr-only">
-                      </label>
+ <div class="px-6 py-4 grid gap-3 md:flex justify-end md:items-center border-b border-gray-200">
+
+                        <div class="px-6 py-1.5">
+                            <a on:click={()=>dispatch('cancel')} class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-gray-500 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="#">
+                                Cancel
+                            </a>
+                        </div>
+                        <div class="px-3 py-1.0">
+                            <a on:click={send} class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800" href="#">
+                                Open
+                            </a>
+                        </div>
                     </div>
-                    <p class="text-xs leading-5 text-gray-600">PDF up to 10MB</p>
-                  </div>
-                </div>      
-            </div>
-          </div>
-      </div>
-    </div>
-  
-    <div class="mt-6 flex items-center justify-end gap-x-6">
-      <button on:click={send} type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Send</button>
-    </div>
+
   </div>
 </div>
 </div>

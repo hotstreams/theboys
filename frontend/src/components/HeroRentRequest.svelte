@@ -16,6 +16,8 @@
     let validationMesssage: string
 
     function validate() {
+      dateStart = document.getElementsByName("start")[0].getAttribute("value") ?? ""
+      dateEnd = document.getElementsByName("end")[0].getAttribute("value") ?? ""
       if (!requestAnyHero && (requestDescription == null || dateStart == null || dateEnd == null)) {
           validationError = true
           validationMesssage = 'All fields should be filled out'
@@ -29,6 +31,8 @@
       }  
 
       if (!/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/.test(dateStart) || !/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/.test(dateEnd)) {
+          console.log(dateStart)
+          console.log(dateEnd)
           validationError = true
           validationMesssage = 'Dates should be XXXX-XX-XX'
           return false
@@ -96,7 +100,6 @@
                               <h2 class="text-base font-semibold leading-7 text-gray-900">Request for a hero</h2>
                               <p class="mt-1 text-sm leading-6 text-gray-600">This information will be send to the manager to process your desires.</p>
                         
-
                               {#if validationError}
                               <div class="pt-6 w-full">
                                   <div class="mx-8 flex flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-5 sm:h-12" >
