@@ -66,10 +66,12 @@ public class HeroService {
             rateId.setHeroId(heroId);
             rateId.setUserId(userId);
 
-            Subscription subscription = subscriptionsRepo.findByUserIdAndHeroId(heroId, userId);
+            SubscriptionId subscriptionId = new SubscriptionId(userId, heroId);
+
+            Optional<Subscription> subscription = subscriptionsRepo.findById(subscriptionId);
             Optional<UserHeroRate> userHeroRating = userHeroRateRepo.findById(rateId);
 
-            hero.setSubscribed(Objects.nonNull(subscription));
+            hero.setSubscribed(subscription.isPresent());
             hero.setAlreadyRatedByUser(userHeroRating.isPresent());
         });
         return heroes;
