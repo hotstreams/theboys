@@ -1,6 +1,5 @@
 package com.theboys.contollers;
 
-import com.theboys.data.entities.Post;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.services.PostService;
 import com.theboys.to.PostTO;

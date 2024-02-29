@@ -1,6 +1,5 @@
 package com.theboys.data.entities;
 
-import com.theboys.security.User;
 import jakarta.persistence.*;
 
 import java.util.List;

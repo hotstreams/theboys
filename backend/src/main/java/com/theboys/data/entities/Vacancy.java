@@ -1,20 +1,16 @@
 package com.theboys.data.entities;
 
-import com.theboys.data.enums.CandidateRequestStatus;
+import com.theboys.data.enums.VacancyStatus;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "candidate_requests")
-public class CandidateRequest {
+@Table(name = "vacancy")
+public class Vacancy {
 
     @Id
-    @Column(name = "candidate_order_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer candidateId;
-
-    @ManyToOne
-    @JoinColumn(name = "scientist_id")
-    private Scientist scientist;
+    @Column(name = "vacancy_id")
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    private Integer vacancyId;
 
     private String firstName;
 
@@ -40,30 +36,22 @@ public class CandidateRequest {
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
-    private CandidateRequestStatus status;
+    private VacancyStatus status;
 
-    public CandidateRequestStatus getStatus() {
-        return status;
+    public Integer getVacancyId() {
+        return vacancyId;
     }
 
-    public void setStatus(CandidateRequestStatus status) {
-        this.status = status;
+    public void setVacancyId(Integer vacancyId) {
+        this.vacancyId = vacancyId;
     }
 
-    public Integer getCandidateId() {
-        return candidateId;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setCandidateId(Integer candidateId) {
-        this.candidateId = candidateId;
-    }
-
-    public Scientist getScientist() {
-        return scientist;
-    }
-
-    public void setScientist(Scientist scientist) {
-        this.scientist = scientist;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     public String getSex() {
@@ -82,6 +70,14 @@ public class CandidateRequest {
         this.race = race;
     }
 
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
     public String getHeight() {
         return height;
     }
@@ -98,19 +94,11 @@ public class CandidateRequest {
         this.description = description;
     }
 
-    public String getBirthday() {
-        return birthday;
+    public VacancyStatus getStatus() {
+        return status;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getWeight() {
-        return weight;
-    }
-
-    public void setWeight(String weight) {
-        this.weight = weight;
+    public void setStatus(VacancyStatus status) {
+        this.status = status;
     }
 }

@@ -1,12 +1,7 @@
 package com.theboys.contollers;
 
 import com.theboys.data.enums.CandidateRequestStatus;
-import com.theboys.security.User;
-import com.theboys.security.UserRole;
 import com.theboys.services.CandidateRequestService;
-import com.theboys.services.CandidateService;
-import com.theboys.services.UserService;
-import com.theboys.to.CandidateResponseTO;
 import com.theboys.to.RequestCandidateRequestTO;
 import com.theboys.to.RequestCandidateResponseTO;
 import com.theboys.to.UpdateRequestCandidateStatusTO;

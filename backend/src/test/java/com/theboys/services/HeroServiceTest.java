@@ -2,12 +2,10 @@ package com.theboys.services;
 
 import com.theboys.data.entities.Customer;
 import com.theboys.data.entities.Hero;
-import com.theboys.data.entities.Order;
 import com.theboys.data.repos.CustomerRepo;
 import com.theboys.data.repos.HeroRepo;
 import com.theboys.data.repos.OrderRepo;
 import com.theboys.security.PersistentUserManager;
-import com.theboys.security.UserRole;
 import com.theboys.security.WebSecurityConfig;
 import com.theboys.to.OrderRequestTO;
 import org.junit.jupiter.api.Assertions;

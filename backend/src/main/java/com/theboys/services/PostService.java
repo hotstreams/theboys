@@ -7,7 +7,6 @@ import com.theboys.data.entities.SubscriptionId;
 import com.theboys.data.repos.HeroRepo;
 import com.theboys.data.repos.PostRepo;
 import com.theboys.data.repos.SubscriptionsRepo;
-import com.theboys.data.repos.UserRepo;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.to.PostTO;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,8 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RequestCandidateRequestTO {
-
+public class VacancyRequestTO {
     private String firstName = "";
 
     private String lastName = "";

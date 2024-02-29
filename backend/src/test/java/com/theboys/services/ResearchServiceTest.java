@@ -1,10 +1,11 @@
 package com.theboys.services;
 
-import com.theboys.data.entities.*;
+import com.theboys.data.entities.Candidate;
+import com.theboys.data.entities.Medicine;
+import com.theboys.data.entities.Scientist;
 import com.theboys.data.repos.*;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.security.User;
-import com.theboys.security.UserRole;
 import com.theboys.security.WebSecurityConfig;
 import com.theboys.to.AssessmentRequestTO;
 import com.theboys.to.ResearchRequestTO;
@@ -19,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 

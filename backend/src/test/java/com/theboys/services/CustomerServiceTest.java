@@ -4,9 +4,7 @@ import com.theboys.data.entities.Customer;
 import com.theboys.data.repos.CustomerRepo;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.security.User;
-import com.theboys.security.UserRole;
 import com.theboys.security.WebSecurityConfig;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,8 +12,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-import java.util.Optional;
 
 @SpringBootTest(
         classes = {

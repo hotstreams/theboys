@@ -2,7 +2,6 @@ package com.theboys.controllers;
 
 import com.theboys.SecurityTestConfigurationHelper;
 import com.theboys.contollers.PostController;
-import com.theboys.data.entities.Post;
 import com.theboys.exceptions.RestResponseEntityExceptionHandler;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.security.WebSecurityConfig;
@@ -22,8 +21,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;

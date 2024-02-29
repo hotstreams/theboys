@@ -11,10 +11,8 @@ import com.theboys.security.User;
 import com.theboys.security.UserRole;
 import com.theboys.to.RequestCandidateRequestTO;
 import com.theboys.to.RequestCandidateResponseTO;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
