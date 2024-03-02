@@ -2,10 +2,14 @@ package com.theboys.contollers;
 
 import com.theboys.data.enums.CandidateRequestStatus;
 import com.theboys.services.CandidateRequestService;
+import com.theboys.services.HeroCreationOrderService;
+import com.theboys.to.HeroCreationOrderTO;
 import com.theboys.to.RequestCandidateRequestTO;
 import com.theboys.to.RequestCandidateResponseTO;
 import com.theboys.to.UpdateRequestCandidateStatusTO;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +21,13 @@ import java.util.List;
 public class ScientistController {
 
     private final CandidateRequestService candidateRequestService;
-    public ScientistController(CandidateRequestService candidateRequestService) {
+
+    private final HeroCreationOrderService heroCreationOrderService;
+
+    @Autowired
+    public ScientistController(CandidateRequestService candidateRequestService, HeroCreationOrderService heroCreationOrderService) {
         this.candidateRequestService = candidateRequestService;
+        this.heroCreationOrderService = heroCreationOrderService;
     }
 
     @GetMapping("/candidates")
@@ -40,5 +49,15 @@ public class ScientistController {
         CandidateRequestStatus candidateRequestStatus = requestCandidateStatusTO.getCandidateRequestStatus();
         candidateRequestService.updateStatus(candidateRequestStatus, requestId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/hero_creation_orders")
+    public List<HeroCreationOrderTO> getHeroCreationOrder() {
+        return heroCreationOrderService.getHeroCreationOrders();
+    }
+
+    @PatchMapping("/hero_creation_orders/{id}")
+    public void updateOrderWithCreatedHero(@PathVariable("id") Integer heroCreationOrderId, @NotNull @RequestParam("heroId") Integer heroId) {
+        heroCreationOrderService.fulfillHeroCreationOrder(heroCreationOrderId, heroId);
     }
 }

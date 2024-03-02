@@ -17,6 +17,9 @@ public class HeroCreationOrder {
     @JoinColumn(name = "manager_id")
     private Manager manager;
 
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "orders_skills",
@@ -40,6 +43,14 @@ public class HeroCreationOrder {
 
     public void setManager(Manager manager) {
         this.manager = manager;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Set<Skill> getSkills() {

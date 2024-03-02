@@ -50,7 +50,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(value = EntityNotFoundException.class)
     public ResponseEntity<Object> handleEntityNotFoundException(BasicHttpException exception, WebRequest request) {
-        return handleExceptionInternal(exception, exception.getResponse(), new HttpHeaders(), HttpStatus.NO_CONTENT, request);
+        return handleExceptionInternal(exception, exception.getResponse(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @Override

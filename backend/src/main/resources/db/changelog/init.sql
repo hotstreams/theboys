@@ -41,7 +41,7 @@ create table s265062.candidate_requests (first_name varchar(255), last_name varc
 create table s265062.candidates (birthday date not null, candidate_id integer not null, height integer not null, weight integer not null, address varchar(255), description varchar(255), first_name varchar(255) not null, last_name varchar(255) not null, phone varchar(255), race varchar(255), sex varchar(255), status varchar(255) check (status in ('IN_PROGRESS','WAITING','BECAME_HERO','DIED')), medical_doc bytea, photo bytea, primary key (candidate_id));
 create table s265062.customers (customer_id integer not null, primary key (customer_id));
 create table s265062.hero_creation_events (candidate_id integer, date date not null, hero_creation_event_id serial not null, scientist_id integer, result varchar(255) not null, primary key (hero_creation_event_id));
-create table s265062.hero_creation_orders (hero_creation_order_id serial not null, manager_id integer, primary key (hero_creation_order_id));
+create table s265062.hero_creation_orders (hero_creation_order_id serial not null, manager_id integer, order_id integer, primary key (hero_creation_order_id));
 create table s265062.heroes (hero_id integer not null, description varchar(255), name varchar(255) not null unique, rating double precision, primary key (hero_id));
 create table s265062.heroes_skills (hero_id integer not null, skill_id integer not null, primary key (hero_id, skill_id));
 create table s265062.managers (manager_id integer not null, primary key (manager_id));
@@ -62,6 +62,7 @@ alter table if exists s265062.candidate_requests add constraint FK6p18ycejl4iqnp
 alter table if exists s265062.hero_creation_events add constraint FKp96ch72xasoo0dep874c2y5cx foreign key (candidate_id) references s265062.candidates;
 alter table if exists s265062.hero_creation_events add constraint FKnq8b6sy1w3bavuh1cr3beeer9 foreign key (scientist_id) references s265062.scientists;
 alter table if exists s265062.hero_creation_orders add constraint FK3a2563eo2bu85j2gy7ncsve48 foreign key (manager_id) references s265062.managers;
+alter table if exists s265062.hero_creation_orders add constraint FK3a2563eo2bu85j2gy7ncsve58 foreign key (order_id) references s265062.orders;
 alter table if exists s265062.heroes_skills add constraint FKfb86n50ehxp2jpxbw56w95ap0 foreign key (skill_id) references s265062.skills;
 alter table if exists s265062.heroes_skills add constraint FKr2toc6rbynlu9wwbvy889rvmi foreign key (hero_id) references s265062.heroes;
 alter table if exists s265062.orders add constraint FKpxtb8awmi0dk6smoh2vp1litg foreign key (customer_id) references s265062.customers;
@@ -77,7 +78,7 @@ alter table if exists s265062.user_hero_subscriptions add constraint FKpe600ijjt
 alter table if exists s265062.user_hero_rates add constraint FKf6ijummhnbjdijc3p3rt10b18 foreign key (hero_id) references s265062.heroes;
 alter table if exists s265062.user_hero_rates add constraint FKpe600ijjtefi75jxb3rtjtxpr foreign key (user_id) references s265062.users;
 
-insert into users (login,password,role) values ('login','{bcrypt}$2a$10$gME7VLRHiw4dbjAJEJ9EM.1KA4/5jQwg6gQ6r9fCNJ2n3uPawF/OG', 'VISITOR')
+insert into s265062.users (login,password,role) values ('login','{bcrypt}$2a$10$gME7VLRHiw4dbjAJEJ9EM.1KA4/5jQwg6gQ6r9fCNJ2n3uPawF/OG', 'VISITOR')
                                                                                                           ,('scientist1','{bcrypt}$2a$10$B5iA7OUD4P9BrLfpjnatEemyGb.IDxUoEK25d48zCjCDYhzB9uwEe', 'SCIENTIST')
                                                                                                           ,('scientist2','{bcrypt}$2a$10$X44JqjGlX0hRAtqzr3ZBM.tTPUXb2KmLu8UaZNZjzdtAEr/R/MTsK', 'SCIENTIST')
                                                                                                           ,('manager1','{bcrypt}$2a$10$ppjYRaZVTPQhlspcI7f6uu7YX2S8HaPFFSVyS8W3.Y0jfpje/m8ie', 'MANAGER')
