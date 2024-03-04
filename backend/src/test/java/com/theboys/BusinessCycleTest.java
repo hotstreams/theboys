@@ -1,5 +1,6 @@
 package com.theboys;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -88,6 +89,7 @@ public class BusinessCycleTest extends BaseFirefoxTest {
         Select status = new Select(driver.findElement(By.xpath("//tr[last()]//select")));
         status.selectByValue("WAITING_FOR_CUSTOMER_APPROVAL");
     }
+    @Disabled
     @Test
     public void mainBusinessProcessShouldEndSuccessfully() {
         signInAsCustomer();

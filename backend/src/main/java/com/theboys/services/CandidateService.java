@@ -40,12 +40,6 @@ public class CandidateService {
         this.candidateRequestRepo = candidateRequestRepo;
     }
 
-    @Transactional
-    public void createCandidateRequest(Scientist scientist, CandidateRequestTO candidateRequestTO) {
-        CandidateRequest candidateRequest = convertCandidateRequest(scientist, candidateRequestTO);
-        candidateRequestRepo.save(candidateRequest);
-    }
-
 
     public List<CandidateResponseTO> getCandidates() {
         List<Candidate> candidates = (List<Candidate>) candidateRepo.findAll();
@@ -105,14 +99,5 @@ public class CandidateService {
                 Base64.decodeBase64(candidateRequestTO.getPhoto()),
                 Base64.decodeBase64(candidateRequestTO.getMedicalDoc())
         );
-    }
-
-    private CandidateRequest convertCandidateRequest(Scientist scientist, CandidateRequestTO candidateRequestTO) {
-        CandidateRequest candidateRequest = new CandidateRequest();
-        candidateRequest.setRace(candidateRequestTO.getRace());
-        String dateOfBirth = candidateRequestTO.getDateOfBirth();
-        candidateRequest.setBirthday(dateOfBirth);
-        candidateRequest.setScientist(scientist);
-        return candidateRequest;
     }
 }

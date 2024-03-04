@@ -52,12 +52,12 @@ public class EntrepreneurControllerTest {
     public void testGetOrders() throws Exception {
         List<OrderResponseTO> orders = new ArrayList<>();
         when(orderService.getOrdersByCustomerId(anyInt())).thenReturn(orders);
-        mockMvc.perform(get("/entrepreneurs/rents"))
+        mockMvc.perform(get("/entrepreneurs/2/rents"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("[]"));
         orders.add(new OrderResponseTO(1, 2, "Something", "Big guy", "Gang fight", "2020-01-01", "2020-01-03", "2019-10-01", OrderStatus.PENDING));
-        mockMvc.perform(get("/entrepreneurs/rents"))
+        mockMvc.perform(get("/entrepreneurs/2/rents"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("""
@@ -95,7 +95,7 @@ public class EntrepreneurControllerTest {
         mockMvc.perform(patch("/entrepreneurs/1/rents/1").contentType(MediaType.APPLICATION_JSON).content(
                         """
                         {
-                            "status":"WAITING_FOR_CUSTOMER_APPROVAL"
+                            "status":"HERO_ACCEPTED"
                         }
                         """))
                 .andExpect(status().isOk())

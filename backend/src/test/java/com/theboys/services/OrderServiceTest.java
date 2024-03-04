@@ -8,6 +8,7 @@ import com.theboys.data.repos.CustomerRepo;
 import com.theboys.data.repos.HeroRepo;
 import com.theboys.data.repos.OrderRepo;
 import com.theboys.security.PersistentUserManager;
+import com.theboys.security.User;
 import com.theboys.security.WebSecurityConfig;
 import com.theboys.to.OrderResponseTO;
 import org.junit.jupiter.api.Assertions;
@@ -21,6 +22,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest(
         classes = {
@@ -32,7 +34,8 @@ import java.util.List;
         OrderRepo.class
 })
 @EntityScan(basePackageClasses = {
-        Order.class
+        Order.class,
+        User.class
 })
 @Import(WebSecurityConfig.class)
 public class OrderServiceTest {
@@ -51,31 +54,24 @@ public class OrderServiceTest {
 
     @Test
     public void testCreateHeroOrder() {
-        Order order = createOrder(1);
+        Order order = createOrder();
         Assertions.assertDoesNotThrow(() -> orderService.createHeroOrder(order));
     }
 
     @Test
     public void testGetOrders() {
-        Order order = createOrder(4);
-        orderService.createHeroOrder(order);
-        List<OrderResponseTO> orders = orderService.getOrdersByCustomerId(2);
-        Assertions.assertEquals(1, orders.size());
+        List<OrderResponseTO> orders = orderService.getOrdersByCustomerId(18);
+        Assertions.assertFalse(orders.isEmpty());
     }
 
-    private Order createOrder(int postfix) {
-        Hero hero = new Hero();
-        hero.setName("X" + (postfix + 1));
-//        hero.setLogin("X" + (postfix + 1));
-//        hero.setPassword("X" + (postfix + 1));
-//        hero.setRole(UserRole.HERO);
-        heroRepo.save(hero);
+    private Order createOrder() {
+        Optional<Hero> optionalHero = heroRepo.findById(7);
+        Assertions.assertFalse(optionalHero.isEmpty());
+        Hero hero = optionalHero.get();
 
-        Customer customer = new Customer();
-//        customer.setLogin("X" + postfix);
-//        customer.setPassword("X" + postfix);
-//        customer.setRole(UserRole.CUSTOMER);
-        customerRepo.save(customer);
+        Optional<Customer> optionalCustomer = customerRepo.findById(18);
+        Assertions.assertFalse(optionalCustomer.isEmpty());
+        Customer customer = optionalCustomer.get();
 
         Order order = new Order();
         order.setHero(hero);

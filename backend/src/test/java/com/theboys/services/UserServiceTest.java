@@ -38,23 +38,17 @@ public class UserServiceTest {
 
     @Autowired
     private UserService userService;
-
-    @AfterEach
-    public void afterEach() {
-        userRepo.deleteAll();
-    }
-
     @Test
     public void testRegister() {
-        RegistrationTO registrationTO = new RegistrationTO("test", "test");
+        RegistrationTO registrationTO = new RegistrationTO("test3", "test");
         Assertions.assertDoesNotThrow(() -> userService.register(registrationTO));
     }
 
     @Test
     public void testUserByLogin() {
-        RegistrationTO registrationTO = new RegistrationTO("test", "test");
+        RegistrationTO registrationTO = new RegistrationTO("test2", "test");
         userService.register(registrationTO);
-        User test = userService.getUserByLogin("test");
+        User test = userService.getUserByLogin("test2");
         Assertions.assertNotNull(test);
     }
 
@@ -71,7 +65,7 @@ public class UserServiceTest {
 
     @Test
     public void testLoginFailed() {
-        Assertions.assertThrows(UserNotFoundException.class, () -> userService.login("testUser"));
+        Assertions.assertThrows(UserNotFoundException.class, () -> userService.login("testUser2"));
     }
 
     @Test

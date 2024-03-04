@@ -10,6 +10,7 @@ import com.theboys.services.OrderService;
 import com.theboys.to.HeroTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -71,12 +72,12 @@ public class HeroControllerTest {
     @Test
     public void testGetHeroes() throws Exception {
         List<HeroTO> heroes = new ArrayList<>();
-        when(heroService.getHeroes()).thenReturn(heroes);
+        when(heroService.getHeroes(Mockito.anyString())).thenReturn(heroes);
         mockMvc.perform(get("/heroes").header(AUTHORIZATION, BASE64HEADER)).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Type", "application/json"))
                 .andExpect(content().json("[]"));
-        heroes.add(new HeroTO(2, "Sting", 4.4d, "cringe", "the most cringy hero"));
+        heroes.add(new HeroTO(2, "Sting", 4.4d, "cringe", "the most cringy hero", false, false));
         mockMvc.perform(get("/heroes").header(AUTHORIZATION, BASE64HEADER)).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Type", "application/json"))
@@ -86,10 +87,12 @@ public class HeroControllerTest {
                             "name":"Sting",
                             "rating":4.4,
                             "abilities":"cringe",
-                            "description":"the most cringy hero"
+                            "description":"the most cringy hero",
+                            "alreadyRatedByUser":false,
+                            "subscribed": false
                         }]
                         """));
-        heroes.add(new HeroTO(3, "Sheesh", 4.5d, "none", "he paid to become a 'hero'"));
+        heroes.add(new HeroTO(3, "Sheesh", 4.5d, "none", "he paid to become a 'hero'", false, false));
         mockMvc.perform(get("/heroes").header(AUTHORIZATION, BASE64HEADER)).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Type", "application/json"))
@@ -99,13 +102,17 @@ public class HeroControllerTest {
                             "name":"Sting",
                             "rating":4.4,
                             "abilities":"cringe",
-                            "description":"the most cringy hero"
+                            "description":"the most cringy hero",
+                            "alreadyRatedByUser":false,
+                            "subscribed":false
                         },{
                             "id":3,
                             "name":"Sheesh",
                             "rating":4.5,
                             "abilities":"none",
-                            "description":"he paid to become a 'hero'"
+                            "description":"he paid to become a 'hero'",
+                            "alreadyRatedByUser":false,
+                            "subscribed":false
                         }]
                         """));
     }

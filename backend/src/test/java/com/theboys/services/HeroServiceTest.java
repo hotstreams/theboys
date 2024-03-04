@@ -6,6 +6,7 @@ import com.theboys.data.repos.CustomerRepo;
 import com.theboys.data.repos.HeroRepo;
 import com.theboys.data.repos.OrderRepo;
 import com.theboys.security.PersistentUserManager;
+import com.theboys.security.User;
 import com.theboys.security.WebSecurityConfig;
 import com.theboys.to.OrderRequestTO;
 import org.junit.jupiter.api.Assertions;
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @SpringBootTest(
         classes = {
@@ -32,7 +34,8 @@ import java.time.LocalDate;
         OrderRepo.class
 })
 @EntityScan(basePackageClasses = {
-        Hero.class
+        Hero.class,
+        User.class
 })
 @Import(WebSecurityConfig.class)
 public class HeroServiceTest {
@@ -48,35 +51,12 @@ public class HeroServiceTest {
 
     @Test
     public void testRentHero() {
-        Customer customer = createCustomer(1);
-        customerRepo.save(customer);
-
-        Hero hero = createHero(2);
-        Hero saved = heroRepo.save(hero);
-
         OrderRequestTO orderRequestTO = new OrderRequestTO();
         orderRequestTO.setHeroDescription("test");
-//        orderRequestTO.setHeroId(saved.getId());
+        orderRequestTO.setHeroId(8);
         orderRequestTO.setDateStart(LocalDate.now());
         orderRequestTO.setDateEnd(LocalDate.now().plusDays(1));
 
-        Assertions.assertDoesNotThrow(() -> heroService.rentHero(orderRequestTO, "X1"));
-    }
-
-    private Customer createCustomer(int postfix) {
-        Customer customer = new Customer();
-//        customer.setLogin("X" + postfix);
-//        customer.setPassword("X" + postfix);
-//        customer.setRole(UserRole.CUSTOMER);
-        return customer;
-    }
-
-    private Hero createHero(int postfix) {
-        Hero hero = new Hero();
-        hero.setName("X" + (postfix + 1));
-//        hero.setLogin("X" + (postfix + 1));
-//        hero.setPassword("X" + (postfix + 1));
-//        hero.setRole(UserRole.HERO);
-        return hero;
+        Assertions.assertDoesNotThrow(() -> heroService.rentHero(orderRequestTO, "customer"));
     }
 }

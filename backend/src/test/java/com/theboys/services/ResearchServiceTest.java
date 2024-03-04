@@ -1,8 +1,6 @@
 package com.theboys.services;
 
-import com.theboys.data.entities.Candidate;
-import com.theboys.data.entities.Medicine;
-import com.theboys.data.entities.Scientist;
+import com.theboys.data.entities.*;
 import com.theboys.data.repos.*;
 import com.theboys.security.PersistentUserManager;
 import com.theboys.security.User;
@@ -54,32 +52,18 @@ public class ResearchServiceTest {
 
     @Test
     public void testCreateResearch() {
-        createMedicine(1,"Test");
-        int candidateId = createCandidate("TestCandidate");
-        Scientist scientist = new Scientist();
-//        scientist.setLogin("X1");
-//        scientist.setPassword("X1");
-//        scientist.setRole(UserRole.SCIENTIST);
-        ResearchRequestTO requestTO = createResearchRequest(1, candidateId);
-        Scientist savedScientist = scientistRepo.save(scientist);
-//        Assertions.assertDoesNotThrow(
-//                () -> researchService.createResearch(savedScientist.getId(), requestTO));
+        ResearchRequestTO requestTO = createResearchRequest(1, 17);
+        Assertions.assertDoesNotThrow(
+                () -> researchService.createResearch(2, requestTO));
     }
 
     @Test
     public void testGetResearchById() {
-        createMedicine(2, "Test2");
-        int candidateId = createCandidate("TestCandidate3");
-        Scientist scientist =  new Scientist();
-//        scientist.setLogin("X12");
-//        scientist.setPassword("X1");
-//        scientist.setRole(UserRole.SCIENTIST);
-        Scientist savedScientist = scientistRepo.save(scientist);
-        ResearchRequestTO researchRequest = createResearchRequest(2, candidateId);
-//        Research research = researchService.createResearch(savedScientist.getId(), researchRequest);
-
-//        Research researchById = researchService.getResearchById(research.getResearchId());
-//        Assertions.assertEquals(research.getDozeCount(), researchById.getDozeCount());
+        List<Research> all = researchRepo.findAll();
+        Research research = all.get(0);
+        
+        Research researchById = researchService.getResearchById(research.getResearchId());
+        Assertions.assertNotNull(researchById);
     }
 
     @Test
@@ -93,39 +77,24 @@ public class ResearchServiceTest {
     @Test
     @Transactional
     public void testAddTestsToResearch() {
-        createMedicine(1,"Test");
-        int candidateId = createCandidate("TestCandidate4");
-        Scientist scientist = new Scientist();
-//        scientist.setLogin("X10");
-//        scientist.setPassword("X4");
-//        scientist.setRole(UserRole.SCIENTIST);
-        ResearchRequestTO requestTO = createResearchRequest(1, candidateId);
-        Scientist savedScientist = scientistRepo.save(scientist);
-//        Research research = researchService.createResearch(savedScientist.getId(), requestTO);
+        List<Research> all = researchRepo.findAll();
+        Research research = all.get(0);
         TestRequestTO testRequestTO = new TestRequestTO();
         testRequestTO.setTestName("Test");
-//        com.theboys.data.entities.Test test = researchService.addTestsToResearch(research.getResearchId(), testRequestTO);
-//        Assertions.assertEquals("Test", test.getName());
-//        Assertions.assertEquals(research, test.getResearch());
+        com.theboys.data.entities.Test test = researchService.addTestsToResearch(research.getResearchId(), testRequestTO);
+        Assertions.assertEquals("Test", test.getName());
     }
 
     @Test
     @Transactional
     public void testAddAssessmentsToResearch() {
-        createMedicine(1,"Test");
-        int candidateId = createCandidate("TestCandidate2");
-        Scientist scientist = new Scientist();
-//        scientist.setLogin("X8");
-//        scientist.setPassword("X4");
-//        scientist.setRole(UserRole.SCIENTIST);
-        ResearchRequestTO requestTO = createResearchRequest(1, candidateId);
-        Scientist savedScientist = scientistRepo.save(scientist);
-//        Research research = researchService.createResearch(savedScientist.getId(), requestTO);
+        List<Research> all = researchRepo.findAll();
+        Research research = all.get(0);
         AssessmentRequestTO request = new AssessmentRequestTO();
         request.setAssessmentName("Test");
-//        Assessment assessment = researchService.addAssessmentsToResearch(research.getResearchId(), request);
-//        Assertions.assertEquals("Test", assessment.getName());
-//        Assertions.assertEquals(research, assessment.getResearch());
+        Assessment assessment = researchService.addAssessmentsToResearch(research.getResearchId(), request);
+        Assertions.assertEquals("Test", assessment.getName());
+        Assertions.assertEquals(research, assessment.getResearch());
 
     }
 
@@ -134,21 +103,6 @@ public class ResearchServiceTest {
         medicine.setName(name);
         medicine.setId(id);
         medicineRepo.save(medicine);
-    }
-
-    private int createCandidate(String login) {
-        Candidate candidate = new Candidate();
-//        candidate.setLogin(login);
-//        candidate.setPassword("X");
-//        candidate.setRole(UserRole.CANDIDATE);
-//        candidate.setFirstName("A");
-//        candidate.setLastName("A");
-//        candidate.setBirthday(LocalDate.now());
-//        candidate.setPhone("");
-//        candidate.setMedicalDocument(new byte[]{});
-//        Candidate saved = candidateRepo.save(candidate);
-//        return saved.getId();
-        return -1;
     }
 
     private ResearchRequestTO createResearchRequest(Integer medicineId, Integer candidateId) {

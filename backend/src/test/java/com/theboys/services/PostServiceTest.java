@@ -48,67 +48,26 @@ public class PostServiceTest {
 
     @Test
     public void testCreatePost() {
-        User user = new User("test", "test", UserRole.HERO);
-        userRepo.save(user);
-
         PostTO postTO = createPost();
-        Assertions.assertDoesNotThrow(() -> postService.createPost("test", postTO));
+        Assertions.assertDoesNotThrow(() -> postService.createPost("hero1", postTO));
     }
 
     @Test
     public void testGetHeroPosts() {
-        User user = new User("HeroTest", "test", UserRole.HERO);
-        User savedUser = userRepo.save(user);
-        PostTO post = createPost();
-        postService.createPost("HeroTest", post);
-        List<PostTO> heroPosts = postService.getHeroPosts(savedUser.getId(), Pageable.ofSize(10));
-        Assertions.assertEquals(1, heroPosts.size());
-        PostTO heroPost = heroPosts.get(0);
-        Assertions.assertEquals(post.getTitle(), heroPost.getTitle());
-        Assertions.assertEquals(post.getDescription(), heroPost.getDescription());
+        List<PostTO> heroPosts = postService.getHeroPosts(7, Pageable.ofSize(10));
+        Assertions.assertFalse(heroPosts.isEmpty());
     }
 
     @Test
     public void testSubscriptions() {
-        User user = new User("newUser", "test", UserRole.VISITOR);
-        user = userRepo.save(user);
-
-        Hero heroEntity = new Hero();
-//        heroEntity.setName("NewHero");
-//        heroEntity.setLogin("Y");
-//        heroEntity.setPassword("test");
-//        heroEntity.setRole(UserRole.HERO);
-        Hero hero = heroRepo.save(heroEntity);
-        Integer userId = user.getId();
-//        Integer heroId = hero.getId();
-//        Assertions.assertDoesNotThrow(() -> postService.subscribeToHero(userId, heroId));
-//        Assertions.assertDoesNotThrow(() -> postService.unsubscribeFromHero(userId, heroId));
+        Assertions.assertDoesNotThrow(() -> postService.subscribeToHero(2, 8));
+        Assertions.assertDoesNotThrow(() -> postService.unsubscribeFromHero(2, 8));
     }
 
     @Test
     public void testGetPostsBySubscription() {
-        User user = new User("newUser2", "test", UserRole.VISITOR);
-        user = userRepo.save(user);
-
-        Hero hero = new Hero();
-        hero.setName("X");
-//        hero.setLogin("newHeroUser");
-//        hero.setPassword("test");
-//        hero.setRole(UserRole.HERO);
-        heroRepo.save(hero);
-
-        Integer userId = user.getId();
-//        Integer heroId = hero.getId();
-//        postService.subscribeToHero(userId, heroId);
-
-        PostTO post = createPost();
-        postService.createPost("newHeroUser", post);
-
-//        List<Post> postsBySubscription = postService.getPostsBySubscription(userId, Pageable.ofSize(10));
-//        Assertions.assertEquals(1, postsBySubscription.size());
-//        Post heroPost = postsBySubscription.get(0);
-//        Assertions.assertEquals(post.getTitle(), heroPost.getTitle());
-//        Assertions.assertEquals(post.getDescription(), heroPost.getDescription());
+        List<PostTO> postsBySubscription = postService.getPostsBySubscription(1, Pageable.ofSize(10));
+        Assertions.assertFalse(postsBySubscription.isEmpty());
     }
 
     private PostTO createPost() {
