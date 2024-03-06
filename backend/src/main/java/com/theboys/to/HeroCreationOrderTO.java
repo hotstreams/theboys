@@ -13,8 +13,6 @@ import java.util.List;
 @Data
 public class HeroCreationOrderTO {
     @NotNull
-    private Integer orderId;
-    @NotNull
     @NotEmpty
-    private List<String> skillNames;
+    private String description;
 }

@@ -41,7 +41,7 @@ public class EntrepreneurController {
     @PatchMapping(path = "/{entrepreneursId}/rents/{rentId}")
     public CustomHttpResponse updateOrderStatus(@PathVariable("entrepreneursId") Integer entrepreneursId,
                                                 @PathVariable("rentId") Integer rentId,
-                                                @Valid @RequestBody UpdateOrderStatusTO orderStatusTO) {
+                                                @RequestBody UpdateOrderStatusTO orderStatusTO) {
         orderService.updateOrderStatus(orderStatusTO.getStatus(), rentId);
         return new CustomHttpResponse();
     }

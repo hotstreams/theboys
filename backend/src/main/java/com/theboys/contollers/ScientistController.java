@@ -1,12 +1,10 @@
 package com.theboys.contollers;
 
 import com.theboys.data.enums.CandidateRequestStatus;
+import com.theboys.data.enums.CreationStatus;
 import com.theboys.services.CandidateRequestService;
 import com.theboys.services.HeroCreationOrderService;
-import com.theboys.to.HeroCreationOrderTO;
-import com.theboys.to.RequestCandidateRequestTO;
-import com.theboys.to.RequestCandidateResponseTO;
-import com.theboys.to.UpdateRequestCandidateStatusTO;
+import com.theboys.to.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,12 +50,12 @@ public class ScientistController {
     }
 
     @GetMapping("/hero_creation_orders")
-    public List<HeroCreationOrderTO> getHeroCreationOrder() {
+    public List<HeroCreationOrderResponseTO> getHeroCreationOrder() {
         return heroCreationOrderService.getHeroCreationOrders();
     }
 
     @PatchMapping("/hero_creation_orders/{id}")
-    public void updateOrderWithCreatedHero(@PathVariable("id") Integer heroCreationOrderId, @NotNull @RequestParam("heroId") Integer heroId) {
-        heroCreationOrderService.fulfillHeroCreationOrder(heroCreationOrderId, heroId);
+    public void updateOrderWithCreatedHero(@PathVariable("id") Integer heroCreationOrderId, @RequestBody @Valid HeroCreationStatusTO status) {
+        heroCreationOrderService.fulfillHeroCreationOrder(heroCreationOrderId, status.getStatus());
     }
 }

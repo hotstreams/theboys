@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserInterfaceTest extends BaseFirefoxTest {
     private static final String URL = "http://localhost:5173/";
 
-    @Disabled
     @Test
     public void signinShouldBeSuccessfulWithCorrectCredentials() {
         driver.get(URL + "signin");
@@ -36,9 +35,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertEquals(URL, driver.getCurrentUrl());
     }
 
-    @Disabled
     @Test
-    //Fix it
     public void signinShouldBeUnsuccessfulWithIncorrectCredentials() {
         driver.get(URL + "signin");
 
@@ -53,10 +50,9 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         WebElement button = driver.findElement(By.xpath("//button[text()='Sign in']"));
         button.click();
 
-        assertDoesNotThrow(() -> driver.findElement(By.xpath("//div[text()='Error occured during sending request']")));
+        assertDoesNotThrow(() -> driver.findElement(By.xpath("//div[text()='Unauthorized']")));
     }
 
-    @Disabled
     @Test
     public void signupShouldBeSuccessfulWithCorrectCredentials() {
         driver.get(URL + "signup");
@@ -75,7 +71,6 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertDoesNotThrow(() -> driver.findElement(By.xpath("//div[text()='You were successfully registered!']")));
     }
 
-    @Disabled
     @Test
     public void signupShouldBeUnsuccessfulWithIncorrectCredentials() {
         driver.get(URL + "signup");
@@ -94,9 +89,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertDoesNotThrow(() -> driver.findElement(By.xpath("//div[text()='Fields shoud be min 8 characters']")));
     }
 
-    @Disabled
     @Test
-    //Fix me
     public void customerSpecifiedHeroRentShouldBeSuccessful() {
         driver.get(URL + "signin");
 
@@ -133,9 +126,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertEquals(URL + "rent-requests", driver.getCurrentUrl());
     }
 
-    @Disabled
     @Test
-    //Fix me
     public void customerSpecifiedHeroRentShouldBeUnsuccessfulWhenDateIsNull() {
         driver.get(URL + "signin");
 
@@ -172,7 +163,6 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertNotNull(alert);
     }
 
-    @Disabled
     @Test
     public void customerSpecifiedHeroRentShouldBeUnsuccessfulWhenDescriptionIsNull() {
         driver.get(URL + "signin");
@@ -214,9 +204,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
                 .toString();
     }
 
-    @Disabled
     @Test
-    //Fix me
     public void visitorBecomeHeroRequestSuccessfullySubmitted() {
         driver.get(URL + "signup");
 
@@ -318,7 +306,6 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         button.click();
     }
 
-    @Disabled
     @Test
     public void visitorBecomeHeroRequestUnsuccessfullWhenFirstNameIsNull() {
         signInAsRandomUser();
@@ -335,7 +322,6 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertNotNull(alert);
     }
 
-    @Disabled
     @Test
     public void visitorBecomeHeroRequestUnsuccessfullWhenLastNameIsNull() {
         signInAsRandomUser();
@@ -355,7 +341,6 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertNotNull(alert);
     }
 
-    @Disabled
     @Test
     public void visitorBecomeHeroRequestUnsuccessfullWhenPhoneIsNull() {
         signInAsRandomUser();
@@ -378,7 +363,6 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertNotNull(alert);
     }
 
-    @Disabled
     @Test
     public void visitorBecomeHeroRequestUnsuccessfullWhenDateIsNull() {
         signInAsRandomUser();
@@ -401,9 +385,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertNotNull(alert);
     }
 
-    @Disabled
     @Test
-    //Fix me
     public void visitorBecomeHeroRequestUnsuccessfullWhenHeightAndWeightIsNull() {
         signInAsRandomUser();
 
@@ -434,9 +416,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertNotNull(alert);
     }
 
-    @Disabled
     @Test
-    //Fix me
     public void visitorBecomeHeroRequestUnsuccessfullWhenAddressAndDescrIsNull() {
         signInAsRandomUser();
 
@@ -480,9 +460,7 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertNotNull(alert);
     }
 
-    @Disabled
     @Test
-    //Fix me
     public void visitorBecomeHeroRequestUnsuccessfullWhenPhoneIsNotValid() {
         signInAsRandomUser();
 
@@ -526,7 +504,6 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertNotNull(alert);
     }
 
-    @Disabled
     @Test
     public void managerShouldHaveSpecificFunctionality() {
         driver.get(URL + "signin");
@@ -552,7 +529,6 @@ public class UserInterfaceTest extends BaseFirefoxTest {
         assertNotNull(scientistRequests);
     }
 
-    @Disabled
     @Test
     public void customerShouldHaveSpecificFunctionality() {
         driver.get(URL + "signin");
