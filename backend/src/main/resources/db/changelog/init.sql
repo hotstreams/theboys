@@ -78,7 +78,7 @@ alter table if exists s265062.user_hero_subscriptions add constraint FKpe600ijjt
 alter table if exists s265062.user_hero_rates add constraint FKf6ijummhnbjdijc3p3rt10b18 foreign key (hero_id) references s265062.heroes;
 alter table if exists s265062.user_hero_rates add constraint FKpe600ijjtefi75jxb3rtjtxpr foreign key (user_id) references s265062.users;
 
-insert into users (login,password,role) values ('login','{bcrypt}$2a$10$gME7VLRHiw4dbjAJEJ9EM.1KA4/5jQwg6gQ6r9fCNJ2n3uPawF/OG', 'VISITOR')
+insert into s265062.users (login,password,role) values ('login','{bcrypt}$2a$10$gME7VLRHiw4dbjAJEJ9EM.1KA4/5jQwg6gQ6r9fCNJ2n3uPawF/OG', 'VISITOR')
                                              ,('scientist1','{bcrypt}$2a$10$B5iA7OUD4P9BrLfpjnatEemyGb.IDxUoEK25d48zCjCDYhzB9uwEe', 'SCIENTIST')
                                              ,('scientist2','{bcrypt}$2a$10$X44JqjGlX0hRAtqzr3ZBM.tTPUXb2KmLu8UaZNZjzdtAEr/R/MTsK', 'SCIENTIST')
                                              ,('manager1','{bcrypt}$2a$10$ppjYRaZVTPQhlspcI7f6uu7YX2S8HaPFFSVyS8W3.Y0jfpje/m8ie', 'MANAGER')
