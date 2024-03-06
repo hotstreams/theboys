@@ -23,7 +23,7 @@
             });
 
             if (response.ok) {
-                request.status = status
+                await getJobs()
             } else {
                 error = true
                 errorMessage = 'Error occured during request'
@@ -36,11 +36,11 @@
     }
 
     async function confirm(request: any) {
-        await changeStatus(request, 'HERO_CONFIRMED')
+        await changeStatus(request, 'HERO_ACCEPTED')
     }
 
     async function decline(request: any) {
-        await changeStatus(request, 'HERO_DECLAINED')
+        await changeStatus(request, 'HERO_DECLINED')
     }
 
     async function getJobs() {
@@ -97,14 +97,14 @@
 
                           {#each requests as request}
                             <div class="border-b border-gray-900/10 pb-8">
-                                <h2 class="text-xl font-semibold text-gray-900">From {request.name}</h2>
+                                <!-- <h2 class="text-xl font-semibold text-gray-900">From {request.name}</h2> -->
 
                                 <div class="mt-2">
                                     <h2 class="text-base text-gray-900">Date</h2>
                                     <div class="mt-2">
-                                    <input disabled bind:value={request.dateStart} name="start" type="date" class="w-50 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Date start XXXX-XX-XX">
+                                    <input disabled bind:value={request.startDate} name="start" type="date" class="w-50 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Date start XXXX-XX-XX">
                                     <span class="mx-4 text-gray-500">to</span>
-                                    <input disabled bind:value={request.dateEnd} name="end" type="date" class="w-50 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Date end XXXX-XX-XX">
+                                    <input disabled bind:value={request.endDate} name="end" type="date" class="w-50 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Date end XXXX-XX-XX">
                                     </div>
                                 </div>
                                 <div class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">

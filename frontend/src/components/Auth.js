@@ -10,7 +10,7 @@ export async function authenticate(username, password) {
                 'Authorization': auth
             }
         })
-    
+
         if (response.ok) {
             localStorage.setItem('auth', auth)
             localStorage.setItem('user', JSON.stringify(await response.json()))
@@ -19,13 +19,13 @@ export async function authenticate(username, password) {
             }
         } else {
             const body = await response.json()
+
             return {
                 status: false,
-                message: body.message
+                message: body.error
             }
         }
     } catch (error) {
-        console.log(error)
         return {
             status: false,
             message: 'Error occured during sending request'

@@ -16,8 +16,11 @@
     let validationMesssage: string
 
     function validate() {
-      dateStart = document.getElementsByName("start")[0].getAttribute("value") ?? ""
-      dateEnd = document.getElementsByName("end")[0].getAttribute("value") ?? ""
+      if (dateStart == null || dateEnd == null) {
+        dateStart = document.getElementsByName("start")[0].getAttribute("value") ?? ""
+        dateEnd = document.getElementsByName("end")[0].getAttribute("value") ?? ""
+      }
+
       if (!requestAnyHero && (requestDescription == null || dateStart == null || dateEnd == null)) {
           validationError = true
           validationMesssage = 'All fields should be filled out'

@@ -9,7 +9,7 @@
     let password: string
 
     let error: boolean = false
-    let errorMessage: string
+    let errorMessage: string = "Unathenticated"
 
     function validate() {
         if (username == null || password == null || password.length < 8) {
@@ -28,12 +28,12 @@
         }
 
         const res = await authenticate(username, password)
-
+        
         if (res.status) {
             goto('/')
         } else {
-            error = true
-            errorMessage = res.message
+           error = true
+           errorMessage = res.message
         }
     }
 

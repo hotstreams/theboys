@@ -111,7 +111,7 @@
             goto('/candidate-requests')
         } else {
             validation = true
-            validationMsg = (await res.json()).message
+            validationMsg = (await res.json()).error
         }
       } catch (error) {
           console.log(error)

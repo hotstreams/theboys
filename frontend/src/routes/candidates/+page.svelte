@@ -454,7 +454,7 @@
 
             <div class="px-6 py-4 grid gap-3  md:items-center border-b border-gray-200 dark:border-gray-700">
                 <h2 class="text-base font-semibold leading-7 text-gray-900">Request Status</h2>
-                <select bind:value={selectedCandidate.status} id="countries" class="block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <select bind:value={selectedCandidate.status} id="selectId" class="block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                   <option>BECAME_HERO</option>
                   <option>DIED</option>
                   <option>IN_PROGRESS</option>
